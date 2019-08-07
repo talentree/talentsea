@@ -1,0 +1,28 @@
+{
+  "name": "talentsea",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/talentree/talentsea.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/talentree/talentsea/issues"
+  },
+  "homepage": "https://github.com/talentree/talentsea#readme",
+  "devDependencies": {
+    "concurrently": "^4.1.1",
+    "rollup": "^1.19.4",
+    "rollup-plugin-node-resolve": "^5.2.0"
+  },
+  "dependencies": {
+    "@polymer/lit-element": "^0.7.1",
+    "firebase": "^6.3.4"
+  }
+}

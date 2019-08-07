@@ -1,0 +1,17 @@
+# Dependency directories
+node_modules/
+
+# Visual Studio Code
+.vscode
+
+# GIT
+.git
+
+# Distribution
+dist/bundle.js
+
+#Applicativi Roberto
+applicativi/
+
+#Firebase
+.firebase
