@@ -1,16 +1,20 @@
 {
   "name": "talentsea",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Talentsea by Talentree",
+  "main": "src/main.js",
   "scripts": {
+    "start": "./node_modules/.bin/concurrently \"npm run watch\" \"npm run serve\"",
+    "watch": "./node_modules/.bin/rollup -c -w",
+    "serve": "lite-server --baseDir=dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/talentree/talentsea.git"
-  },
-  "author": "",
+  "keywords": [
+    "game",
+    "talentree",
+    "coderdojo"
+  ],
+  "author": "Roberto Grossa, Andrea Roveroni, Davide Peron, Edoardo Bortolozzo, Nicola Valentini",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/talentree/talentsea/issues"
@@ -19,6 +23,7 @@
   "devDependencies": {
     "concurrently": "^4.1.1",
     "rollup": "^1.19.4",
+    "rollup-plugin-copy": "^3.1.0",
     "rollup-plugin-node-resolve": "^5.2.0"
   },
   "dependencies": {
