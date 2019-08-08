@@ -1,0 +1,28 @@
+games
+	info
+		gameTime
+		windDirection
+		windForce
+		name
+	teams
+		id
+			password
+			inputs
+				acceleration
+				wheel
+				timer
+			outputs
+				isUsed
+				speed
+				fuel
+				positionX
+				positionY
+				radar
+					state
+					frontStates
+
+OPERAZIONI SUL DATABASE
+Console: lettura/scrittura su inputs, lettura su outputs e info
+Engine: legge intera appena aperto
+
+Router ha array che definisce path e nome elemento da usare

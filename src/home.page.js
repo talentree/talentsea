@@ -1,6 +1,7 @@
-import { LitElement, html } from '@polymer/lit-element';
+import { html } from '@polymer/lit-element';
+import { NavElement } from './core/nav-element';
 
-export class HomePage extends LitElement{
+export class HomePage extends NavElement{
     constructor(){
         super();
     }
