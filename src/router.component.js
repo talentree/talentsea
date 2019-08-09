@@ -1,9 +1,6 @@
-import { html } from '@polymer/lit-element';
-import { NavElement } from './core/nav-element';
-
-import HomePage from './home.page';
-import JoinPage from './join.page';
-import ConsolePage from './console.page';
+import './home.page';
+import './join.page';
+import './console.page';
 
 export class RouterComponent extends HTMLElement {
 
