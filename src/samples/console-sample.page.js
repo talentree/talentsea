@@ -1,8 +1,8 @@
 import { html } from '@polymer/lit-element';
-import { NavElement } from './core/nav-element';
-import { Fake } from './core/fake';
+import { NavElement } from '../core/nav-element';
+import { Fake } from '../core/fake';
 
-export class ConsolePage extends NavElement{
+export class ConsoleSamplePage extends NavElement{
     
     static get properties(){
         return {
@@ -16,7 +16,7 @@ export class ConsolePage extends NavElement{
         this.once = { contatore: 0, prova: ''};
         this.many = { contatore: 0, prova: ''};
         this.fake = new Fake();
-        this.fake.read().then(content => this.once = content);
+        this.fake.read(result => this.once = result);
         this.fake.reads(result => this.many = result);
     }
 
@@ -37,4 +37,4 @@ export class ConsolePage extends NavElement{
     }
 }
 
-customElements.define('console-page', ConsolePage);
+customElements.define('console-sample-page', ConsoleSamplePage);

@@ -1,6 +1,6 @@
 import './home.page';
-import './join.page';
-import './console.page';
+import './samples/engine-sample.page';
+import './samples/console-sample.page';
 
 export class RouterComponent extends HTMLElement {
 
@@ -8,8 +8,8 @@ export class RouterComponent extends HTMLElement {
         super();
         this.routes = [
             {path: '/', element: 'home-page'},
-            {path: '/join', element: 'join-page'},
-            {path: '/console', element: 'console-page'}
+            {path: '/engine-sample', element: 'engine-sample-page'},
+            {path: '/console-sample', element: 'console-sample-page'}
         ];
         this.navigate(document.location.pathname);
 

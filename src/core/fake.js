@@ -7,15 +7,21 @@ export class Fake {
         this.doc = db.collection("Fake").doc("1");
     }
 
-    read() {
+/*     read() {
         return new Promise((resolve, reject) => {
             this.doc
                 .get()
                 .catch(e => reject(e))
                 .then(res => resolve(res.data()));
             });
-        }
-    
+        } */
+        
+    read(func) {
+        this.doc.get()
+            .catch(e => console.log(e))
+            .then(res => func(res.data()));
+    }
+
     reads(func) {
         this.doc.onSnapshot(doc => func(doc.data()));
         }
