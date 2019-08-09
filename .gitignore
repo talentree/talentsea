@@ -8,7 +8,7 @@ node_modules/
 .git
 
 # Distribution
-dist/bundle.js
+dist
 
 #Applicativi Roberto
 applicativi/
