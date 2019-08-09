@@ -1,8 +1,8 @@
 import { html } from '@polymer/lit-element';
-import { NavElement } from './core/nav-element';
-import { Fake } from './core/fake';
+import { NavElement } from '../core/nav-element';
+import { Fake } from '../core/fake';
 
-export class JoinPage extends NavElement{
+export class EngineSamplePage extends NavElement{
 
     static get properties(){
         return {
@@ -41,8 +41,9 @@ export class JoinPage extends NavElement{
     }
 
     reset() {
+        this.contatore = 0;
         this.fake.setFake({ contatore: 0, prova: 'prova' });
     }
 }
 
-customElements.define('join-page', JoinPage);
+customElements.define('engine-sample-page', EngineSamplePage);
