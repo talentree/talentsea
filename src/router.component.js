@@ -1,4 +1,10 @@
-import './home.page';
+import './pages/home.page';
+import './pages/admin-login.page';
+import './pages/admin-new-game.page';
+import './pages/admin-console.page';
+import './pages/team-login.page';
+import './pages/team-console.page';
+
 import './samples/engine-sample.page';
 import './samples/console-sample.page';
 
@@ -8,6 +14,12 @@ export class RouterComponent extends HTMLElement {
         super();
         this.routes = [
             {path: '/', element: 'home-page'},
+            {path: '/admin-login', element: 'admin-login-page'},
+            {path: '/admin-newgame', element: 'admin-new-game-page'},
+            {path: '/admin-console', element: 'admin-console-page'},
+            {path: '/team-login', element: 'team-login-page'},
+            {path: '/team-console', element: 'team-console-page'},
+
             {path: '/engine-sample', element: 'engine-sample-page'},
             {path: '/console-sample', element: 'console-sample-page'}
         ];

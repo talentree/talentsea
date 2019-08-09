@@ -26,3 +26,11 @@ Console: lettura/scrittura su inputs, lettura su outputs e info
 Engine: legge intera appena aperto
 
 Router ha array che definisce path e nome elemento da usare
+
+PAGINE .page:
+HomePage
+AdminLoginPage
+AdminNewGamePage
+AdminConsolePage
+TeamLoginPage
+TeamConsolePage
