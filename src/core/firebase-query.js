@@ -3,26 +3,33 @@ import firebase from "firebase/app";
 export class FirebaseQuery {
 
     constructor() {
-        const db = firebase.firestore();
-        this.doc = db.collection("games").doc("1");
+        this.db = firebase.firestore().collection("games");
+        
     }
 
-/*     read() {
-        return new Promise((resolve, reject) => {
-            this.doc
-                .get()
-                .catch(e => reject(e))
-                .then(res => resolve(res.data()));
+    set(uid){
+        this.doc = db.doc(uid);
+    }
+
+    //restituisce tutti i documenti del database dentro un array
+    readAll(func) {
+        this.db.get()
+            .catch(e => console.log(e))
+            .then(res => {
+                let datas = [];
+                res.docs.forEach(doc => {
+                    datas.push(doc.data());
+                })
+                func(datas);
             });
-        } */
+    }
         
-        /*
     read(func) {
         this.doc.get()
             .catch(e => console.log(e))
             .then(res => func(res.data()));
     }
-
+/*
     reads(func) {
         this.doc.onSnapshot(doc => func(doc.data()));
         }
@@ -39,6 +46,4 @@ export class FirebaseQuery {
         this.doc.update(fake);
     }
     */
-
-   
 }

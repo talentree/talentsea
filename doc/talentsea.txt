@@ -33,4 +33,9 @@ TeamLoginPage
 TeamConsolePage
 
 OPERAZIONI SU FIRESTORE
-HomePage: 
+HomePage: nulla
+AdminLoginPage: auth, lettura eventuale partita presente
+AdminNewGamePage: scrittura nuova partita
+AdminConsolePage: lettura da UID e scrittura in tutto
+TeamLoginPage: lettura tutte partite e scrittura isUsed ? , setFirebaseConfig (UID)
+TeamConsolePage: lettura da UID e scrittura 
