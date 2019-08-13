@@ -21,9 +21,6 @@ games
 					state
 					frontStates
 
-OPERAZIONI SUL DATABASE
-Console: lettura/scrittura su inputs, lettura su outputs e info
-Engine: legge intera appena aperto
 
 Router ha array che definisce path e nome elemento da usare
 
@@ -34,3 +31,6 @@ AdminNewGamePage
 AdminConsolePage
 TeamLoginPage
 TeamConsolePage
+
+OPERAZIONI SU FIRESTORE
+HomePage: 
