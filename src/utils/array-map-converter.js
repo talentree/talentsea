@@ -1,4 +1,4 @@
-import { teamClassStandardProperties } from './classes/team.class';
+import { teamClassStandardProperties } from '../core/classes/team.class';
 
 export let ArrayMapConverter = (function () {
     return {

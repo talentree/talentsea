@@ -8,8 +8,8 @@ import './pages/team-console.page';
 import './samples/engine-sample.page';
 import './samples/console-sample.page';
 
-import { adminGuard } from './core/admin.guard';
-import { teamGuard } from './core/team.guard';
+import { adminGuard } from './core/guards/admin.guard';
+import { teamGuard } from './core/guards/team.guard';
 
 export class RouterComponent extends HTMLElement {
 
@@ -49,8 +49,9 @@ export class RouterComponent extends HTMLElement {
         //ottengo la rotta corretta
         let route = this.routes.find(item => item.path === path);
         if (route) {
-            //controllo la relativa guardia
-            let routeGuardResponse = route.guard;
+            //controllo la relativa guardia se esiste
+            let routeGuardResponse = route.guard && route.guard();
+            console.log(routeGuardResponse);
             if (routeGuardResponse) {
                 //nel caso non possa accedere a quella pagina vengo reindirizzato
                 this.navigate(routeGuardResponse);

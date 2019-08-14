@@ -1,7 +1,7 @@
 import { html } from '@polymer/lit-element';
 import { NavElement } from '../core/nav-element';
 import { FirebaseQuery } from '../core/firebase-query';
-import { ArrayMapConverter } from '../core/array-map-converter';
+import { ArrayMapConverter } from '../utils/array-map-converter';
 
 export class TeamLoginPage extends NavElement {
     constructor() {
@@ -53,6 +53,7 @@ export class TeamLoginPage extends NavElement {
 
             //inserisco i tag nel posto richiesto
             item += "</div>";
+            //FIXME: da errore se passo velocemente da team-login a home
             document.getElementById("partite").innerHTML = item;
         })
     }

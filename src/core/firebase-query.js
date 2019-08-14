@@ -1,6 +1,6 @@
 import firebase from "firebase/app";
 import { Game } from "./classes/game.class";
-import { ArrayMapConverter } from "./array-map-converter";
+import { ArrayMapConverter } from '../utils/array-map-converter';
 
 export class FirebaseQuery {
 
