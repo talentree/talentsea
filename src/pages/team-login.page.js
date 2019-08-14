@@ -1,15 +1,26 @@
 import { html } from '@polymer/lit-element';
 import { NavElement } from '../core/nav-element';
 import { FirebaseQuery } from '../core/firebase-query';
+import { ArrayMapConverter } from '../core/array-map-converter';
 
 export class TeamLoginPage extends NavElement {
     constructor() {
         super();
         this.firebaseQuery = new FirebaseQuery();
+        /*togliere i commenti per provare fromArrayToMap
+        setTimeout(()=>{
+            let obj = {"info":{"gameTime":0,"name":"First game","windDirection":0,"windForce":0},"teams":[{"inputs":{"acceleration":0,"timer":0,"wheel":0},"outputs":{"fuel":2000,"isUsed":false,"positionX":0,"positionY":0,"radar":{"frontStates":[0,0,0,0,0,0,0],"state":0},"speed":0},"password":"s1","name":"squadra1"}]};
+            let partita = {};
+            partita.info = obj.info;
+            partita.teams = ArrayMapConverter.fromArrayToMap(obj.teams);
+            console.log(partita);
+        }, 3000);
+        */
     }
 
     updated() {
         this.firebaseQuery.readAll(data => {
+            console.log(data);
             // crea titolo popup
             var item = "<div class='columns is-multiline is-mobile'>" + 
                             "<div class='column is-half'>" +

@@ -1,4 +1,6 @@
 import firebase from "firebase/app";
+import { Game } from "./classes/game.class";
+import { ArrayMapConverter } from "./array-map-converter";
 
 export class FirebaseQuery {
 
@@ -19,7 +21,14 @@ export class FirebaseQuery {
                 let datas = [];
                 res.docs.forEach(doc => {
                     datas.push(doc.data());
-                })
+                    /* togliere i commenti per provare fromMapToArray
+                    let partita = new Game();
+                    partita.info = doc.data().info;
+                    partita.teams = ArrayMapConverter.fromMapToArray(doc.data().teams);
+                    console.log("partita ", partita);
+                    */
+                });
+
                 func(datas);
             });
     }

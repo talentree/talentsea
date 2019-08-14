@@ -24,11 +24,14 @@ export class RouterComponent extends HTMLElement {
             { path: '/engine-sample', element: 'engine-sample-page' },
             { path: '/console-sample', element: 'console-sample-page' }
         ];
-        this.navigate(document.location.pathname);
+        window.addEventListener('popstate', () => this.navigate(document.location.pathname, false));
+        this.navigate(document.location.pathname, true);
 
     }
 
+    /*
     navigate(path) {
+        console.log('cerco il path ', path);
         let route = this.routes.find(item => item.path === path);
         if (route) {
             if (route.guard) {
@@ -41,6 +44,7 @@ export class RouterComponent extends HTMLElement {
                 }
                 this.appendChild(newElement);
                 setTimeout(() => {
+                    
                     let activeRoutes = Array.from(this.querySelectorAll('[route]'));
                     activeRoutes.forEach(activeRoute => {
                         activeRoute.addEventListener('click', () => {
@@ -48,12 +52,51 @@ export class RouterComponent extends HTMLElement {
                             console.log(activeRoute);
                         });
                     })
+                    
                 }, 0);
 
+                console.log(route.path);
+                document.title = 'Navigator ' + route.path;
                 history.pushState({}, '', route.path);
             }
         }
     }
+    */
+
+
+    setListenerToActiveRoutes() {
+        let activeRoutes = Array.from(this.querySelectorAll('[route]'));
+        activeRoutes.forEach(activeRoute => {
+            activeRoute.addEventListener('click', () => {
+                this.navigate(activeRoute.attributes.route.value, true);
+                console.log(activeRoute);
+            });
+        })
+    }
+
+    navigate(path, pushState) {
+        let route = this.routes.find(item => item.path === path);
+        if (route) {
+            if (route.guard) {
+                this.navigate(route.guard);
+            }
+            else {
+                const newElement = document.createElement(route.element);
+                while (this.firstChild) {
+                    this.removeChild(this.firstChild);
+                }
+                this.appendChild(newElement);
+                setTimeout(() => {
+                    this.setListenerToActiveRoutes();
+                }, 0);
+                document.title = 'Talentsea ' + route.path;
+                if (pushState) {
+                    history.pushState({}, '', route.path);
+                }
+            }
+        }
+    }
+
 }
 
 customElements.define('router-component', RouterComponent);
