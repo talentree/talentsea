@@ -20,7 +20,6 @@ export class TeamLoginPage extends NavElement {
 
     updated() {
         this.firebaseQuery.readAll(data => {
-            console.log(data);
             // crea titolo popup
             var item = "<div class='columns is-multiline is-mobile'>" + 
                             "<div class='column is-half'>" +

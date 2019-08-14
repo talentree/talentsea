@@ -17,7 +17,6 @@ export class TeamConsolePage extends NavElement{
 
     firstUpdated(){
         const container = this.querySelector('#container-p5');
-        console.log(container);
         this.p5 = new p5(teamConsoleP5, container);
     }
 
