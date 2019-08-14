@@ -1,35 +1,46 @@
-import { teamClassStandardProperties } from '../core/classes/team.class';
+import { teamClassStandardProperties, teamClassKeyProperty } from '../core/classes/team.class';
 
+//singleton
 export let ArrayMapConverter = (function () {
     return {
-        fromArrayToMap: fromArrayToMap,
-        fromMapToArray: fromMapToArray
+        teamsFromArrayToMap: teamsFromArrayToMap,
+        teamsFromMapToArray: teamsFromMapToArray
     };
 })();
 
-function fromArrayToMap(myArray) {
+function teamsFromArrayToMap(myArray) {
     let map = {};
+    //per ogni elemento dell'array
     myArray.forEach((element, index) => {
+        /*devo assegnarlo ad una proprietà dell'oggetto.
+        Di default il nome della proprietà è l'index dell'elemento nell'array*/
         let objectProperty = index;
-        if (element.name) {
-            objectProperty = element.name;
-            delete element.name;
+        //se l'oggetto contiene la proprietà chiave
+        if (Object.keys(element).find(key => key == teamClassKeyProperty)) {
+            //mi salvo il valore di tale proprietà che verrà poi usato come valore nel nuovo oggetto
+            objectProperty = element[teamClassKeyProperty];
+            //la cancello
+            delete element[teamClassKeyProperty];
         }
-
+        //aggiungo l'elemento nella mappa
         map[objectProperty] = element;
     });
 
     return map;
 }
 
-function fromMapToArray(myMap) {
+function teamsFromMapToArray(myMap) {
     let myArray = [];
+    //per ogni proprietà dell'oggetto
     Object.keys(myMap).forEach((key, index) => {
+        //estraggo il valore di ogni proprietà
         let element = myMap[key];
+        //se tale proprietà non è una di quelle standard significa che è il nome di una squadra
         if (!teamClassStandardProperties.find(prop => prop === key)) {
-            element['name'] = key;
+            //va quindi aggiunto all'elemento da inserire nell'array per conservarla
+            element[teamClassKeyProperty] = key;
         }
-
+        //pusho il nuovo elemento
         myArray.push(element);
     })
     return myArray;

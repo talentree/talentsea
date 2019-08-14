@@ -4,7 +4,9 @@ import { Outputs } from './outputs.class';
 export class Team {
 
     constructor() {
-        this.name = "";
+        //name indica il nome della squadra e viene utilizzato da ArrayMapConverter
+        this[teamClassKeyProperty] = 'name';
+
         this.inputs = new Inputs();
         this.outputs = new Outputs()
         this.password = "";
@@ -19,3 +21,5 @@ export let teamClassStandardProperties = [
     'password',
     'firebaseQuery'
 ]
+//usato da ArrayMapConverter per stabilire quale campo è da considerarsi la chiave (nome della squadra)
+export let teamClassKeyProperty = 'name';

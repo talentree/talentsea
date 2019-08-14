@@ -21,12 +21,13 @@ export class FirebaseQuery {
                 let datas = [];
                 res.docs.forEach(doc => {
                     datas.push(doc.data());
-                    /* togliere i commenti per provare fromMapToArray
+                    // togliere i commenti per provare teamsFromMapToArray
+
                     let partita = new Game();
                     partita.info = doc.data().info;
-                    partita.teams = ArrayMapConverter.fromMapToArray(doc.data().teams);
-                    console.log("partita ", partita);
-                    */
+                    partita.teams = ArrayMapConverter.teamsFromMapToArray(doc.data().teams);
+                    console.log("From map to array: ", partita);
+                    
                 });
 
                 func(datas);
