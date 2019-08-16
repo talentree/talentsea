@@ -8,15 +8,13 @@ export class TeamLoginPage extends NavElement {
         super();
         this.firebaseQuery = new FirebaseQuery();
         //togliere i commenti per provare fromArrayToMap
-        /*
+        
         setTimeout(() => {
             let obj = { "info": { "gameTime": 0, "name": "First game", "windDirection": 0, "windForce": 0 }, "teams": [{ "inputs": { "acceleration": 0, "timer": 0, "wheel": 0 }, "outputs": { "fuel": 2000, "isUsed": false, "positionX": 0, "positionY": 0, "radar": { "frontStates": [0, 0, 0, 0, 0, 0, 0], "state": 0 }, "speed": 0 }, "password": "s1", "name": "squadra1" }] };
-            let partita = {};
-            partita.info = obj.info;
-            partita.teams = ArrayMapConverter.teamsFromArrayToMap(obj.teams);
+            let partita = ArrayMapConverter.fromClassGameToFirebaseDoc(obj);
             console.log('From array to map: ', partita);
         }, 3000);
-        */
+        
     }
 
     updated() {
