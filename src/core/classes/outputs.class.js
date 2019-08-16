@@ -1,6 +1,6 @@
 import { Radar } from "./radar.class";
 
-export class Outputs{
+export class Outputs {
 
     constructor() {
         this.fuel = 0;

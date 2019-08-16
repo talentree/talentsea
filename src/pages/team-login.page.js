@@ -1,27 +1,38 @@
 import { html } from '@polymer/lit-element';
 import { NavElement } from '../core/nav-element';
 import { FirebaseQuery } from '../core/firebase-query';
+import { ArrayMapConverter } from '../utils/array-map-converter';
 
 export class TeamLoginPage extends NavElement {
     constructor() {
         super();
         this.firebaseQuery = new FirebaseQuery();
+        //togliere i commenti per provare fromArrayToMap
+        /*
+        setTimeout(() => {
+            let obj = { "info": { "gameTime": 0, "name": "First game", "windDirection": 0, "windForce": 0 }, "teams": [{ "inputs": { "acceleration": 0, "timer": 0, "wheel": 0 }, "outputs": { "fuel": 2000, "isUsed": false, "positionX": 0, "positionY": 0, "radar": { "frontStates": [0, 0, 0, 0, 0, 0, 0], "state": 0 }, "speed": 0 }, "password": "s1", "name": "squadra1" }] };
+            let partita = {};
+            partita.info = obj.info;
+            partita.teams = ArrayMapConverter.teamsFromArrayToMap(obj.teams);
+            console.log('From array to map: ', partita);
+        }, 3000);
+        */
     }
 
     updated() {
         this.firebaseQuery.readAll(data => {
             // crea titolo popup
-            var item = "<div class='columns is-multiline is-mobile'>" + 
-                            "<div class='column is-half'>" +
-                                "<h2 class='title is-5'>Nome Partita</h2>" +
-                            "</div>" +
-                            "<div class='column is-one-quarter'>" +
-                                "<h2 class='title is-5'>Squadre</h2>" +
-                            "</div>" +
-                            "<div class='column is-one-quarter'>" +
-                                "<h2 class='title is-5'>Libere<h2>" +
-                            "</div>";
-           
+            var item = "<div class='columns is-multiline is-mobile'>" +
+                "<div class='column is-half'>" +
+                "<h2 class='title is-5'>Nome Partita</h2>" +
+                "</div>" +
+                "<div class='column is-one-quarter'>" +
+                "<h2 class='title is-5'>Squadre</h2>" +
+                "</div>" +
+                "<div class='column is-one-quarter'>" +
+                "<h2 class='title is-5'>Libere<h2>" +
+                "</div>";
+
             //aggiungo i vari tag alla variabile
             for (var i = 0; i < data.length; i++) {
 
@@ -43,6 +54,7 @@ export class TeamLoginPage extends NavElement {
 
             //inserisco i tag nel posto richiesto
             item += "</div>";
+            //FIXME: da errore se passo velocemente da team-login a home
             document.getElementById("partite").innerHTML = item;
         })
     }
