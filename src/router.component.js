@@ -11,17 +11,18 @@ import './samples/console-sample.page';
 import { adminGuard } from './core/guards/admin.guard';
 import { teamGuard } from './core/guards/team.guard';
 
+
 export class RouterComponent extends HTMLElement {
 
     constructor() {
         super();
         this.routes = [
-            { path: '/', element: 'home-page' },
-            { path: '/admin-login', element: 'admin-login-page' },
-            { path: '/admin-newgame', element: 'admin-new-game-page', guard: adminGuard },
-            { path: '/admin-console', element: 'admin-console-page', guard: adminGuard },
-            { path: '/team-login', element: 'team-login-page' },
-            { path: '/team-console', element: 'team-console-page' , guard : teamGuard},
+            { path: '/', element: 'home-page' , description: "Home"},
+            { path: '/admin-login', element: 'admin-login-page', description: "Login Amministratore" },
+            { path: '/admin-newgame', element: 'admin-new-game-page' , description: "Crea Partita", guard: adminGuard },
+            { path: '/admin-console', element: 'admin-console-page' , description: "Console Amministratore", guard: adminGuard },
+            { path: '/team-login', element: 'team-login-page' , description: "Login Squadra" },
+            { path: '/team-console', element: 'team-console-page' , description: "Console Squadra" , guard : teamGuard},
 
             { path: '/engine-sample', element: 'engine-sample-page' },
             { path: '/console-sample', element: 'console-sample-page' }
@@ -51,7 +52,6 @@ export class RouterComponent extends HTMLElement {
         if (route) {
             //controllo la relativa guardia se esiste
             let routeGuardResponse = route.guard && route.guard();
-            console.log(routeGuardResponse);
             if (routeGuardResponse) {
                 //nel caso non possa accedere a quella pagina vengo reindirizzato
                 this.navigate(routeGuardResponse);
@@ -70,14 +70,15 @@ export class RouterComponent extends HTMLElement {
                 setTimeout(() => {
                     this.setListenerToActiveRoutes();
                 }, 0);
-                document.title = 'Talentsea ' + route.path;
+                document.title = 'Talentsea - ' + route.description;
                 if (pushState) {
                     history.pushState({}, '', route.path);
                 }
             }
         }
         else{
-            //TODO: 404
+            console.log ("ERROR 404 PAGE NOT FOUND");
+            this.navigate('/', true);
         }
     }
 }

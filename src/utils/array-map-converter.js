@@ -1,10 +1,11 @@
 import { teamClassStandardProperties, teamClassKeyProperty } from '../core/classes/team.class';
+import { Game } from '../core/classes/game.class';
 
 //singleton
 export let ArrayMapConverter = (function () {
     return {
-        teamsFromArrayToMap: teamsFromArrayToMap,
-        teamsFromMapToArray: teamsFromMapToArray
+        fromFirebaseDocToClassGame : fromFirebaseDocToClassGame,
+        fromClassGameToFirebaseDoc : fromClassGameToFirebaseDoc
     };
 })();
 
@@ -44,4 +45,18 @@ function teamsFromMapToArray(myMap) {
         myArray.push(element);
     })
     return myArray;
+}
+
+function fromFirebaseDocToClassGame(game){
+    let newGame = new Game();
+    newGame.info = game.info;
+    newGame.teams = teamsFromMapToArray(game.teams);
+    return newGame;
+}
+
+function fromClassGameToFirebaseDoc(game){
+    let newGame = {};
+    newGame.info = game.info;
+    newGame.teams = teamsFromArrayToMap(game.teams);
+    return newGame;
 }
