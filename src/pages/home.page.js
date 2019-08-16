@@ -32,7 +32,7 @@ export class HomePage extends NavElement {
                             <div style= " box-shadow: 2px 2px 3px hsl(217, 71%, 53%), 0 0 0 1px hsl(217, 71%, 53%) " class = " box has-background-light ">
                                 <p class = "is-size-4 has-text-centered">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sapien turpis, ultrices eget congue eget, scelerisque sed felis. Quisque dui risus, lobortis vel dignissim sit amet, ullamcorper et sapien. </p>
                                 <br>                     
-                                <button route="/admin-login " class=" button is-medium is-fullwidth is-link is-focused ">Amministratore</button>
+                                <button route="/admin-login" class=" button is-medium is-fullwidth is-link is-focused ">Amministratore</button>
                             </div> 
                         </div>
                     </div>

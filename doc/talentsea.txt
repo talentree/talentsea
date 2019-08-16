@@ -39,3 +39,10 @@ AdminNewGamePage: scrittura nuova partita
 AdminConsolePage: lettura da UID e scrittura in tutto
 TeamLoginPage: lettura tutte partite e scrittura isUsed ? , setFirebaseConfig (UID)
 TeamConsolePage: lettura da UID e scrittura 
+
+
+
+in caso ci fossero ulteriori problemi a caricare su git a causa di debug.log usare i seguenti comandi in talentsea
+git rm -r --cached .
+
+git add .
