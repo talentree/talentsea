@@ -17,4 +17,4 @@ applicativi/
 .firebase
 
 #Debug
-/debug.log
+debug.log
