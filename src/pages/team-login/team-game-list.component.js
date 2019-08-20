@@ -1,20 +1,11 @@
 import { html } from '@polymer/lit-element';
-import { NavElement } from '../core/nav-element';
-import { FirebaseQuery } from '../core/firebase-query';
-import { ArrayMapConverter } from '../utils/array-map-converter';
+import { NavElement } from '../../core/nav-element';
+import { FirebaseQuery } from '../../core/firebase-query';
 
-export class TeamLoginPage extends NavElement {
+export class TeamGameList extends NavElement {
     constructor() {
         super();
         this.firebaseQuery = new FirebaseQuery();
-        //togliere i commenti per provare fromArrayToMap
-        
-        setTimeout(() => {
-            let obj = { "info": { "gameTime": 0, "name": "First game", "windDirection": 0, "windForce": 0 }, "teams": [{ "inputs": { "acceleration": 0, "timer": 0, "wheel": 0 }, "outputs": { "fuel": 2000, "isUsed": false, "positionX": 0, "positionY": 0, "radar": { "frontStates": [0, 0, 0, 0, 0, 0, 0], "state": 0 }, "speed": 0 }, "password": "s1", "name": "squadra1" }] };
-            let partita = ArrayMapConverter.fromClassGameToFirebaseDoc(obj);
-            console.log('From array to map: ', partita);
-        }, 3000);
-        
     }
 
     updated() {
@@ -61,10 +52,6 @@ export class TeamLoginPage extends NavElement {
 
     render() {
         return html`
-            <h1 class="title">Team login page</h1>
-            <button route="/" class="button is-primary">Home</button>
-            <button route="/team-console" class="button is-link">Team console</button>
-
             <div class="field">
                 <div class="control">
                     <a class="button is-primary" onclick="document.getElementById('modalPartite').style.display='block'" >Lista</a>
@@ -85,4 +72,4 @@ export class TeamLoginPage extends NavElement {
     }
 }
 
-customElements.define('team-login-page', TeamLoginPage);
+customElements.define('team-game-list-component', TeamGameList);

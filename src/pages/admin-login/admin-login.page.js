@@ -1,5 +1,7 @@
 import { html } from '@polymer/lit-element';
-import { NavElement } from '../core/nav-element';
+import { NavElement } from '../../core/nav-element';
+import './admin-auth.component';
+import './admin-signup.component';
 
 export class AdminLoginPage extends NavElement{
     constructor(){
@@ -10,6 +12,10 @@ export class AdminLoginPage extends NavElement{
         return html`
             <h1 class="title">Admin login page</h1>
             <button route="/" class="button is-primary">Home</button>
+            <div class="columns">
+                <admin-auth-component class="column"></admin-auth-component>
+                <admin-signup-component class="column"></admin-signup-component>
+            </div>
             <button route="/admin-newgame" class="button is-link">Admin new game</button>
             `;
     }
