@@ -15,7 +15,7 @@ export default {
       targets:[
         { src: 'index.html', dest: 'dist'},
         { src: 'favicon.ico', dest: 'dist'},
-        { src: 'style.css' , dest:'dist' }
+        { src: 'style.css', dest: 'dist'}
       ]
     })
   ]

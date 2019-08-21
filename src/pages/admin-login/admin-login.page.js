@@ -1,6 +1,6 @@
 import { html } from '@polymer/lit-element';
 import { NavElement } from '../../core/nav-element';
-import './admin-auth.component';
+import './admin-signin.component';
 import './admin-signup.component';
 
 export class AdminLoginPage extends NavElement{
@@ -10,14 +10,21 @@ export class AdminLoginPage extends NavElement{
 
     render(){
         return html`
-            <h1 class="title">Admin login page</h1>
-            <button route="/" class="button is-primary">Home</button>
-            <div class="columns">
-                <admin-auth-component class="column"></admin-auth-component>
-                <admin-signup-component class="column"></admin-signup-component>
+            <div class = " columns is-mobile is-centered is-full ">
+                <div class = " column is-11 ">
+                    <h1  class = " title is-size-1 has-text-centered has-text-primary is-italic has-text-weight-bold gradient-text ">AMMINISTRATORE</h1>
+                    <hr> 
+                </div>
             </div>
-            <button route="/admin-newgame" class="button is-link">Admin new game</button>
-            `;
+            <div class = " gradient-box ">  
+                <div class = " column is-10 is-offset-1">
+                    <admin-signin-component id = "signin"></admin-signin-component>                    
+                    <admin-signup-component id = "signup" class = " hidden " ></admin-signup-component>                        
+                </div>
+            </div>
+            <button route = "/admin-newgame" class = " button is-link ">Admin new game</button>
+            <button route = "/" class = " button is-primary ">Home</button>
+        `;
     }
 }
 

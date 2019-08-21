@@ -18,7 +18,7 @@ export class TeamLoginPage extends NavElement {
                     <hr> 
                 </div>
             </div>           
-            <div class = " columns ">
+            <div class = " columns is-full">
                 <div class = " column is-2 is-offset-1">
                         <label class="label is-large ">Nome del Gioco:</label>
                 </div>
@@ -29,7 +29,7 @@ export class TeamLoginPage extends NavElement {
                     <team-game-list-component></team-game-list-component>
                 </div>
             </div>
-            <div class="columns is-mobile is-centered is-full">
+            <div class="columns is-centered is-full">
                 <div class = "column is-11">
                     <hr> 
                 </div>
@@ -42,7 +42,7 @@ export class TeamLoginPage extends NavElement {
                     <input class="input is-medium is-primary"  type="text"  @input=${e => this.squadra = e.target.value}/>
                 </div>            
             </div>
-            <div class="columns is-mobile is-centered is-full">
+            <div class="columns is-centered is-full">
                 <div class = "column is-11">
                     <hr> 
                 </div>
@@ -52,17 +52,17 @@ export class TeamLoginPage extends NavElement {
                         <label class="label is-large">Codice Segreto:</label>
                 </div>
                 <div class = " column is-6">
-                    <input  class="input is-medium is-primary"  type="text"  @input=${e => this.codice = e.target.value}/>
+                    <input  class="input is-medium  is-primary"  type="text"  @input=${e => this.codice = e.target.value}/>
                 </div>            
             </div>
-            <div class="columns is-mobile is-centered is-full">
+            <div class="columns is-centered is-full">
                 <div class = "column is-11">
                     <hr> 
                 </div>
             </div>
-            <div class = "columns is mobile is-centered is-full">
+            <div class = "columns is-centered is-full">
                 <div class = "column is-4">
-                    <button class="button has-text-white  is-large is-fullwidth gradient-background" @click=${(e) => this.login()}>Login</button>
+                    <button class="button has-text-white  is-large is-fullwidth gradient-background " @click=${(e) => this.login()}>Login</button>
                 </div>
             </div>
         `;

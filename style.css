@@ -2,15 +2,15 @@ hr{
     background: linear-gradient(to right, hsl(171, 100%, 41%) 40%, hsl(217, 71%, 53%) 60%);
     height: 3px;
 }
-
 .gradient-text{
     background: linear-gradient(to right, hsl(171, 100%, 41%) 40%, hsl(217, 71%, 53%) 60%);
-    -webkit-background-clip: text; 
+    -webkit-background-clip: text;
+    background-clip: text; 
     -webkit-text-fill-color: transparent; 
 }
 
 .gradient-background{
-    background: linear-gradient(to right, hsl(171, 100%, 41%) 40%, hsl(217, 71%, 53%) 60%);
+    background: linear-gradient(to right, hsl(171, 100%, 41%)  40% , hsl(217, 71%, 53%) 60%);
 }
 
 .box-shadow-primary{
@@ -20,3 +20,38 @@ hr{
 .box-shadow-link{
     box-shadow: 2px 2px 3px hsl(217, 71%, 53%), 0 0 0 1px hsl(217, 71%, 53%)
 }
+.hidden{
+    display: none;
+}
+
+.gradient-box {
+    display: flex;
+    align-items: center;
+    width: 91%;   
+    margin: auto;
+    position: relative;
+    padding: 5% 1em;
+    box-sizing: border-box;
+   
+    color: #000;
+    background: hsl(0, 0%, 96%);
+    background-clip: padding-box;
+    /* !importanté */
+    border: solid 3px transparent;
+    /* !importanté */
+    border-radius: 1em;
+  }
+  .gradient-box:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    margin: -3px;
+    /* !importanté */
+    border-radius: inherit;
+    /* !importanté */
+    background: linear-gradient(to right, hsl(171, 100%, 41%)  40% , hsl(217, 71%, 53%) 60%);
+  }
