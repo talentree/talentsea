@@ -1,0 +1,22 @@
+hr{
+    background: linear-gradient(to right, hsl(171, 100%, 41%) 40%, hsl(217, 71%, 53%) 60%);
+    height: 3px;
+}
+
+.gradient-text{
+    background: linear-gradient(to right, hsl(171, 100%, 41%) 40%, hsl(217, 71%, 53%) 60%);
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+}
+
+.gradient-background{
+    background: linear-gradient(to right, hsl(171, 100%, 41%) 40%, hsl(217, 71%, 53%) 60%);
+}
+
+.box-shadow-primary{
+    box-shadow: -2px 2px 3px hsl(171, 100%, 41%), 0 0 0 1px hsl(171, 100%, 41%) 
+}
+
+.box-shadow-link{
+    box-shadow: 2px 2px 3px hsl(217, 71%, 53%), 0 0 0 1px hsl(217, 71%, 53%)
+}

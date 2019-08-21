@@ -12,37 +12,57 @@ export class TeamLoginPage extends NavElement {
 
     render() {
         return html`
-            <h1 class="title">Team login page</h1>
-            <button route="/" class="button is-primary">Home</button>
-
-            <div class="field">
-                <label class="label">Nome del gioco:</label>
-                <div class="control">
-                <input class="input" id="nomePartita" type="text"  @input=${e => this.game = e.target.value}/>
+            <div class="columns is-mobile is-centered is-full">
+                <div class = "column is-11">
+                    <h1  class=" title is-size-1 has-text-centered  has-text-primary is-italic has-text-weight-bold gradient-text ">LOGIN SQUADRE</h1>
+                    <hr> 
                 </div>
-            </div>
-            <div class="field">
-                <div class="control">
+            </div>           
+            <div class = " columns ">
+                <div class = " column is-2 is-offset-1">
+                        <label class="label is-large ">Nome del Gioco:</label>
+                </div>
+                <div class = " column is-6">
+                    <input class="input is-medium is-primary" id="gameName" type="text"  @input=${e => this.game = e.target.value}/>
+                </div>
+                <div class = " column is-2 ">
                     <team-game-list-component></team-game-list-component>
                 </div>
             </div>
-            
-            <div class="field">
-                <label class="label">Nome della squadra:</label>
-                <div class="control">
-                    <input class="input" type="text"  @input=${e => this.squadra = e.target.value}/>
+            <div class="columns is-mobile is-centered is-full">
+                <div class = "column is-11">
+                    <hr> 
+                </div>
+            </div>            
+            <div class = " columns ">
+                <div class = " column is-2 is-offset-1">
+                        <label class="label is-large">Nome della Squadra:</label>
+                </div>
+                <div class = " column is-6">
+                    <input class="input is-medium is-primary"  type="text"  @input=${e => this.squadra = e.target.value}/>
+                </div>            
+            </div>
+            <div class="columns is-mobile is-centered is-full">
+                <div class = "column is-11">
+                    <hr> 
                 </div>
             </div>
-                    
-            <div class="field">
-                <label class="label">Codice segreto:</label>
-                <div class="control">
-                    <input class="input" type="text"  @input=${e => this.codice = e.target.value}/>
+            <div class = " columns ">
+                <div class = " column is-2 is-offset-1">
+                        <label class="label is-large">Codice Segreto:</label>
+                </div>
+                <div class = " column is-6">
+                    <input  class="input is-medium is-primary"  type="text"  @input=${e => this.codice = e.target.value}/>
+                </div>            
+            </div>
+            <div class="columns is-mobile is-centered is-full">
+                <div class = "column is-11">
+                    <hr> 
                 </div>
             </div>
-            <div class="field">
-                <div class="control">
-                    <button  class="button is-link" @click=${(e) => this.login()}>Login</button>
+            <div class = "columns is mobile is-centered is-full">
+                <div class = "column is-4">
+                    <button class="button has-text-white  is-large is-fullwidth gradient-background" @click=${(e) => this.login()}>Login</button>
                 </div>
             </div>
         `;
