@@ -5,6 +5,6 @@ export class Game {
 
     constructor() {
         this.info = new Info();
-        this.teams = [];
+        this.teams = {};
     }
 }
