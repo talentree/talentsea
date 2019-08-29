@@ -1,9 +1,8 @@
 import './pages/home.page';
 import './pages/admin-login/admin-login.page';
-import './pages/admin-new-game.page';
-import './pages/admin-console.page';
+import './pages/admin-console/admin-console.page';
 import './pages/team-login/team-login.page';
-import './pages/team-console.page';
+import './pages/team-console/team-console.page';
 
 import './samples/engine-sample.page';
 import './samples/console-sample.page';
@@ -19,7 +18,6 @@ export class RouterComponent extends HTMLElement {
         this.routes = [
             { path: '/', element: 'home-page' , description: "Home"},
             { path: '/admin-login', element: 'admin-login-page', description: "Login Amministratore" },
-            { path: '/admin-newgame', element: 'admin-new-game-page' , description: "Crea Partita", guard: adminGuard },
             { path: '/admin-console', element: 'admin-console-page' , description: "Console Amministratore", guard: adminGuard },
             { path: '/team-login', element: 'team-login-page' , description: "Login Squadra" },
             { path: '/team-console', element: 'team-console-page' , description: "Console Squadra" , guard : teamGuard},

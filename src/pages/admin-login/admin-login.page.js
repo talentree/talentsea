@@ -22,7 +22,7 @@ export class AdminLoginPage extends NavElement{
                     <admin-signup-component id = "signup" class = " hidden " ></admin-signup-component>                        
                 </div>
             </div>
-            <button route = "/admin-newgame" class = " button is-link ">Admin new game</button>
+            <button route = "/admin-console" class = " button is-link ">Admin new game</button>
             <button route = "/" class = " button is-primary ">Home</button>
         `;
     }

@@ -2,7 +2,6 @@ import { html } from '@polymer/lit-element';
 import { NavElement } from '../../core/nav-element';
 import { FirebaseQuery } from '../../core/firebase-query';
 import './team-game-list.component';
-//import { ArrayMapConverter } from '../utils/array-map-converter';
 
 export class TeamLoginPage extends NavElement {
     constructor() {
