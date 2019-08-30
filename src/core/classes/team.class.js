@@ -7,6 +7,5 @@ export class Team {
         this.inputs = new Inputs();
         this.outputs = new Outputs()
         this.password = "";
-        this.firebaseQuery = new FirebaseQuery();
     }
 }
