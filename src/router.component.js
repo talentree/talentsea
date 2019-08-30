@@ -53,7 +53,7 @@ export class RouterComponent extends HTMLElement {
             let routeGuardResponse = route.guard && route.guard();
             if (routeGuardResponse) {
                 //nel caso non possa accedere a quella pagina vengo reindirizzato
-                this.navigate(routeGuardResponse);
+                this.navigate(routeGuardResponse, true);
             }
             else {
                 //cambio la pagina a seconda del path

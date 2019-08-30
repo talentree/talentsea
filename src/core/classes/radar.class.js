@@ -1,7 +1,7 @@
 export class Radar {
 
     constructor() {
-        this.frontStates = [];
+        this.frontStates = [0,0,0,0,0,0,0];
         this.state = 0;
     }
 }
