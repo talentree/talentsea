@@ -1,27 +1,29 @@
 import firebase from "firebase/app";
 import { Game } from "./classes/game.class";
+import { Team } from "./classes/team.class";
+import { AdminState } from './states/admin.state';
 
 export class FirebaseQuery {
 
     constructor() {
         this.db = firebase.firestore().collection("games");
-        
-    }
-
-    setUid(uid){
-        this.doc = db.doc(uid);
-    }
-
-    uploadDocument() {
 
     }
 
+    setUid(uid) {
+        this.doc = this.db.doc(uid);
+    }
 
+    uploadDocument(doc, callback) {
+        this.doc.set(doc)
+            .catch(err => console.log('error in uploadDocument', err))
+            .then(() => callback());
+    }
 
     //restituisce tutti i documenti del database dentro un array
     readAll(func) {
         this.db.get()
-            .catch(e => console.log(e))
+            .catch(e => console.log('error in readAll', e))
             .then(res => {
                 let data = [];
                 res.docs.forEach(doc => {
@@ -30,27 +32,64 @@ export class FirebaseQuery {
                 func(data);
             });
     }
-        
+
     read(func) {
         this.doc.get()
             .catch(e => console.log(e))
             .then(res => func(res.data()));
     }
-/*
-    reads(func) {
-        this.doc.onSnapshot(doc => func(doc.data()));
+    /*
+        reads(func) {
+            this.doc.onSnapshot(doc => func(doc.data()));
+            }
+    
+        setContatore(contatore) {
+            this.doc.update({contatore});
         }
-
-    setContatore(contatore) {
-        this.doc.update({contatore});
+    
+        setProva(prova) {
+            this.doc.update({prova});
+        }
+    
+        setFake(fake) {
+            this.doc.update(fake);
+        }
+        */
+    checkForGameNameAvailable(name, availableCallback, takenCallback) {
+        this.db.where('info.name', '==', name).get()
+            .catch(err => console.log('error in checkForGameNameAvailable', err))
+            .then(res => {
+                if (res.empty) { availableCallback() }
+                else { takenCallback() }
+            })
     }
 
-    setProva(prova) {
-        this.doc.update({prova});
+    createNewGame(gameName, teamArray, callback) {
+        let game = new Game();
+        game.info.name = gameName;
+        teamArray.forEach(team => {
+            let teamConverted = new Team();
+            teamConverted.password = team.teamPassword;
+            game.teams[team.teamName] = teamConverted;
+        });
+        //console.log(game);
+        //TODO: aggiro mancanza di uid
+        this.setUid('ciaoooo');
+        //TODO: deleteCustomObject èuna soluzione a errore di firebase
+        let gameConverted = this.deleteCustomObject(Object.assign({}, game));
+        this.uploadDocument(gameConverted, callback)
     }
 
-    setFake(fake) {
-        this.doc.update(fake);
+    //TODO: ALLORA, la lascio qui così se fa schifo basta cancellarla, nel frattempo la provo
+    deleteCustomObject(custom) {
+        //controllo che sia un oggetto prima di provare a modificarlo
+        if(custom === Object(custom) && !Array.isArray(custom)){
+            Object.keys(custom).forEach(property => {
+                if (custom[property] === Object(custom[property]) && !Array.isArray(custom[property])) {
+                    custom[property] = Object.assign({}, this.deleteCustomObject(custom[property]));
+                }
+            })
+        }
+        return custom;
     }
-    */
 }
