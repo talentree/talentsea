@@ -55,14 +55,6 @@ export class FirebaseQuery {
             this.doc.update(fake);
         }
         */
-    checkForGameNameAvailable(name, availableCallback, takenCallback) {
-        this.db.where('info.name', '==', name).get()
-            .catch(err => console.log('error in checkForGameNameAvailable', err))
-            .then(res => {
-                if (res.empty) { availableCallback() }
-                else { takenCallback() }
-            })
-    }
 
     createNewGame(gameName, teamArray, callback) {
         let game = new Game();
