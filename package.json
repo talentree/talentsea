@@ -21,15 +21,16 @@
   },
   "homepage": "https://github.com/talentree/talentsea#readme",
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.10.2",
-    "concurrently": "^4.1.1",
-    "rollup": "^1.19.4",
+    "concurrently": "^4.1.2",
+    "rollup": "^1.20.3",
     "rollup-plugin-copy": "^3.1.0",
     "rollup-plugin-node-resolve": "^5.2.0"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.10.2",
     "@polymer/lit-element": "^0.7.1",
-    "firebase": "^6.3.4",
+    "bulma": "^0.7.5",
+    "firebase": "^6.5.0",
     "p5": "^0.9.0"
   }
 }
