@@ -66,7 +66,7 @@ export class FirebaseQuery {
         });
         //console.log(game);
         //TODO: aggiro mancanza di uid
-        this.setUid('ciaoooo');
+        this.setUid(AdminState.uid);
         //TODO: deleteCustomObject èuna soluzione a errore di firebase
         let gameConverted = this.deleteCustomObject(Object.assign({}, game));
         this.uploadDocument(gameConverted, callback)
@@ -83,5 +83,11 @@ export class FirebaseQuery {
             })
         }
         return custom;
+    }
+
+    listenToChanges(func){
+        /*esegue una callback ad ogni cambiamento del documento
+        ma ritorna se stessa per poter rimuovere il listener*/
+        return this.doc.onSnapshot(doc => func(doc.data()));
     }
 }
