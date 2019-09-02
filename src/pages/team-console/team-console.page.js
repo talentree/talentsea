@@ -1,6 +1,6 @@
 import { html } from '@polymer/lit-element';
-import { NavElement } from '../core/nav-element';
-import { teamConsoleP5 } from '../p5/team-console.p5';
+import { NavElement } from '../../core/nav-element';
+import { teamConsoleP5 } from '../../p5/team-console.p5';
 
 export class TeamConsolePage extends NavElement{
     constructor(){

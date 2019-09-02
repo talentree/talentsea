@@ -1,6 +1,5 @@
 import firebase from "firebase/app";
 import { Game } from "./classes/game.class";
-import { ArrayMapConverter } from '../utils/array-map-converter';
 
 export class FirebaseQuery {
 
@@ -9,26 +8,26 @@ export class FirebaseQuery {
         
     }
 
-    set(uid){
+    setUid(uid){
         this.doc = db.doc(uid);
     }
+
+    uploadDocument() {
+
+    }
+
+
 
     //restituisce tutti i documenti del database dentro un array
     readAll(func) {
         this.db.get()
             .catch(e => console.log(e))
             .then(res => {
-                let datas = [];
+                let data = [];
                 res.docs.forEach(doc => {
-                    datas.push(doc.data());
-                    // togliere i commenti per provare teamsFromMapToArray
-                    
-                    let partita = ArrayMapConverter.fromFirebaseDocToClassGame(doc.data());
-                    console.log("From map to array: ", partita);
-                    
-                });
-
-                func(datas);
+                    data.push(doc.data());
+                })
+                func(data);
             });
     }
         
