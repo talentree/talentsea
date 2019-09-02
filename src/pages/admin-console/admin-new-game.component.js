@@ -31,39 +31,45 @@ export class AdminNewGameComponent extends NavElement {
 
     render() {
         return html`            
-            <div class="modal" style ="display:block;">        
+            <div class="modal visible" >        
                 <div class="modal-background"></div>
                 <div class="modal-card">
-                    <header class="modal-card-head">                       
-                        <p class=" modal-card-title is-size-2 has-text-centered  has-text-primary is-italic has-text-weight-bold gradient-text  ">NUOVA PARTITA</p>
+                    <header class="modal-card-head">
+                        <p class=" modal-card-title is-size-2 has-text-centered  has-text-primary is-italic has-text-weight-bold gradient-text  ">NUOVA PARTITA</p>                
+                        <a route="/"><i class="fas fa-home icon"></i></a>
                     </header>
-                    <section class="modal-card-body">
-                        <h1 class="title is-4">Dati generali</h1>
-                        <div class="field">
+                    <section class="modal-card-body">                       
                         <!--TODO: quando isNameAlreadyTaken == true compare avviso-->
-                            <label class="label">Inserisci nome della partita ${this.isNameAlreadyTaken? html`<b style="color: red">Nome già presente!</b>` : html``}</label>
-                            <div class="control">
-                                <input type="text" class="input" placeholder="Inserisci nome della partita" @input=${e => this.gameName = e.target.value}>
+                        <br>
+                        <div class = " columns is-11 ">
+                            <div class = "column is-3 ">
+                                <label class="label is-medium">Nome Partita:  ${this.isNameAlreadyTaken? html`<b class = "alert">Nome già presente!</b>` : html``}</label>
                             </div>
-                        </div>
-                        <div class="field">
+                            <div class = "column is-9 ">                                
+                                <input type="text" class="input is-primary" placeholder="Nome Partita" @input=${e => this.gameName = e.target.value}>                                
+                            </div>
+                        </div> 
+                        <div class = " columns ">
+                            <div class = " column ">                        
                                 ${this.allTeams.map(team => {
                                     return html`<insert-new-team-component .teamName="${team.teamName}" .teamPassword="${team.teamPassword}"
                                     @nameChanged="${e => team.teamName = e.detail}" @passwordChanged="${e => team.teamPassword = e.detail}"
                                     @teamRemoved="${e => this.removeTeam(team)}"
                                     ></insert-new-team-component>`;
                                 })}
-                        </div>
-                        <div class="field">
-                            <div class="control">
-                                <a class="button is-primary" @click=${e => this.addTeam()}>Aggiungi squadra</a>
                             </div>
                         </div>
                     </section>
                     <footer class="modal-card-foot">
-                        <button route="/" class="button is-primary">Home</button>
-                        <a class="button is-link ${this.isLoadingOnFirebase? 'is-loading is-disabled' : ''}" @click=${e => this.buildGame()}>Crea partita!</a>
-                        ${this.missingData? html`<b style="color: red">Dati mancanti!</b>` : html``}
+                        <div class = "columns is-12">
+                            <div class = "column is-6">                            
+                                <a class="button is-primary is-fullwidth is-focused" @click=${e => this.addTeam()}>Aggiungi squadra</a>
+                            </div>
+                            <div class = "column is-offset-12 is-6">
+                                <a class="button is-link is-fullwidth is-focused  ${this.isLoadingOnFirebase? 'is-loading is-disabled' : ''}" @click=${e => this.buildGame()}>Crea partita!</a>
+                                ${this.missingData? html`<b class = "alert">Dati mancanti!</b>` : html``}
+                            </div>
+                        </div>
                     </footer>
                 </div>
             </div>
@@ -78,7 +84,6 @@ export class AdminNewGameComponent extends NavElement {
     }
 
     buildGame() {
-        console.log(this.allTeams);
         this.missingData = false;
         if(!this.gameName || this.allTeams.find(team => !team.teamName || !team.teamPassword)){
             console.log('dati incompleti');
@@ -99,7 +104,7 @@ export class AdminNewGameComponent extends NavElement {
     }
 
     removeTeam(teamToRemove) {
-        if (this.allTeams.lenght > 1) {
+        if (this.allTeams.length > 1) {
             this.allTeams = this.allTeams.filter(team => team != teamToRemove);
         }
     }

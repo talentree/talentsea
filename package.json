@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/talentree/talentsea#readme",
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.10.2",
     "concurrently": "^4.1.1",
     "rollup": "^1.19.4",
     "rollup-plugin-copy": "^3.1.0",

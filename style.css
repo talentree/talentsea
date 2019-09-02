@@ -23,6 +23,27 @@ hr{
 .hidden{
     display: none;
 }
+.visible{
+    display: block;
+}
+.alert{
+    color: red;
+}
+
+
+
+
+.home-position {
+    position: absolute;
+    top: 30px;
+    right: 80px;
+  }
+
+
+
+
+
+
 
 .gradient-box {
     display: flex;
@@ -55,3 +76,4 @@ hr{
     /* !importanté */
     background: linear-gradient(to right, hsl(171, 100%, 41%)  40% , hsl(217, 71%, 53%) 60%);
   }
+  

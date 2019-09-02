@@ -13,6 +13,9 @@ export class AdminLoginPage extends NavElement{
             <div class = " columns is-mobile is-centered is-full ">
                 <div class = " column is-11 ">
                     <h1  class = " title is-size-1 has-text-centered has-text-primary is-italic has-text-weight-bold gradient-text ">AMMINISTRATORE</h1>
+                    <div class = "home-position" >
+                        <a route="/"><i class="fas fa-home icon is-medium"></i></a>
+                    </div>
                     <hr> 
                 </div>
             </div>
@@ -23,7 +26,6 @@ export class AdminLoginPage extends NavElement{
                 </div>
             </div>
             <button route = "/admin-console" class = " button is-link ">Admin new game</button>
-            <button route = "/" class = " button is-primary ">Home</button>
         `;
     }
 }
