@@ -1,5 +1,5 @@
 import 'p5';
-
+//da fare come adminConsolep5?
 export function teamConsoleP5(p) {
     p.setup = function(){
         p.createCanvas(600, 600);
