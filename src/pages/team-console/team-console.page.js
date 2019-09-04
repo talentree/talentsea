@@ -19,22 +19,28 @@ export class TeamConsolePage extends NavElement{
                     <hr> 
                 </div>
             </div>
-            <div class = "continer is-centered">
-                <div class = " columns is-mobile  is-11 ">
-                    <div class = " column is-6 ">
-                        <div class = " gradient-box">
-                            <div id="container-p5"></div>
+            <div class = " columns is-mobile is-full is-centered">
+                <div class = "column is-11">
+                    <div class = "columns">
+                        <div class = " column is-6">
+                            <div class = " gradient-box primary-box box-shadow-primary">
+                                <div class = "columns is-centered">
+                                    <div class = " column is-11"> 
+                                        <div id="container-p5"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class = " column is-6 ">
-                        <div class = " gradient-box">
-                            <textual-interface-component></textual-interface-component>
+                        <div class = " column is-6">
+                            <div class = " gradient-box link-box box-shadow-link">
+                                <div class = "columns is-centered">                                   
+                                        <textual-interface-component></textual-interface-component>                                    
+                                </div>                             
+                            </div>                      
                         </div>
-                        
                     </div>
                 </div>
-            </div>
-            
+            </div>      
             
         `;
     }

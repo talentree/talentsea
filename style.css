@@ -30,6 +30,9 @@ hr{
     color: red;
 }
 
+.label.is-extra-large {
+    font-size: 1.75rem;
+}  
 
 
 
@@ -38,13 +41,6 @@ hr{
     top: 30px;
     right: 80px;
   }
-
-
-
-
-
-
-
 .gradient-box {
     display: flex;
     align-items: center;
@@ -76,4 +72,9 @@ hr{
     /* !importanté */
     background: linear-gradient(to right, hsl(171, 100%, 41%)  40% , hsl(217, 71%, 53%) 60%);
   }
-  
+  .link-box:before{
+      background:  hsl(217, 71%, 53%);
+  }
+  .primary-box:before{
+    background:   hsl(171, 100%, 41%);
+}

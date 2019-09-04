@@ -6,7 +6,7 @@ export function teamConsoleP5(p) {
     let bg = p.color(45,45,45);
     let ip = new InterfacciaParametrizzata(p, 405,720,bg);
     p.setup = function(){
-        p.createCanvas(405, 720);
+        p.createCanvas(710, 740);
         //p.background(255, 200, 220);
         //p, width, height, coloreBackground
     }

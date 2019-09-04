@@ -38,24 +38,7 @@ export class FirebaseQuery {
             .catch(e => console.log(e))
             .then(res => func(res.data()));
     }
-    /*
-        reads(func) {
-            this.doc.onSnapshot(doc => func(doc.data()));
-            }
-    
-        setContatore(contatore) {
-            this.doc.update({contatore});
-        }
-    
-        setProva(prova) {
-            this.doc.update({prova});
-        }
-    
-        setFake(fake) {
-            this.doc.update(fake);
-        }
-        */
-
+   
     createNewGame(gameName, teamArray, callback) {
         let game = new Game();
         game.info.name = gameName;

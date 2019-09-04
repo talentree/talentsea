@@ -22,10 +22,10 @@ export class TeamLoginPage extends NavElement {
             </div>           
             <div class = " columns is-full">
                 <div class = " column is-2 is-offset-1">
-                        <label class="label is-large ">Nome del Gioco:</label>
+                        <label class="label is-extra-large ">Nome del Gioco:</label>
                 </div>
                 <div class = " column is-6">
-                    <input class="input is-medium is-primary" id="gameName" type="text"  @input=${e => this.game = e.target.value}/>
+                    <input class="input is-large is-primary " id="gameName" type="text"  @input=${e => this.game = e.target.value}/>
                 </div>
                 <div class = " column is-2 ">
                     <team-game-list-component></team-game-list-component>
@@ -38,10 +38,10 @@ export class TeamLoginPage extends NavElement {
             </div>            
             <div class = " columns ">
                 <div class = " column is-2 is-offset-1">
-                        <label class="label is-large">Nome della Squadra:</label>
+                        <label class="label is-extra-large">Nome della Squadra:</label>
                 </div>
                 <div class = " column is-6">
-                    <input class="input is-medium is-primary"  type="text"  @input=${e => this.squadra = e.target.value}/>
+                    <input class="input is-large is-primary"  type="text"  @input=${e => this.squadra = e.target.value}/>
                 </div>            
             </div>
             <div class="columns is-centered is-full">
@@ -51,10 +51,10 @@ export class TeamLoginPage extends NavElement {
             </div>
             <div class = " columns ">
                 <div class = " column is-2 is-offset-1">
-                        <label class="label is-large">Codice Segreto:</label>
+                        <label class="label is-extra-large">Codice Segreto:</label>
                 </div>
                 <div class = " column is-6">
-                    <input  class="input is-medium  is-primary"  type="text"  @input=${e => this.codice = e.target.value}/>
+                    <input  class="input is-large is-primary"  type="text"  @input=${e => this.codice = e.target.value}/>
                 </div>            
             </div>
             <div class="columns is-centered is-full">

@@ -54,7 +54,7 @@ export class TeamGameList extends NavElement {
         return html`
             <div class="field">
                 <div class="control">
-                    <a class="button is-link is-medium is-fullwidth is-focused" onclick="document.getElementById('gamesModal').style.display='block'" >Lista Partite</a>
+                    <a class="button is-link is-large is-fullwidth is-focused" onclick="document.getElementById('gamesModal').style.display='block'" >Lista Partite</a>
                 </div>
             </div>
                 
