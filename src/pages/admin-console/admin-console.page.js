@@ -4,7 +4,6 @@ import { AdminState } from '../../core/states/admin.state';
 
 import './admin-new-game.component';
 import { FirebaseQuery } from '../../core/firebase-query';
-import { AdminState } from '../../core/states/admin.state';
 import { AdminConsoleP5 } from '../../p5/admin-console.p5';
 
 export class AdminConsolePage extends NavElement {
@@ -35,19 +34,22 @@ export class AdminConsolePage extends NavElement {
                 <div class = " column is-11 ">
                     <h1  class = " title is-size-1 has-text-centered has-text-primary is-italic has-text-weight-bold gradient-text ">AMMINISTRATORE</h1>
                     <div class = "home-position" >
-                        <a route="/"><i class="fas fa-home icon is-medium"></i></a>
+                        <a route="/"><i class="fas fa-home icon is-large"></i></a><!--TODO: controllare perche grandezza icone non va-->
                     </div>
                     <hr> 
                 </div>
             </div>
+            <div class = " gradient-box ">
+                <button route = "/team-login" class = " button is-medium is-fullwidth is-primary is-focused ">Partecipante</button>
+            </div>
+            <br>
+            <div class = " gradient-box ">                
+                <div id="container-p5"></div>      
+            </div>
             
-            <admin-new-game-component ></admin-new-game-component>
-
-            <h1 class="title">Admin console</h1>
+            
             <!--popup compare se non esiste la partita-->
-            ${this.showNewGameComponent ? html`<admin-new-game-component ></admin-new-game-component>` : html``}
-            <div id="container-p5"></div>
-            <button route="/" class="button is-primary">Home</button>
+            ${this.showNewGameComponent ? html`<admin-new-game-component ></admin-new-game-component>` : html``}          
         `;
     }
     
@@ -80,8 +82,6 @@ export class AdminConsolePage extends NavElement {
         if (this.istanzaP5) { this.istanzaP5.remove() }
     }
 }
-
-
 
 
 customElements.define('admin-console-page', AdminConsolePage);

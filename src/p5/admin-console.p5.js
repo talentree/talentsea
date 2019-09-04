@@ -9,9 +9,15 @@ export class AdminConsoleP5{
     }
 
     p5Function(p) {
+        let img;
+        p.preload = () => {
+            img = p.loadImage('mapset08.jpg');
+        }
         p.setup = () => {
-            p.createCanvas(600, 600);
-            p.background(255, 200, 220);
+            console.log(img.width, img.height)
+            p.createCanvas(1600, 1000);
+            p.background(img);
+            //p.background(255, 200, 220);
         }
         p.draw = () => {
             p.ellipse(50, 50, 100,100);

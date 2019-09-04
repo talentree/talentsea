@@ -27,7 +27,6 @@
     "rollup-plugin-node-resolve": "^5.2.0"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.10.2",
     "@polymer/lit-element": "^0.7.1",
     "bulma": "^0.7.5",
     "firebase": "^6.5.0",
