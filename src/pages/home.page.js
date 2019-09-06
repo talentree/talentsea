@@ -8,13 +8,17 @@ export class HomePage extends NavElement {
 
     render() {
         return html`            
-            <div class = " column is-full ">
-                <h1 class = " title is-size-1 has-text-centered is-italic has-text-weight-bold gradient-text ">TALENTSEA</h1>
-            </div>            
+            <div class = " columns is-mobile is-centered is-full ">
+                <div class = " column is-11 ">
+                    <h1  class = " title is-0 has-text-centered has-text-primary is-italic has-text-weight-bold gradient-text ">AMMINISTRATORE</h1>
+                    <hr> 
+                </div> 
+            </div>          
             <div class = " columns is-mobile is-centered ">   
                 <div class = " column is-11 ">
-                    <hr>
-                    <p class = " is-size-4 has-text-justified ">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sapien turpis, ultrices eget congue eget, scelerisque sed felis. Quisque dui risus, lobortis vel dignissim sit amet, ullamcorper et sapien. Maecenas maximus eget est id ornare. Fusce pellentesque orci vitae metus viverra pellentesque. Aliquam pellentesque mi turpis, ut consequat felis semper at. Proin et rhoncus sem, eget pretium elit. Donec sagittis arcu in nisl imperdiet congue.</p> 
+                    <p class = " subtitle is-size-2 has-text-justified ">La vostra squadra ha il comando di una nave con la strumentazione ridotta al minimo: motore, timone, mappa,  il goniometro, e … la testa.</p>
+                    <p class = " subtitle is-size-2 has-text-justified ">L’obiettivo è arrivare in un porto sicuro: per farlo dovrete calcolare la rotta  e mantenerla risparmiando carburante, perché il vento, le correnti marine e le imprecisioni degli strumenti vi potranno portare fuori rotta.</p>
+                    <p class = " subtitle is-size-2 has-text-justified ">Riuscirete ad arrivare per primi a destinazione? O, almeno, riuscirete ad arrivare?</p> 
                     <hr>
                 </div>
             </div>
@@ -23,16 +27,16 @@ export class HomePage extends NavElement {
                     <div class = " columns is-mobile " >
                         <div class = " column is-5 ">
                             <div class = " box has-background-light box-shadow-primary ">
-                                <p class = " is-size-4 has-text-centered ">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sapien turpis, ultrices eget congue eget, scelerisque sed felis. Quisque dui risus, lobortis vel dignissim sit amet, ullamcorper et sapien. </p>
+                                <p class = " is-size-3 has-text-centered ">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sapien turpis, ultrices eget congue eget, scelerisque sed felis. Quisque dui risus, lobortis vel dignissim sit amet, ullamcorper et sapien. </p>
                                 <br>
-                                <button route = "/team-login" class = " button is-medium is-fullwidth is-primary is-focused ">Partecipante</button>
+                                <button route = "/team-login" class = " button is-extra-large is-fullwidth is-primary is-focused ">Partecipante</button>
                             </div>
                         </div>
                         <div class = " column is-5 is-offset-2 ">
                             <div  class = " box has-background-light box-shadow-link ">
-                                <p class = " is-size-4 has-text-centered ">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sapien turpis, ultrices eget congue eget, scelerisque sed felis. Quisque dui risus, lobortis vel dignissim sit amet, ullamcorper et sapien. </p>
+                                <p class = " is-size-3 has-text-centered ">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sapien turpis, ultrices eget congue eget, scelerisque sed felis. Quisque dui risus, lobortis vel dignissim sit amet, ullamcorper et sapien. </p>
                                 <br>                     
-                                <button route = "/admin-login" class = " button is-medium is-fullwidth is-link is-focused ">Amministratore</button>
+                                <button route = "/admin-login" class = " button is-extra-large is-fullwidth is-link is-focused ">Amministratore</button>
                             </div> 
                         </div>
                     </div>

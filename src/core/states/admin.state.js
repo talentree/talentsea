@@ -2,6 +2,6 @@
 export let AdminState = (function () {
     return {
         mail : '',
-        uid : 'ciaoo'
+        uid : 'ciao'
     }
 })();

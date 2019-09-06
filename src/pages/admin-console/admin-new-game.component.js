@@ -31,7 +31,7 @@ export class AdminNewGameComponent extends NavElement {
 
     render() {
         return html`            
-            <div class="modal visible" >        
+            <div class="modal visible " >        
                 <div class="modal-background"></div>
                 <div class="modal-card">
                     <header class="modal-card-head">

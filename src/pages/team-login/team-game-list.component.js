@@ -12,15 +12,15 @@ export class TeamGameList extends NavElement {
         this.firebaseQuery.readAll(data => {
             // crea titolo popup
             var item = "<div class='columns is-multiline is-mobile is-centered '>" +
-                "<div class='column is-one-third '>" +
-                "<h2 class='title is-4'>Nome Partita</h2>" +
-                "</div>" +
-                "<div class='column is-one-quarter has-text-centered'>" +
-                "<h2 class='title is-4'>Squadre</h2>" +
-                "</div>" +
-                "<div class='column is-one-quarter has-text-centered'>" +
-                "<h2 class='title is-4'>Libere<h2>" +
-                "</div>";
+                            "<div class='column is-6 '>" +
+                                "<h2 class='title is-3'>Nome Partita</h2>" +
+                            "</div>" +
+                            "<div class='column is-3 has-text-centered'>" +
+                                "<h2 class='title is-3'>Squadre</h2>" +
+                            "</div>" +
+                            "<div class='column is-3 has-text-centered'>" +
+                                "<h2 class='title is-3'>Libere<h2>" +
+                             "</div>";
 
             //aggiungo i vari tag alla variabile
             for (var i = 0; i < data.length; i++) {
@@ -33,12 +33,12 @@ export class TeamGameList extends NavElement {
                 });
 
                 //assegnando alla variabile il codice HTML necessario
-                item += `<div class='column is-one-third is-size-5'><a id="` +
+                item += `<div class='column is-6 is-size-3'><a class = "has-text-weight-bold has-text-primary" id="` +
                     i + `" onclick='document.getElementById("gameName").value=document.getElementById("` +
                     i + `").textContent , document.getElementById("gamesModal").style.display="none"'>` +
                     data[i].info.name + `</a> </div> 
-                            <div class='column is-one-quarter has-text-centered is-size-5'> ` + Object.keys(data[i].teams).length + `</div> 
-                            <div class='column is-one-quarter has-text-centered is-size-5'>` + libere + `</div>`;
+                            <div class='column is-3 has-text-centered is-size-3 has-text-weight-bold'> ` + Object.keys(data[i].teams).length + `</div> 
+                            <div class='column is-3 has-text-centered is-size-3 has-text-weight-bold'>` + libere + `</div>`;
             }
 
             //inserisco i tag nel posto richiesto
@@ -54,7 +54,7 @@ export class TeamGameList extends NavElement {
         return html`
             <div class="field">
                 <div class="control">
-                    <a class="button is-link is-medium is-fullwidth is-focused" onclick="document.getElementById('gamesModal').style.display='block'" >Lista Partite</a>
+                    <a class="button is-link is-extra-large is-fullwidth is-focused" onclick="document.getElementById('gamesModal').style.display='block'" >Lista Partite</a>
                 </div>
             </div>
                 
@@ -62,7 +62,7 @@ export class TeamGameList extends NavElement {
                 <div class="modal-background"></div>
                 <div class="modal-card">
                     <header class="modal-card-head">                       
-                        <p class=" modal-card-title is-size-2 has-text-centered  has-text-primary is-italic has-text-weight-bold gradient-text  ">LISTA PARTITE</p>
+                        <p class=" modal-card-title is-size-1 has-text-centered  has-text-primary is-italic has-text-weight-bold gradient-text  ">LISTA PARTITE</p>
                         <button class="delete" onclick="document.getElementById('gamesModal').style.display='none'"></button>
                     </header>
                     <section class="modal-card-body" id="games"> </section>
