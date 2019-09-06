@@ -1,11 +1,29 @@
-import { html } from '@polymer/lit-element';
-import { NavElement } from '../../core/nav-element';
-import { teamConsoleP5 } from '../../p5/team-console.p5';
+import { NavElement, html } from '../../core/nav-element';
+import { Info } from '../../core/classes/info.class';
+import { Team } from '../../core/classes/team.class';
+import { FirebaseQuery } from '../../core/firebase-query';
+import { TeamState } from '../../core/states/team.state';
+
 import './textual-interface.component';
+import { TeamConsoleP5Controller } from '../../p5/team-console.p5';
 
 export class TeamConsolePage extends NavElement{
+
+    static get properties(){
+        return {
+            gameInfo : {type : Object},
+            myTeam : {type : Object}
+        }
+    }
+
     constructor(){
         super();
+        this.gameInfo = new Info();
+        this.myTeam = new Team();
+
+        this.firebaseQuery = new FirebaseQuery();
+        this.onSnapshotReference = null;
+        this.teamConsoleP5 = new TeamConsoleP5Controller(710, 740);
     }
 
     render(){
@@ -46,12 +64,26 @@ export class TeamConsolePage extends NavElement{
     }
 
     firstUpdated(){
-        const container = this.querySelector('#container-p5');
-        this.p5 = new p5(teamConsoleP5, container);
+        this.firebaseQuery.setUid(TeamState.connectedToGameId);
+        this.onSnapshotReference = this.firebaseQuery.listenToChanges(newDoc => {
+            if(!this.p5){
+                let container = this.querySelector('#container-p5');
+                this.p5 = new p5(this.teamConsoleP5.p5Function.bind(this.teamConsoleP5), container);
+            }
+            this.gameInfo = newDoc.info;
+            this.myTeam = newDoc.teams[TeamState.teamName];
+        })
+    }
+
+    updated(){
+        console.log('hello');
+        this.teamConsoleP5.gameInfo = this.gameInfo || new Info();
+        this.teamConsoleP5.myTeam = this.myTeam || new Team();
     }
 
     disconnectedCallback(){
-        this.p5.remove();
+        if(this.p5){this.p5.remove()}
+        if(this.onSnapshotReference){this.onSnapshotReference()};
     }
 }
 
