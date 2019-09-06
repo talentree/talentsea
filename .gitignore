@@ -8,10 +8,10 @@ node_modules/
 .git
 
 # Distribution
-dist
+dist/*
 
 #Applicativi Roberto
-applicativi/
+!dist/applicativi/
 
 #Firebase
 .firebase

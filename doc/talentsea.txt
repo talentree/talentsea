@@ -46,3 +46,5 @@ in caso ci fossero ulteriori problemi a caricare su git a causa di debug.log usa
 git rm -r --cached .
 
 git add .
+
+https://stackoverflow.com/questions/5533050/gitignore-exclude-folder-but-include-specific-subfolder
