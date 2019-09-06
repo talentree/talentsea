@@ -53,7 +53,7 @@ export class TextualInterface extends NavElement{
         }
 
         return html`
-            <div class = "column is-offset-7 is-full has-text-centered">
+            <div class = "column has-text-centered">
                 <h1 class="title is-1 has-text-link">${this.temaName}</h1>
                 <hr>
                 <p class="subtitle is-3"><b>Tempo di Gioco:</b> ${this.gameTime} sec.</p>

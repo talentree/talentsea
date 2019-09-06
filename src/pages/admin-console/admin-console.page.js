@@ -3,6 +3,7 @@ import { NavElement } from '../../core/nav-element';
 import { AdminState } from '../../core/states/admin.state';
 
 import './admin-new-game.component';
+import './admin-console-bar.component';
 import { FirebaseQuery } from '../../core/firebase-query';
 import { AdminConsoleP5 } from '../../p5/admin-console.p5';
 
@@ -32,19 +33,23 @@ export class AdminConsolePage extends NavElement {
         return html`
             <div class = " columns is-mobile is-centered is-full ">
                 <div class = " column is-11 ">
-                    <h1  class = " title is-size-1 has-text-centered has-text-primary is-italic has-text-weight-bold gradient-text ">AMMINISTRATORE</h1>
+                    <h1  class = " title is-0 has-text-centered has-text-primary is-italic has-text-weight-bold gradient-text ">CONSOLE AMMINISTRATORE</h1>
                     <div class = "home-position" >
-                        <a route="/"><i class="fas fa-home icon is-large"></i></a><!--TODO: controllare perche grandezza icone non va-->
+                        <a route="/"><i class="fas fa-home icon is-medium"></i></a><!--TODO: controllare perche grandezza icone non va-->
                     </div>
                     <hr> 
                 </div>
             </div>
             <div class = " gradient-box ">
-                <button route = "/team-login" class = " button is-medium is-fullwidth is-primary is-focused ">Partecipante</button>
+                <admin-new-bar-component></admin-new-bar-component>
             </div>
             <br>
-            <div class = " gradient-box ">                
-                <div id="container-p5"></div>      
+            <div class = " gradient-box map-padding "> 
+                <div class ="colums is-full " >
+                    <div class= "column ">            
+                        <div id="container-p5"></div> 
+                    </div> 
+                </div>    
             </div>
             
             
