@@ -1,10 +1,11 @@
 import 'p5';
-import { InterfacciaParametrizzata } from './testo-spazzatura';
+import { InterfacciaParametrizzata } from '../core/classes/interfacciaParametrizzata.class';
 
 //da fare come adminConsolep5?
 export function teamConsoleP5(p) {
     let bg = p.color(45,45,45);
-    let ip = new InterfacciaParametrizzata(p, 405,720,bg);
+    let ip = new InterfacciaParametrizzata(p, 710,720,bg);
+
     p.setup = function(){
         p.createCanvas(710, 740);
         //p.background(255, 200, 220);
@@ -15,6 +16,4 @@ export function teamConsoleP5(p) {
         p.background(bg);
         ip.display();
     }
-
-
 }
