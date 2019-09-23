@@ -11,10 +11,9 @@ export class AdminConsoleP5{
     p5Function(p) {
         let img;
         p.preload = () => {
-            img = p.loadImage('mapset08.jpg');
+            img = p.loadImage('./applicativi/mapset08.jpg');
         }
         p.setup = () => {
-            console.log(img.width, img.height)
             p.createCanvas(1600, 1000);
             p.background(img);
             //p.background(255, 200, 220);
