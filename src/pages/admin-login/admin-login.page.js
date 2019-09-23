@@ -3,12 +3,20 @@ import { NavElement } from '../../core/nav-element';
 import './admin-signin.component';
 import './admin-signup.component';
 
-export class AdminLoginPage extends NavElement{
-    constructor(){
-        super();
+export class AdminLoginPage extends NavElement {
+
+    static get properties() {
+        return {
+            displaySignIn: { type: Boolean }
+        }
     }
 
-    render(){
+    constructor() {
+        super();
+        this.displaySignIn = true;
+    }
+
+    render() {
         return html`
             <div class = " columns is-mobile is-centered is-full ">
                 <div class = " column is-11 ">
@@ -21,11 +29,15 @@ export class AdminLoginPage extends NavElement{
             </div>
             <div class = " gradient-box ">  
                 <div class = " column is-10 is-offset-1">
-                    <admin-signin-component id = "signin"></admin-signin-component>                    
-                    <admin-signup-component id = "signup" class = " hidden " ></admin-signup-component>                        
+                    <admin-signin-component @goToSignUp=${() => this.toggleSignIn()} style="display: ${this.displaySignIn? 'block': 'none'}"></admin-signin-component>                    
+                    <admin-signup-component @goToSignIn=${() => this.toggleSignIn()} style="display: ${this.displaySignIn? 'none': 'block'}"></admin-signup-component>                        
                 </div>
             </div>
         `;
+    }
+
+    toggleSignIn(){
+        this.displaySignIn = !this.displaySignIn;
     }
 }
 
