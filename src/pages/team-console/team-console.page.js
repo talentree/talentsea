@@ -45,7 +45,7 @@ export class TeamConsolePage extends NavElement {
         this.maxWheelAngle = 30;
 
         //tempo tra un invio e l'altro degli input a firebase
-        this.millisBetweenInputsUpload = 2000;
+        this.millisBetweenInputsUpload = 1000;
         //la reference serve a rimuovere setInterval
         this.uploadInputsRef = null;
     }

@@ -29,19 +29,22 @@ export class AdminSignIn extends NavElement {
             <hr>
             <div class = "columns is-9 "> 
                 <div class = "column is-3 ">                    
-                    <button class = "button is-extra-large is is-primary is-focused is-fullwidth" onclick = " document.getElementById('signup').style.display='block';
-                                                                                             document.getElementById('signin').style.display='none' ">Registrati</button>
+                    <button class = "button is-extra-large is is-primary is-focused is-fullwidth" @click="${() => this.goToSignUp()}">Registrati</button>
                 </div>
                 <div class = " column is-3  has-text-right is-offset-6 ">                    
-                    <button route = "/admin-console" class = " button is-extra-large is-link is-focused is-fullwidth " @click = ${(e) => this.login()}>Accedi</button>
+                    <button route = "/admin-console" class = " button is-extra-large is-link is-focused is-fullwidth " @click = ${() => this.doSignIn()}>Accedi</button>
                 </div>
              </div>
         `;
     }
 
-    login() {
+    doSignIn() {
         AdminState.uid = "ciao";
-        console.log(AdminState.uid);
+    }
+
+    goToSignUp(){
+        let event = new CustomEvent('goToSignUp');
+        this.dispatchEvent(event);
     }
 }
 

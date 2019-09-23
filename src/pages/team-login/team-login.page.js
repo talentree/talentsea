@@ -4,9 +4,20 @@ import { FirebaseQuery } from '../../core/firebase-query';
 import './team-game-list.component';
 
 export class TeamLoginPage extends NavElement {
+
+    static get properties() {
+        return {
+            connectToGameName: { type: String }
+        }
+    }
+
     constructor() {
         super();
         this.firebaseQuery = new FirebaseQuery();
+        //dat per connettersi alla partita
+        this.connectToGameName = "";
+        this.teamName = "";
+        this.teamPassword = "";
     }
 
     render() {
@@ -25,10 +36,10 @@ export class TeamLoginPage extends NavElement {
                         <label class="label is-extra-large ">Nome Partita:</label>
                 </div>
                 <div class = " column is-6">
-                    <input class="input is-extra-large is-primary " id="gameName" type="text"  @input=${e => this.game = e.target.value}/>
+                    <input class="input is-extra-large is-primary " type="text"  @input=${e => this.connectToGameName = e.target.value} .value=${this.connectToGameName} />
                 </div>
                 <div class = " column is-2 ">
-                    <team-game-list-component></team-game-list-component>
+                    <team-game-list-component @gameChoosen=${e => this.connectToGameName = e.detail}></team-game-list-component>
                 </div>
             </div>
             <div class="columns is-centered is-full">
@@ -41,7 +52,7 @@ export class TeamLoginPage extends NavElement {
                         <label class="label is-extra-large">Nome Squadra:</label>
                 </div>
                 <div class = " column is-6">
-                    <input class="input is-extra-large is-primary"  type="text"  @input=${e => this.squadra = e.target.value}/>
+                    <input class="input is-extra-large is-primary"  type="text"  @input=${e => this.teamName = e.target.value} />
                 </div>            
             </div>
             <div class="columns is-centered is-full">
@@ -54,7 +65,7 @@ export class TeamLoginPage extends NavElement {
                         <label class="label is-extra-large">Codice Segreto:</label>
                 </div>
                 <div class = " column is-6">
-                    <input  class="input is-extra-large is-primary"  type="text"  @input=${e => this.codice = e.target.value}/>
+                    <input  class="input is-extra-large is-primary"  type="text"  @input=${e => this.teamPassword = e.target.value} />
                 </div>            
             </div>
             <div class="columns is-centered is-full">
@@ -70,11 +81,11 @@ export class TeamLoginPage extends NavElement {
         `;
     }
 
-    login(){
+    login() {
         //effettua login
-
+        console.log('connecting to game (TODO:)', this.connectToGameName, this.teamName, this.teamPassword);
         //then cambia pagina se va bene
-        let e = new CustomEvent('navigate', {detail: '/team-console'})
+        let e = new CustomEvent('navigate', { detail: '/team-console' })
         window.dispatchEvent(e);
     }
 }

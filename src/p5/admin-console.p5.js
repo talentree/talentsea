@@ -6,6 +6,7 @@ export class AdminConsoleP5{
     constructor(){
         //gameData è accessibile da admin-console-page
         this.gameData = new Game();
+        this.gameIsPlaying = true;
     }
 
     p5Function(p) {
