@@ -1,5 +1,5 @@
 import 'p5';
-import { InterfacciaParametrizzata } from './testo-spazzatura';
+import { InterfacciaParametrizzata } from '../core/classes/interfacciaParametrizzata.class';
 import { Info } from '../core/classes/info.class';
 import { Team } from '../core/classes/team.class';
 
@@ -18,8 +18,6 @@ export function teamConsoleP5(p) {
         p.background(bg);
         ip.display();
     }
-
-
 }
 */
 

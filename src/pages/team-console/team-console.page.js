@@ -30,7 +30,7 @@ export class TeamConsolePage extends NavElement{
         return html`            
             <div class = " columns is-mobile is-centered is-full ">
                 <div class = " column is-11 ">
-                    <h1  class = " title is-size-1 has-text-centered has-text-primary is-italic has-text-weight-bold gradient-text ">CONSOLE SQUADRA</h1>
+                    <h1  class = " title is-0 has-text-centered has-text-primary is-italic has-text-weight-bold gradient-text ">CONSOLE SQUADRA</h1>
                     <div class = "home-position" >
                         <a route="/"><i class="fas fa-home icon is-medium"></i></a>
                     </div>

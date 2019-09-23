@@ -23,7 +23,7 @@ export class InsertNewTeamComponent extends NavElement {
                 <input   class= "input is-primary" type="text" @input="${e => this.changedTeamName(e.target.value)}" .value="${this.teamName}" placeholder="Nome Squadra"/>
             </div>             
             <div class = "column is-5">
-                <input class= "input is-link" type="password" @input="${e => this.changedTeamPassword(e.target.value)}" .value= "${this.teamPassword}" placeholder="Password Segreta"/>
+                <input class= "input is-link" type="text" @input="${e => this.changedTeamPassword(e.target.value)}" .value= "${this.teamPassword}" placeholder="Password Segreta"/>
             </div>
            <div class = "column is-2">
                 <a class="button is-link is-focused " @click=${e => this.removeTeam()}>Rimuovi</a>
