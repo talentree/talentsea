@@ -6,7 +6,7 @@ import { AdminState } from './states/admin.state';
 export class FirebaseQuery {
 
     constructor() {
-        this.db = firebase.firestore().collection("games");
+        this.db = firebase.firestore().collection('games');
 
     }
 
@@ -50,7 +50,8 @@ export class FirebaseQuery {
         //console.log(game);
         //TODO: aggiro mancanza di uid
         this.setUid(AdminState.uid);
-        //TODO: deleteCustomObject èuna soluzione a errore di firebase
+        //TODO: deleteCustomObject è una soluzione a errore di firebase
+        //in updateInputs non sembra necessario object.assign
         let gameConverted = this.deleteCustomObject(Object.assign({}, game));
         this.uploadDocument(gameConverted, callback)
     }
@@ -72,5 +73,12 @@ export class FirebaseQuery {
         /*esegue una callback ad ogni cambiamento del documento
         ma ritorna se stessa per poter rimuovere il listener*/
         return this.doc.onSnapshot(doc => func(doc.data()));
+    }
+
+    updateInputs(teamName, inputs, onSuccess){
+        let inputsToUpload = this.deleteCustomObject(inputs);
+        this.doc.update('teams.' + teamName + '.inputs', inputsToUpload)
+        .catch(err => console.log('error in uploadInputs ', err))
+        .then(() => onSuccess());
     }
 }

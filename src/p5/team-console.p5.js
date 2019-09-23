@@ -2,6 +2,7 @@ import 'p5';
 import { InterfacciaParametrizzata } from '../core/classes/interfacciaParametrizzata.class';
 import { Info } from '../core/classes/info.class';
 import { Team } from '../core/classes/team.class';
+import { ClickAction } from './clickActionCode';
 
 //da fare come adminConsolep5?
 /*
@@ -22,6 +23,8 @@ export function teamConsoleP5(p) {
 */
 
 export class TeamConsoleP5Controller {
+
+    //inizializza alcune proprietà
     constructor(canvasWidth, canvasHeight) {
         this.gameInfo = new Info();
         this.myTeam = new Team();
@@ -31,6 +34,7 @@ export class TeamConsoleP5Controller {
         //this.radar = [false, true, true, false, false, false, true];
         this.collisioneAvvenuta = false;
 
+        //TODO: la direzione deve venire da firebase
         this.direzione = 20;
 
         this.coloreResettaTimone = [255, 1, 0];
@@ -46,9 +50,11 @@ export class TeamConsoleP5Controller {
         this.gameInfo.windDirection = 200;
 
         this.calculateUIPositions(canvasWidth, canvasHeight);
+
+        this.onMouseClicked = null;
     }
 
-
+    //serve a calcolare dove posizionare i vari elementi della grafica della console
     calculateUIPositions(width, height) {
 
         this.canvasWidth = width;
@@ -99,10 +105,10 @@ export class TeamConsoleP5Controller {
         }
     }
 
+    //metodo che disegna tutta l'interfaccia
     display() {
         this.coloreAnelloBussola = this.p.color(255, 204, 0);
         this.coloreTesti = this.p.color(255, 255, 255);
-        console.log(this.gameInfo, this.myTeam);
         //disegno anello bussola
         this.p.fill(this.coloreAnelloBussola);
         this.p.noStroke();
@@ -260,18 +266,55 @@ export class TeamConsoleP5Controller {
         }
     }
 
+    //questa funzione viene passata a p5
     p5Function(p) {
         this.p = p;
         let bg;
         p.setup = () => {
             p.createCanvas(this.canvasWidth, this.canvasHeight);
             bg = p.color(45, 45, 45);
-            p.frameRate(1);
         }
         p.draw = () => {
             //p.ellipse(50, 50, 100,100);
             p.background(bg);
             this.display();
         }
+        p.mouseClicked = () => {
+            //controllo se ho una callback in onMouseClicked
+            if (this.onMouseClicked) {
+                //ottengo il colore nel punto in cui ho cliccato il mouse
+                let colorInPoint = p.get(p.mouseX, p.mouseY);
+                //rimuovo il canale alpha
+                colorInPoint.pop();
+                let actionChoosen = this.whereIsClick(colorInPoint);
+                this.onMouseClicked(actionChoosen);
+            }
+        }
+    }
+
+    //i valori sono in clickActionCode.js
+    whereIsClick(coloreNelPunto) {
+        if (JSON.stringify(coloreNelPunto) == JSON.stringify(this.coloreAumentaVelocita)) {
+            return ClickAction.accelerate;
+        }
+        else if (JSON.stringify(coloreNelPunto) == JSON.stringify(this.coloreDiminuisciVelocita)) {
+            return ClickAction.decelerate;
+        }
+        else if (JSON.stringify(coloreNelPunto) == JSON.stringify(this.coloreViraDestra)) {
+            return ClickAction.turnRight;
+        }
+        else if (JSON.stringify(coloreNelPunto) == JSON.stringify(this.coloreViraSinistra)) {
+            return ClickAction.turnLeft;
+        }
+        else if (JSON.stringify(coloreNelPunto) == JSON.stringify(this.coloreResettaTimone)) {
+            return ClickAction.resetWheel;
+        }
+        else {
+            return ClickAction.nothing;
+        }
+    }
+
+    setCallbackToMouseClick(callback) {
+        this.onMouseClicked = callback;
     }
 }
