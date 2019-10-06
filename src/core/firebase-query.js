@@ -14,8 +14,13 @@ export class FirebaseQuery {
         this.doc = this.db.doc(uid);
     }
 
-    uploadDocument(doc, callback) {
-        this.doc.set(doc)
+    /**
+     * Writes a document to Firebase (overwrite)
+     * @param {Object} document - Document to write
+     * @param {function} callback - Callback executed if no errors
+     */
+    uploadDocument(document, callback) {
+        this.doc.set(document)
             .catch(err => console.log('error in uploadDocument', err))
             .then(() => callback());
     }
@@ -38,7 +43,7 @@ export class FirebaseQuery {
             .catch(e => console.log(e))
             .then(res => func(res.data()));
     }
-   
+
     createNewGame(gameName, teamArray, callback) {
         let game = new Game();
         game.info.name = gameName;
@@ -59,7 +64,7 @@ export class FirebaseQuery {
     //TODO: ALLORA, la lascio qui così se fa schifo basta cancellarla, nel frattempo la provo
     deleteCustomObject(custom) {
         //controllo che sia un oggetto prima di provare a modificarlo
-        if(custom === Object(custom) && !Array.isArray(custom)){
+        if (custom === Object(custom) && !Array.isArray(custom)) {
             Object.keys(custom).forEach(property => {
                 if (custom[property] === Object(custom[property]) && !Array.isArray(custom[property])) {
                     custom[property] = Object.assign({}, this.deleteCustomObject(custom[property]));
@@ -69,16 +74,35 @@ export class FirebaseQuery {
         return custom;
     }
 
-    listenToChanges(func){
+    listenToChanges(func) {
         /*esegue una callback ad ogni cambiamento del documento
         ma ritorna se stessa per poter rimuovere il listener*/
         return this.doc.onSnapshot(doc => func(doc.data()));
     }
 
-    updateInputs(teamName, inputs, onSuccess){
+    updateInputs(teamName, inputs, onSuccess) {
         let inputsToUpload = this.deleteCustomObject(inputs);
         this.doc.update('teams.' + teamName + '.inputs', inputsToUpload)
-        .catch(err => console.log('error in uploadInputs ', err))
-        .then(() => onSuccess());
+            .catch(err => console.log('error in uploadInputs ', err))
+            .then(() => onSuccess());
+    }
+
+    /**
+     * Updates a document on firebase. Does not overwrite
+     * @param {Object} document - Document to update
+     * @param {function} callback - Executed at update compleate successfully
+     */
+    updateDocument(document, callback) {
+        let documentObject = this.deleteCustomObject(document);
+        this.doc.update(documentObject)
+            .catch(err => console.log('Error in updateDocument!', err))
+            .then(() => callback())
+    }
+
+    updateSingleTeam(teamName, newValues, onSuccess) {
+        let newValuesObject = this.deleteCustomObject(newValues);
+        this.doc.update('teams.' + teamName, newValuesObject)
+            .catch(err => console.log('error in updateSingleTeam ', err))
+            .then(() => { if (onSuccess) { onSuccess() } })
     }
 }

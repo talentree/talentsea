@@ -30,7 +30,7 @@ export class AdminConsoleBarComponent extends NavElement {
 
         //stringa vuota significa che non verranno contati come dati da modificare
         this.dataToChange = {
-            indexTeam: 0,
+            teamName : "",
             positionX: "",
             positionY: "",
             fuel: ""
@@ -47,7 +47,7 @@ export class AdminConsoleBarComponent extends NavElement {
                     </button>
                 </div>
                 <div class = "column is-1">
-                    <button  class = " button is-extra-large is-fullwidth is-primary is-focused " title="Mappa Fullscreen" ><i class="fas fa-expand"></i></button>
+                    <button @click= ${() => this.toggleFullScreen()} class = " button is-extra-large is-fullwidth is-primary is-focused " title="Mappa Fullscreen" ><i class="fas fa-expand"></i></button>
                 </div>
                 <div class = "column is-1">
                     <button  class = " button is-extra-large is-fullwidth is-primary is-focused " title="Cancella Partita" @click=${() => this.askingForGameDelete = true} ><i class="fas fa-trash-alt"></i></button>
@@ -102,18 +102,25 @@ export class AdminConsoleBarComponent extends NavElement {
     }
 
     //TODO: FULLSCREEN FUNCTION
+    toggleFullScreen() {
+        console.log('toggle Fullscreen not implemented');
+    }
 
     changeTeamData() {
-        this.dataToChange.indexTeam = parseInt(this.querySelector('#selectTeamToChange').value) - 1;
-        let event = new CustomEvent('changeTeamData', {
-            detail: this.dataToChange
-        })
-
-        this.dispatchEvent(event);
+        let indexTeam = parseInt(this.querySelector('#selectTeamToChange').value) - 1;
+        if (indexTeam > -1) {
+            this.dataToChange.teamName = this.allTeamsName[indexTeam];
+            let event = new CustomEvent('changeTeamData', {
+                detail: this.dataToChange
+            })
+            this.dispatchEvent(event);
+        }
     }
 
     toggleGameStatus() {
         this.gameIsPlaying = !this.gameIsPlaying;
+        let e = new CustomEvent('gameStatusToggled', { detail: this.gameIsPlaying });
+        this.dispatchEvent(e);
     }
 
 

@@ -2,6 +2,6 @@
 export let TeamState = (function () {
     return {
         connectedToGameId : 'ciao',
-        teamName : 's'
+        teamName : 's1'
     }
 })();
