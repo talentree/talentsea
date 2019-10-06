@@ -76,7 +76,7 @@ export class TeamConsolePage extends NavElement {
                         <div class = " column is-6">
                             <div class = " gradient-box link-box box-shadow-link">
                                 <div class = "columns is-centered">                                   
-                                        <textual-interface-component></textual-interface-component>                                    
+                                        <textual-interface-component .gameInfo = ${this.gameInfo} .myTeam= ${this.myTeam} .teamName=${TeamState.teamName}></textual-interface-component>                                    
                                 </div>                             
                             </div>                      
                         </div>
@@ -106,7 +106,7 @@ export class TeamConsolePage extends NavElement {
                 this.teamConsoleP5.setCallbackToMouseClick(action => this.applyClickAction(action));
 
                 //ogni tot secondi carico i nuovi input se sono diversi
-                //TODO: il timer può venire aggiornato qui, al momento del caricamento su firebase
+                //TODO: il timer per la presenza del giocatore può venire aggiornato qui, al momento del caricamento su firebase
                 this.uploadInputsRef = setInterval(() => this.uploadInputsIfChanged(), this.millisBetweenInputsUpload);
             }
             //inserisco i nuovi dati e chiamo così il reload del component
@@ -126,6 +126,7 @@ export class TeamConsolePage extends NavElement {
         if (this.p5) { this.p5.remove() }
         if (this.onSnapshotReference) { this.onSnapshotReference() };
         if (this.uploadInputsRef) { clearInterval(this.uploadInputsRef) };
+        TeamState.logoutFromGame();
     }
 
     applyClickAction(action) {

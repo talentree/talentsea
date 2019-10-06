@@ -4,24 +4,6 @@ import { Info } from '../core/classes/info.class';
 import { Team } from '../core/classes/team.class';
 import { ClickAction } from './clickActionCode';
 
-//da fare come adminConsolep5?
-/*
-export function teamConsoleP5(p) {
-    let bg = p.color(45, 45, 45);
-    let ip = new InterfacciaParametrizzata(p, 405, 720, bg);
-    p.setup = function () {
-        p.createCanvas(710, 740);
-        //p.background(255, 200, 220);
-        //p, width, height, coloreBackground
-    }
-    p.draw = function () {
-        //p.ellipse(50, 50, 100,100);
-        p.background(bg);
-        ip.display();
-    }
-}
-*/
-
 export class TeamConsoleP5Controller {
 
     //inizializza alcune proprietà
@@ -31,11 +13,6 @@ export class TeamConsoleP5Controller {
 
         //proprietà per disegnare console
         this.coloreBackground = 'black';
-        //this.radar = [false, true, true, false, false, false, true];
-        this.collisioneAvvenuta = false;
-
-        //TODO: la direzione deve venire da firebase
-        this.direzione = 20;
 
         this.coloreResettaTimone = [255, 1, 0];
         this.coloreViraDestra = [255, 200, 0];
@@ -136,7 +113,7 @@ export class TeamConsoleP5Controller {
         let coloreTriangoloVento = this.p.color(0, 0, 255);
         let baseVento = this.raggioAnelloBussola * 0.23;
         let altezzaVento = this.gameInfo.windForce / this.maxIntVento * 0.75 * this.raggioAnelloBussola;
-        let angoloVentoTotale = - this.direzione + this.gameInfo.windDirection;
+        let angoloVentoTotale = - this.myTeam.outputs.direction + this.gameInfo.windDirection;
         this.p.fill(this.p.color(255, 255, 255));
         let centroBaseTriangoloVento = {
             x: this.centroBussola.x + (this.raggioAnelloBussola - this.spessoreAnelloBussola) * Math.sin(angoloVentoTotale * Math.PI / 180),
@@ -222,16 +199,16 @@ export class TeamConsoleP5Controller {
 
 
         //collisione avvenuta
-        if (this.collisioneAvvenuta) {
+        if (this.myTeam.outputs.radar.state == 1) {
             this.p.fill(coloreRadar.alert);
             this.p.rect(this.angoloAltoASxRadar.x, this.angoloAltoASxRadar.y + this.altezzaRadar, this.lunghezzaRadar, this.altezzaCollisioneImminente);
         }
 
         //disegno indicatore nord
-        let direzioneIndicatore = this.direzione;
+        let direzioneIndicatore = this.myTeam.outputs.direction;
         this.p.fill(this.p.color(0, 0, 0));
         for (let i = 0; i < 4; i++) {
-            direzioneIndicatore = -this.direzione + 90 * i;
+            direzioneIndicatore = -this.myTeam.outputs.direction + 90 * i;
             this.p.textAlign(this.p.CENTER, this.p.CENTER);
             this.p.textSize(this.dimensioniTesti.piccoli);
             let posNord = {

@@ -12,7 +12,7 @@ export class AdminConsolePage extends NavElement {
     static get properties() {
         return {
             showNewGameComponent: { type: Boolean },
-            allTeamsName : {type : Array}
+            allTeamsName: { type: Array }
         }
     }
 
@@ -30,6 +30,10 @@ export class AdminConsolePage extends NavElement {
         this.adminConsoleP5 = new AdminConsoleP5();
         //serve a admin-coonsole-bar per mostrare il nome della squadra da cambiare
         this.allTeamsName = [];
+
+        //millisecondi per ogni upload del gioco
+        this.millisBetweenUpload = 1000;
+        this.gameUploadReference = null;
     }
 
     render() {
@@ -44,7 +48,10 @@ export class AdminConsolePage extends NavElement {
                 </div>
             </div>
             <div class = " gradient-box ">
-                <admin-new-bar-component .gameIsPlaying="${this.adminConsoleP5.gameIsPlaying}" @changeTeamData= ${e => console.log(e.detail)} .allTeamsName= "${this.allTeamsName}"></admin-new-bar-component>
+                <admin-new-bar-component .gameIsPlaying="${this.adminConsoleP5.gameIsPlaying}"
+                @changeTeamData= ${e => this.changeTeamData(e.detail)}
+                .allTeamsName= "${this.allTeamsName}"
+                @gameStatusToggled = ${e => this.adminConsoleP5.gameIsPlaying = e.detail}></admin-new-bar-component>
             </div>
             <br>
             <div class = " gradient-box map-padding "> 
@@ -60,7 +67,6 @@ export class AdminConsolePage extends NavElement {
             ${this.showNewGameComponent ? html`<admin-new-game-component ></admin-new-game-component>` : html``}          
         `;
     }
-    
 
 
     checkIfGameExists() {
@@ -83,6 +89,10 @@ export class AdminConsolePage extends NavElement {
         if (!this.istanzaP5) {
             let container = this.querySelector('#container-p5');
             this.istanzaP5 = new p5(this.adminConsoleP5.p5Function.bind(this.adminConsoleP5), container);
+            //salvo una reference all'upload del gioco du firebase
+            this.gameUploadReference = setInterval(() => {
+                if (this.adminConsoleP5.gameIsPlaying) { this.uploadGameToFirebase() }
+            }, this.millisBetweenUpload)
         }
     }
 
@@ -91,6 +101,30 @@ export class AdminConsolePage extends NavElement {
         if (this.listenToChangesFunction) { this.listenToChangesFunction() }
         //elimino l'istanza di p5
         if (this.istanzaP5) { this.istanzaP5.remove() }
+        //elimino setInterval
+        if (this.gameUploadReference) { clearInterval(this.gameUploadReference) }
+    }
+
+    uploadGameToFirebase() {
+        //il controllo se gameIsPlaying viene fatto prima poichè questa funzione viene utilizzata anche 
+        this.firebaseQuery.updateDocument(this.adminConsoleP5.gameData, () => console.log('update successfully'));
+    }
+
+    changeTeamData(dataToChange) {
+        Object.keys(this.adminConsoleP5.gameData.teams).forEach(teamName => {
+            if (teamName = dataToChange.teamName) {
+                if(dataToChange.positionX !== ""){
+                    this.adminConsoleP5.gameData.teams[teamName].outputs.positionX = parseInt(dataToChange.positionX)
+                }
+                if(dataToChange.positionY !== ""){
+                    this.adminConsoleP5.gameData.teams[teamName].outputs.positionY = parseInt(dataToChange.positionY)
+                }
+                if(dataToChange.fuel !== ""){
+                    this.adminConsoleP5.gameData.teams[teamName].outputs.fuel = parseInt(dataToChange.fuel)
+                }
+                this.firebaseQuery.updateSingleTeam(teamName, this.adminConsoleP5.gameData.teams[teamName]);
+            }
+        })
     }
 }
 

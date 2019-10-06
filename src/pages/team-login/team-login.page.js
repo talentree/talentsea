@@ -2,12 +2,15 @@ import { html } from '@polymer/lit-element';
 import { NavElement } from '../../core/nav-element';
 import { FirebaseQuery } from '../../core/firebase-query';
 import './team-game-list.component';
+import { TeamState } from '../../core/states/team.state';
 
 export class TeamLoginPage extends NavElement {
 
     static get properties() {
         return {
-            connectToGameName: { type: String }
+            connectToGameName: { type: String },
+            isDoingLogin: { type: Boolean },
+            loginFailedErrorDescription: { type: String }
         }
     }
 
@@ -18,6 +21,8 @@ export class TeamLoginPage extends NavElement {
         this.connectToGameName = "";
         this.teamName = "";
         this.teamPassword = "";
+        this.isDoingLogin = false;
+        this.loginFailedErrorDescription = "";
     }
 
     render() {
@@ -75,7 +80,10 @@ export class TeamLoginPage extends NavElement {
             </div>
             <div class = "columns is-centered is-full">
                 <div class = "column is-4">
-                    <button class="button has-text-white  is-extra-large is-fullwidth gradient-background " @click=${(e) => this.login()}>Login</button>
+                <!--FIXME:messaggio più carino--> 
+                ${this.loginFailedErrorDescription ? html` <b class= "alert">${this.loginFailedErrorDescription}</b>` : html``}
+                    <button class="button has-text-white  is-extra-large is-fullwidth gradient-background ${this.isDoingLogin ? 'is-loading is-disabled' : ''}"
+                    @click=${(e) => this.login()}>Login</button>
                 </div>
             </div>
         `;
@@ -83,10 +91,26 @@ export class TeamLoginPage extends NavElement {
 
     login() {
         //effettua login
-        console.log('connecting to game (TODO:)', this.connectToGameName, this.teamName, this.teamPassword);
-        //then cambia pagina se va bene
+        if (this.connectToGameName && this.teamName && this.teamPassword) {
+            this.isDoingLogin = true;
+            this.loginFailedErrorDescription = "";
+            TeamState.loginToGame(this.connectToGameName, this.teamName, this.teamPassword, () => this.loginSuccessful(), (err) => this.loginFailed(err))
+        }
+        else {
+            this.loginFailedErrorDescription = "Inserisci tutti i dati!"
+        }
+    }
+
+    loginSuccessful() {
+        //non serve settare isDoingLogin a false tanto cambio pagina
         let e = new CustomEvent('navigate', { detail: '/team-console' })
         window.dispatchEvent(e);
+    }
+
+    loginFailed(error) {
+        this.isDoingLogin = false
+        console.log('login failed: ', error);
+        this.loginFailedErrorDescription = error;
     }
 }
 
