@@ -28,48 +28,6 @@ export class TeamGameList extends NavElement {
             this.allGames = games;
         });
     }
-    /*
-        firstUpdated() {
-            this.firebaseQuery.readAll(data => {
-                // crea titolo popup
-                var item = "<div class='columns is-multiline is-mobile is-centered '>" +
-                    "<div class='column is-6 '>" +
-                    "<h2 class='title is-3'>Nome Partita</h2>" +
-                    "</div>" +
-                    "<div class='column is-3 has-text-centered'>" +
-                    "<h2 class='title is-3'>Squadre</h2>" +
-                    "</div>" +
-                    "<div class='column is-3 has-text-centered'>" +
-                    "<h2 class='title is-3'>Libere<h2>" +
-                    "</div>";
-    
-                //aggiungo i vari tag alla variabile
-                for (var i = 0; i < data.length; i++) {
-    
-                    //controllo il numero di squadre libere
-                    var libere = 0;
-                    Object.values(data[i].teams).forEach(team => { //-> utilizzato per avere i valori della mappa che viene considerata come object in firebase
-                        if (team.outputs.isUsed == false)
-                            libere++;
-                    });
-    
-                    //assegnando alla variabile il codice HTML necessario
-                    item += `<div class='column is-6 is-size-3'><a class = "has-text-weight-bold has-text-primary" id="` +
-                        i + `" onclick='document.getElementById("gameName").value=document.getElementById("` +
-                        i + `").textContent , document.getElementById("gamesModal").style.display="none"'>` +
-                        data[i].info.name + `</a> </div> 
-                                <div class='column is-3 has-text-centered is-size-3 has-text-weight-bold'> ` + Object.keys(data[i].teams).length + `</div> 
-                                <div class='column is-3 has-text-centered is-size-3 has-text-weight-bold'>` + libere + `</div>`;
-                }
-    
-                //inserisco i tag nel posto richiesto
-                item += "</div>";
-                //FIXME: da errore se passo velocemente da team-login a home
-                document.getElementById("games").innerHTML = item;
-            })
-        }
-    */
-
 
     render() {
         return html`

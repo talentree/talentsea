@@ -104,4 +104,30 @@ export class FirebaseQuery {
             .catch(err => console.log('error in updateSingleTeam ', err))
             .then(() => { if (onSuccess) { onSuccess() } })
     }
+
+    teamTryLoginToGame(gameName, teamName, teamPassword, onSuccess, onFail) {
+        this.db.where('info.name', '==', gameName).where('teams.' + teamName + '.password', '==', teamPassword).get()
+            .catch(err => {
+                console.log('error in teamTryLoginToGame', err);
+                onFail(err);
+            })
+            .then(res => {
+                if (res.empty || !res.docs[0].exists) { onFail('Dati sbagliati') }
+                else if (res.docs[0].data().teams[teamName].outputs.isUsed) { onFail('La squadra ha già un comandante!') }
+                else {
+                    this.setUid(res.docs[0].id);
+                    this.doc.update('teams.' + teamName + '.outputs.isUsed', true)
+                        .catch(err => console.log('error in teamTryLoginToGame isUsed', err))
+                        .then(() => onSuccess(res.docs[0].id, teamName))
+                }
+                //onSuccess(res.docs[0].id, teamName)
+            })
+    }
+
+    teamLogoutFromGame(gameId, teamName, onSuccess) {
+        this.setUid(gameId);
+        this.doc.update('teams.' + teamName + '.outputs.isUsed', false)
+            .catch(err => console.log('failed teamLogoutFromGame', err))
+            .then(() => onSuccess())
+    }
 }

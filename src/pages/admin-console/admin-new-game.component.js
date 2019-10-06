@@ -38,8 +38,7 @@ export class AdminNewGameComponent extends NavElement {
                         <p class=" modal-card-title is-size-2 has-text-centered  has-text-primary is-italic has-text-weight-bold gradient-text  ">NUOVA PARTITA</p>                
                         <a route="/"><i class="fas fa-home icon"></i></a>
                     </header>
-                    <section class="modal-card-body">                       
-                        <!--TODO: quando isNameAlreadyTaken == true compare avviso-->
+                    <section class="modal-card-body">
                         <br>
                         <div class = " columns is-11 ">
                             <div class = "column is-3 ">
@@ -86,8 +85,6 @@ export class AdminNewGameComponent extends NavElement {
     buildGame() {
         this.missingData = false;
         if (!this.gameName || this.allTeams.find(team => !team.teamName || !team.teamPassword)) {
-            console.log('dati incompleti');
-            //TODO: che si fa con i dati incompleti?
             this.missingData = true;
         }
         else {
@@ -104,8 +101,6 @@ export class AdminNewGameComponent extends NavElement {
     }
 
     gameCreatedSuccessfully() {
-        //TODO: e ora?
-        console.log('game created successfully!');
         this.isLoadingOnFirebase = false;
     }
 

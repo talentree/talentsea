@@ -78,7 +78,7 @@ export class AdminConsoleBarComponent extends NavElement {
                     <button  class = " button is-extra-large is-fullwidth is-link is-focused " @click=${() => this.changeTeamData()} title="Cambia Dati Nave"><i class="fas fa-check"></i></button>
                 </div>
 
-                <!-- MODAL PER CONFERMA ELIMINAZIONE PARTITA-->
+                <!-- MODAL PER CONFERMA ELIMINAZIONE PARTITA FIXME: vengono tagliati i pulsanti-->
                 <div class="modal confirm-message" style = "display: ${this.askingForGameDelete ? 'block' : 'none'}">
                     <div class="gradient-box ">
                         <div class = " columns is-mobile is-centered is-full ">
@@ -92,7 +92,7 @@ export class AdminConsoleBarComponent extends NavElement {
                                 <button class = " button is-extra-large is-fullwidth is-primary is-focused" @click=${() => this.askingForGameDelete = false}>ANNULLA</button>
                             </div>
                             <div class = " column is-3 is-offset-4 ">
-                                <button class = "button is-extra-large is-fullwidth is-link is-focused" @click=${e => console.log('TODO:')} >CONFERMA</button>
+                                <button class = "button is-extra-large is-fullwidth is-link is-focused" @click=${e => console.log('TODO: conferma eliminazione')} >CONFERMA</button>
                             </div>    
                         </div>
                     </div>
