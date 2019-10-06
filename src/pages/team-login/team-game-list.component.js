@@ -56,20 +56,20 @@ export class TeamGameList extends NavElement {
                                 <h2 class="title is-3">Libere<h2>
                             </div>
                             ${this.allGames.map((game, index) => {
-            let teamLiberi = 0;
-            let totalTeams = 0;
-            Object.values(game.teams).forEach(team => {
-                totalTeams++;
-                if (!team.outputs.isUsed)
-                    teamLiberi++;
-            })
-            return html`
+                                let teamLiberi = 0;
+                                let totalTeams = 0;
+                                Object.values(game.teams).forEach(team => {
+                                    totalTeams++;
+                                    if (!team.outputs.isUsed)
+                                        teamLiberi++;
+                                })
+                                return html`
                                 <div class='column is-6 is-size-3'>
                                     <a class = "has-text-weight-bold has-text-primary" @click= ${() => this.selectTeam(index)}>${game.info.name}</a>
                                 </div> 
                                 <div class="column is-3 has-text-centered is-size-3 has-text-weight-bold">${totalTeams}</div> 
                                 <div class="column is-3 has-text-centered is-size-3 has-text-weight-bold">${teamLiberi}</div>`
-        })}
+                            })}
                         </div>
                     </section>
                     <footer class="modal-card-foot"></footer>
