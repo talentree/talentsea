@@ -9,5 +9,6 @@ export class Outputs {
         this.positionY = 0;
         this.radar = new Radar();
         this.speed = 0;
+        this.direction = 0;
     }
 }

@@ -15,6 +15,7 @@ export class TeamConsolePage extends NavElement {
         return {
             gameInfo: { type: Object },
             myTeam: { type: Object }
+            //TODO: quando avviene collisione?
         }
     }
 
@@ -76,7 +77,7 @@ export class TeamConsolePage extends NavElement {
                         <div class = " column is-6">
                             <div class = " gradient-box link-box box-shadow-link">
                                 <div class = "columns is-centered">                                   
-                                        <textual-interface-component></textual-interface-component>                                    
+                                        <textual-interface-component .gameInfo = ${this.gameInfo} .myTeam= ${this.myTeam} .teamName=${TeamState.teamName}></textual-interface-component>                                    
                                 </div>                             
                             </div>                      
                         </div>

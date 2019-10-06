@@ -53,7 +53,6 @@ export class FirebaseQuery {
             game.teams[team.teamName] = teamConverted;
         });
         //console.log(game);
-        //TODO: aggiro mancanza di uid
         this.setUid(AdminState.uid);
         //TODO: deleteCustomObject è una soluzione a errore di firebase
         //in updateInputs non sembra necessario object.assign
