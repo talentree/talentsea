@@ -17,6 +17,7 @@ games
 				fuel
 				positionX
 				positionY
+				direction
 				radar
 					state
 					frontStates
