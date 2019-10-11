@@ -39,12 +39,12 @@ export class TeamConsoleP5Controller {
 
         this.centroBussola = {
             x: width * 0.5,
-            y: height * 0.35
+            y: height * 0.4
         }
 
         this.centroManopolaMotore = {
             x: width * 0.5,
-            y: height * 0.64
+            y: height * 0.85
         }
         this.altezzaManopolaMotore = height * 0.28 / 2;
         this.larghezzaManopolaMotore = width * 0.15 / 2;
@@ -57,7 +57,7 @@ export class TeamConsoleP5Controller {
 
         this.angoloAltoASxRadar = {
             x: width * 0.11,
-            y: height * 0.74
+            y: height * 0.95
         }
         this.lunghezzaRadar = width * 0.78;
         this.altezzaRadar = height * 0.04;
