@@ -1,5 +1,4 @@
 import 'p5';
-import { InterfacciaParametrizzata } from '../core/classes/interfacciaParametrizzata.class';
 import { Info } from '../core/classes/info.class';
 import { Team } from '../core/classes/team.class';
 import { ClickAction } from './clickActionCode';
@@ -84,59 +83,9 @@ export class TeamConsoleP5Controller {
 
     //metodo che disegna tutta l'interfaccia
     display() {
-        this.coloreAnelloBussola = this.p.color(255, 204, 0);
-        this.coloreTesti = this.p.color(255, 255, 255);
-        //disegno anello bussola
-        this.p.fill(this.coloreAnelloBussola);
-        this.p.noStroke();
-        this.p.ellipse(this.centroBussola.x, this.centroBussola.y, this.raggioAnelloBussola * 2);
-        this.p.fill(this.coloreBackground);
-        this.p.ellipse(this.centroBussola.x, this.centroBussola.y, (this.raggioAnelloBussola - this.spessoreAnelloBussola) * 2);
-
-        //disegno triangolo timone
-        this.p.angleMode(this.p.DEGREES);
-        let coloreTriangoloTimone = this.p.color(0, 255, 0);
-        let baseTimone = this.raggioAnelloBussola * 0.21;
-        let altezzaTimone = this.raggioAnelloBussola * 0.80;
-        let puntiTriangoloTimone = [
-            this.centroBussola.x + baseTimone / 2 * Math.sin((this.myTeam.inputs.wheel - 90) * Math.PI / 180),
-            this.centroBussola.y - baseTimone / 2 * Math.cos((this.myTeam.inputs.wheel - 90) * Math.PI / 180),
-            this.centroBussola.x + baseTimone / 2 * Math.sin((this.myTeam.inputs.wheel + 90) * Math.PI / 180),
-            this.centroBussola.y - baseTimone / 2 * Math.cos((this.myTeam.inputs.wheel + 90) * Math.PI / 180),
-            this.centroBussola.x + altezzaTimone * Math.sin(this.myTeam.inputs.wheel * Math.PI / 180),
-            this.centroBussola.y - altezzaTimone * Math.cos(this.myTeam.inputs.wheel * Math.PI / 180)
-        ]
-        this.p.fill(coloreTriangoloTimone);
-        this.p.triangle(puntiTriangoloTimone[0], puntiTriangoloTimone[1], puntiTriangoloTimone[2], puntiTriangoloTimone[3], puntiTriangoloTimone[4], puntiTriangoloTimone[5]);
-
-        //disegno triangolo vento
-        let coloreTriangoloVento = this.p.color(0, 0, 255);
-        let baseVento = this.raggioAnelloBussola * 0.23;
-        let altezzaVento = this.gameInfo.windForce / this.maxIntVento * 0.75 * this.raggioAnelloBussola;
-        let angoloVentoTotale = - this.myTeam.outputs.direction + this.gameInfo.windDirection;
-        this.p.fill(this.p.color(255, 255, 255));
-        let centroBaseTriangoloVento = {
-            x: this.centroBussola.x + (this.raggioAnelloBussola - this.spessoreAnelloBussola) * Math.sin(angoloVentoTotale * Math.PI / 180),
-            y: this.centroBussola.y - (this.raggioAnelloBussola - this.spessoreAnelloBussola) * Math.cos(angoloVentoTotale * Math.PI / 180)
-        }
-        //this.p.ellipse(centroBaseTriangoloVento.x, centroBaseTriangoloVento.y, 10, 10);
-
-        let centroVerticeTriangoloVento = {
-            x: this.centroBussola.x + (this.raggioAnelloBussola - this.spessoreAnelloBussola - altezzaVento) * Math.sin(angoloVentoTotale * Math.PI / 180),
-            y: this.centroBussola.y - (this.raggioAnelloBussola - this.spessoreAnelloBussola - altezzaVento) * Math.cos(angoloVentoTotale * Math.PI / 180)
-        }
-        //this.p.ellipse(centroVerticeTriangoloVento.x, centroVerticeTriangoloVento.y, 10, 10);
-
-        let puntiTriangoloVento = [
-            centroBaseTriangoloVento.x + (baseVento / 2) * Math.sin((angoloVentoTotale - 90) * Math.PI / 180),
-            centroBaseTriangoloVento.y - (baseVento / 2) * Math.cos((angoloVentoTotale - 90) * Math.PI / 180),
-            centroBaseTriangoloVento.x + (baseVento / 2) * Math.sin((angoloVentoTotale + 90) * Math.PI / 180),
-            centroBaseTriangoloVento.y - (baseVento / 2) * Math.cos((angoloVentoTotale + 90) * Math.PI / 180),
-            centroVerticeTriangoloVento.x,
-            centroVerticeTriangoloVento.y
-        ]
-        this.p.fill(coloreTriangoloVento);
-        this.p.triangle(puntiTriangoloVento[0], puntiTriangoloVento[1], puntiTriangoloVento[2], puntiTriangoloVento[3], puntiTriangoloVento[4], puntiTriangoloVento[5]);
+        this.drawCompass();
+        this.drawWheel();
+        this.drawWind();
 
         //disegno centro bussola
         this.p.fill(this.coloreResettaTimone);
@@ -144,66 +93,12 @@ export class TeamConsoleP5Controller {
         let raggioCentroBussola = this.raggioAnelloBussola * 0.09;
         this.p.ellipse(this.centroBussola.x, this.centroBussola.y, raggioCentroBussola, raggioCentroBussola);
 
-        //disegno manopola motore
+        this.drawMotor();
+        this.drawRadar();
+        this.drawCompassLetters();
+    }
 
-        this.p.fill(this.coloreAumentaVelocita);
-        this.p.noStroke();
-        this.p.rect(this.centroManopolaMotore.x - this.larghezzaManopolaMotore / 2, this.centroManopolaMotore.y - this.altezzaManopolaMotore / 2, this.larghezzaManopolaMotore, this.altezzaManopolaMotore / 2);
-
-        this.p.fill(this.coloreDiminuisciVelocita);
-        this.p.rect(this.centroManopolaMotore.x - this.larghezzaManopolaMotore / 2, this.centroManopolaMotore.y, this.larghezzaManopolaMotore, this.altezzaManopolaMotore / 2);
-
-        //disegno triangolo per muovere timone
-        //triangolo sx
-        let timoneSxBase = {
-            x: this.centroManopolaMotore.x - this.distanzaBaseComandiTimone,
-            y: this.centroManopolaMotore.y
-        }
-        this.p.fill(this.coloreViraSinistra);
-        let timoneSxVertice = {
-            x: timoneSxBase.x - this.dimAltezzaComandiTimone,
-            y: timoneSxBase.y
-        }
-        this.p.triangle(timoneSxBase.x, timoneSxBase.y - this.dimBaseComandiTimone / 2, timoneSxBase.x, timoneSxBase.y + this.dimBaseComandiTimone / 2, timoneSxVertice.x, timoneSxVertice.y);
-
-        //triangolo dx
-        let timoneDxBase = {
-            x: this.centroManopolaMotore.x + this.distanzaBaseComandiTimone,
-            y: this.centroManopolaMotore.y
-        }
-        let timoneDxVertice = {
-            x: timoneDxBase.x + this.dimAltezzaComandiTimone,
-            y: timoneDxBase.y
-        }
-        this.p.fill(this.coloreViraDestra);
-
-        this.p.triangle(timoneDxBase.x, timoneDxBase.y - this.dimBaseComandiTimone / 2, timoneDxBase.x, timoneDxBase.y + this.dimBaseComandiTimone / 2, timoneDxVertice.x, timoneDxVertice.y);
-
-        //disegno i radar
-        let coloreRadar = {
-            normal: this.p.color(0, 255, 0),
-            alert: this.p.color(255, 0, 0),
-            contorno: this.p.color(150, 150, 0)
-        }
-
-        this.p.stroke(coloreRadar.contorno);
-        for (let i = 0; i < 7; i++) {
-            if (this.myTeam.outputs.radar.frontStates[i] != 1) {
-                this.p.fill(coloreRadar.normal);
-            }
-            else {
-                this.p.fill(coloreRadar.alert);
-            }
-            this.p.rect(this.angoloAltoASxRadar.x + (this.lunghezzaRadar / 7) * i, this.angoloAltoASxRadar.y, this.lunghezzaRadar / 7, this.altezzaRadar);
-        }
-
-
-        //collisione avvenuta
-        if (this.myTeam.outputs.radar.state == 1) {
-            this.p.fill(coloreRadar.alert);
-            this.p.rect(this.angoloAltoASxRadar.x, this.angoloAltoASxRadar.y + this.altezzaRadar, this.lunghezzaRadar, this.altezzaCollisioneImminente);
-        }
-
+    drawCompassLetters() {
         //disegno indicatore nord
         let direzioneIndicatore = this.myTeam.outputs.direction;
         this.p.fill(this.p.color(0, 0, 0));
@@ -240,6 +135,126 @@ export class TeamConsoleP5Controller {
             this.p.text(lettera, 0, 0);
             this.p.rotate(- direzioneIndicatore);
             this.p.translate(-posNord.x, -posNord.y);
+        }
+    }
+
+    drawCompass() {
+        this.coloreAnelloBussola = this.p.color(255, 204, 0);
+        //disegno anello bussola
+        this.p.fill(this.coloreAnelloBussola);
+        this.p.noStroke();
+        this.p.ellipse(this.centroBussola.x, this.centroBussola.y, this.raggioAnelloBussola * 2);
+        this.p.fill(this.coloreBackground);
+        this.p.ellipse(this.centroBussola.x, this.centroBussola.y, (this.raggioAnelloBussola - this.spessoreAnelloBussola) * 2);
+    }
+
+    drawWheel() {
+        //disegno triangolo timone
+        this.p.angleMode(this.p.DEGREES);
+        let coloreTriangoloTimone = this.p.color(0, 255, 0);
+        let baseTimone = this.raggioAnelloBussola * 0.21;
+        let altezzaTimone = this.raggioAnelloBussola * 0.80;
+        let puntiTriangoloTimone = [
+            this.centroBussola.x + baseTimone / 2 * Math.sin((this.myTeam.inputs.wheel - 90) * Math.PI / 180),
+            this.centroBussola.y - baseTimone / 2 * Math.cos((this.myTeam.inputs.wheel - 90) * Math.PI / 180),
+            this.centroBussola.x + baseTimone / 2 * Math.sin((this.myTeam.inputs.wheel + 90) * Math.PI / 180),
+            this.centroBussola.y - baseTimone / 2 * Math.cos((this.myTeam.inputs.wheel + 90) * Math.PI / 180),
+            this.centroBussola.x + altezzaTimone * Math.sin(this.myTeam.inputs.wheel * Math.PI / 180),
+            this.centroBussola.y - altezzaTimone * Math.cos(this.myTeam.inputs.wheel * Math.PI / 180)
+        ]
+        this.p.fill(coloreTriangoloTimone);
+        this.p.triangle(puntiTriangoloTimone[0], puntiTriangoloTimone[1], puntiTriangoloTimone[2], puntiTriangoloTimone[3], puntiTriangoloTimone[4], puntiTriangoloTimone[5]);
+    }
+
+    drawWind() {
+        //disegno triangolo vento
+        let coloreTriangoloVento = this.p.color(0, 0, 255);
+        let baseVento = this.raggioAnelloBussola * 0.23;
+        let altezzaVento = this.gameInfo.windForce / this.maxIntVento * 0.75 * this.raggioAnelloBussola;
+        let angoloVentoTotale = - this.myTeam.outputs.direction + this.gameInfo.windDirection;
+        this.p.fill(this.p.color(255, 255, 255));
+        let centroBaseTriangoloVento = {
+            x: this.centroBussola.x + (this.raggioAnelloBussola - this.spessoreAnelloBussola) * Math.sin(angoloVentoTotale * Math.PI / 180),
+            y: this.centroBussola.y - (this.raggioAnelloBussola - this.spessoreAnelloBussola) * Math.cos(angoloVentoTotale * Math.PI / 180)
+        }
+        //this.p.ellipse(centroBaseTriangoloVento.x, centroBaseTriangoloVento.y, 10, 10);
+
+        let centroVerticeTriangoloVento = {
+            x: this.centroBussola.x + (this.raggioAnelloBussola - this.spessoreAnelloBussola - altezzaVento) * Math.sin(angoloVentoTotale * Math.PI / 180),
+            y: this.centroBussola.y - (this.raggioAnelloBussola - this.spessoreAnelloBussola - altezzaVento) * Math.cos(angoloVentoTotale * Math.PI / 180)
+        }
+        //this.p.ellipse(centroVerticeTriangoloVento.x, centroVerticeTriangoloVento.y, 10, 10);
+
+        let puntiTriangoloVento = [
+            centroBaseTriangoloVento.x + (baseVento / 2) * Math.sin((angoloVentoTotale - 90) * Math.PI / 180),
+            centroBaseTriangoloVento.y - (baseVento / 2) * Math.cos((angoloVentoTotale - 90) * Math.PI / 180),
+            centroBaseTriangoloVento.x + (baseVento / 2) * Math.sin((angoloVentoTotale + 90) * Math.PI / 180),
+            centroBaseTriangoloVento.y - (baseVento / 2) * Math.cos((angoloVentoTotale + 90) * Math.PI / 180),
+            centroVerticeTriangoloVento.x,
+            centroVerticeTriangoloVento.y
+        ]
+        this.p.fill(coloreTriangoloVento);
+        this.p.triangle(puntiTriangoloVento[0], puntiTriangoloVento[1], puntiTriangoloVento[2], puntiTriangoloVento[3], puntiTriangoloVento[4], puntiTriangoloVento[5]);
+    }
+
+    drawMotor() {
+        //disegno manopola motore
+        this.p.fill(this.coloreAumentaVelocita);
+        this.p.noStroke();
+        this.p.rect(this.centroManopolaMotore.x - this.larghezzaManopolaMotore / 2, this.centroManopolaMotore.y - this.altezzaManopolaMotore / 2, this.larghezzaManopolaMotore, this.altezzaManopolaMotore / 2);
+
+        this.p.fill(this.coloreDiminuisciVelocita);
+        this.p.rect(this.centroManopolaMotore.x - this.larghezzaManopolaMotore / 2, this.centroManopolaMotore.y, this.larghezzaManopolaMotore, this.altezzaManopolaMotore / 2);
+
+        //disegno triangolo per muovere timone
+        //triangolo sx
+        let timoneSxBase = {
+            x: this.centroManopolaMotore.x - this.distanzaBaseComandiTimone,
+            y: this.centroManopolaMotore.y
+        }
+        this.p.fill(this.coloreViraSinistra);
+        let timoneSxVertice = {
+            x: timoneSxBase.x - this.dimAltezzaComandiTimone,
+            y: timoneSxBase.y
+        }
+        this.p.triangle(timoneSxBase.x, timoneSxBase.y - this.dimBaseComandiTimone / 2, timoneSxBase.x, timoneSxBase.y + this.dimBaseComandiTimone / 2, timoneSxVertice.x, timoneSxVertice.y);
+
+        //triangolo dx
+        let timoneDxBase = {
+            x: this.centroManopolaMotore.x + this.distanzaBaseComandiTimone,
+            y: this.centroManopolaMotore.y
+        }
+        let timoneDxVertice = {
+            x: timoneDxBase.x + this.dimAltezzaComandiTimone,
+            y: timoneDxBase.y
+        }
+        this.p.fill(this.coloreViraDestra);
+
+        this.p.triangle(timoneDxBase.x, timoneDxBase.y - this.dimBaseComandiTimone / 2, timoneDxBase.x, timoneDxBase.y + this.dimBaseComandiTimone / 2, timoneDxVertice.x, timoneDxVertice.y);
+    }
+
+    drawRadar() {
+        //disegno i radar
+        let coloreRadar = {
+            normal: this.p.color(0, 255, 0),
+            alert: this.p.color(255, 0, 0),
+            contorno: this.p.color(150, 150, 0)
+        }
+
+        this.p.stroke(coloreRadar.contorno);
+        for (let i = 0; i < 7; i++) {
+            if (this.myTeam.outputs.radar.frontStates[i] != 1) {
+                this.p.fill(coloreRadar.normal);
+            }
+            else {
+                this.p.fill(coloreRadar.alert);
+            }
+            this.p.rect(this.angoloAltoASxRadar.x + (this.lunghezzaRadar / 7) * i, this.angoloAltoASxRadar.y, this.lunghezzaRadar / 7, this.altezzaRadar);
+        }
+        //collisione avvenuta
+        if (this.myTeam.outputs.radar.state == 1) {
+            this.p.fill(coloreRadar.alert);
+            this.p.rect(this.angoloAltoASxRadar.x, this.angoloAltoASxRadar.y + this.altezzaRadar, this.lunghezzaRadar, this.altezzaCollisioneImminente);
         }
     }
 
