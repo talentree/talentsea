@@ -10,7 +10,7 @@ export class HomePage extends NavElement {
         return html`            
             <div class = " columns is-mobile is-centered is-full ">
                 <div class = " column is-11 ">
-                    <h1  class = " title is-0 has-text-centered has-text-primary is-italic has-text-weight-bold gradient-text ">AMMINISTRATORE</h1>
+                    <h1  class = " title is-0 has-text-centered has-text-primary is-italic has-text-weight-bold gradient-text ">HOME</h1>
                     <hr> 
                 </div> 
             </div>          
