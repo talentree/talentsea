@@ -17,13 +17,11 @@ games
 				fuel
 				positionX
 				positionY
+				direction
 				radar
 					state
 					frontStates
 
-OPERAZIONI SUL DATABASE
-Console: lettura/scrittura su inputs, lettura su outputs e info
-Engine: legge intera appena aperto
 
 Router ha array che definisce path e nome elemento da usare
 
@@ -34,3 +32,20 @@ AdminNewGamePage
 AdminConsolePage
 TeamLoginPage
 TeamConsolePage
+
+OPERAZIONI SU FIRESTORE
+HomePage: nulla
+AdminLoginPage: auth, lettura eventuale partita presente
+AdminNewGamePage: scrittura nuova partita
+AdminConsolePage: lettura da UID e scrittura in tutto
+TeamLoginPage: lettura tutte partite e scrittura isUsed ? , setFirebaseConfig (UID)
+TeamConsolePage: lettura da UID e scrittura 
+
+
+
+in caso ci fossero ulteriori problemi a caricare su git a causa di debug.log usare i seguenti comandi in talentsea
+git rm -r --cached .
+
+git add .
+
+https://stackoverflow.com/questions/5533050/gitignore-exclude-folder-but-include-specific-subfolder

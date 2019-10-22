@@ -12,9 +12,11 @@ export default {
   plugins: [
     resolve(),
     copy({
-      targets:[
-        { src: 'index.html', dest: 'dist'},
-        { src: 'favicon.ico', dest: 'dist'}
+      targets: [
+        { src: 'index.html', dest: 'dist' },
+        { src: 'favicon.ico', dest: 'dist' },
+        { src: 'style.css', dest: 'dist' },
+        { src: 'node_modules/bulma/css/bulma.css', dest: 'dist/bulma'}
       ]
     })
   ]

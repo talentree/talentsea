@@ -1,0 +1,116 @@
+hr{
+    background: linear-gradient(to right, hsl(171, 100%, 41%) 40%, hsl(217, 71%, 53%) 60%);
+    height: 3px;
+}
+.gradient-text{
+    background: linear-gradient(to right, hsl(171, 100%, 41%) 40%, hsl(217, 71%, 53%) 60%);
+    -webkit-background-clip: text;
+    background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+}
+
+.gradient-background{
+    background: linear-gradient(to right, hsl(171, 100%, 41%)  40% , hsl(217, 71%, 53%) 60%);
+}
+
+.box-shadow-primary{
+    box-shadow: -2px 2px 3px hsl(171, 100%, 41%), 0 0 0 1px hsl(171, 100%, 41%) 
+}
+
+.box-shadow-link{
+    box-shadow: 2px 2px 3px hsl(217, 71%, 53%), 0 0 0 1px hsl(217, 71%, 53%)
+}
+.hidden{
+    display: none;
+}
+.visible{
+    display: block;
+}
+.alert{
+    color: red;
+}
+.label.is-extra-large{
+    font-size: 2rem;
+}
+
+.button.is-extra-large, .input.is-extra-large, .select.is-extra-large  {
+    font-size: 1.75rem;
+}
+.title.is-0 {
+    font-size: 4rem;
+  }
+  .section-small{
+      display: block;
+      padding: 1.5rem 1.5rem;
+  }
+
+
+.home-position {
+    position: absolute;
+    top: 30px;
+    right: 80px;
+  }
+.gradient-select{
+    border: 3px solid;
+    border-image-source: linear-gradient(to left, hsl(217, 71%, 53%) 2%, hsl(171, 100%, 41%)  60%);
+    border-image-slice: 1;
+    padding-bottom: 3.8rem;
+    font-size: 1.7rem;
+}
+.select.gradient-select select:focus, .select.gradient-select select.is-focused, .select.gradient-select select:active, .select.gradient-select select.is-active {
+    box-shadow: none;
+  }
+  .select.gradient-select:not(:hover)::after{
+    border-color:hsl(217, 71%, 53%);
+  }
+ .select.gradient-select select{
+    border-color: hsl(0, 0%, 96%);
+  }
+  
+.select.gradient-select:not(.is-multiple):hover::after {
+    border-color: hsl(171, 100%, 41%);
+  }
+.confirm-message{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -52.25%);
+    width:70%;
+    height: 30%;
+}
+.gradient-box {
+    display: block;
+    align-items: center;
+    width: 91%;   
+    margin: auto;
+    position: relative;
+    padding: 2% 2%;
+    box-sizing: border-box;
+   
+    color: #000;
+    background: hsl(0, 0%, 96%);
+    background-clip: padding-box;
+    border: solid 3px transparent;
+    border-radius: 1em;
+  }
+  .gradient-box:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    margin: -3px;
+    border-radius: inherit;
+    background: linear-gradient(to right, hsl(171, 100%, 41%)  40% , hsl(217, 71%, 53%) 60%);
+  }
+  .link-box:before{
+      background:  hsl(217, 71%, 53%);
+  }
+  .primary-box:before{
+    background:   hsl(171, 100%, 41%);
+}
+.map-padding{
+    padding: 2% 4%;
+}
