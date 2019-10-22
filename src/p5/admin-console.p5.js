@@ -14,26 +14,25 @@ export class AdminConsoleP5 {
         p.preload = () => {
             img = p.loadImage('./applicativi/mapset08.jpg');
         }
-        
+
         p.setup = () => {
             p.createCanvas(1600, 1000);
-            p.background(img);            
+            p.background(img);
             p.frameRate(1);
         }
 
         p.draw = () => {
-            if (this.gameIsPlaying) {                
+            if (this.gameIsPlaying) {
                 //clock
                 this.gameData.info.gameTime++;
 
                 //gestione vento
                 if ((this.gameData.info.gameTime % 10) == 0) { Engine.changeWind(this.gameData.info); }
-
                 //aggiorno le info dei singoli team                
                 Object.keys(this.gameData.teams).forEach(i => {
-                    Engine.updateTeams(this.gameData.teams[i], p);
+                    Engine.updateTeams(this.gameData.teams[i], this.gameData.info, p);
                 });
-                
+
                 //disegno le navi sulla mappa dopo aver azzerato lo sfondo
                 p.background(img);
                 Object.keys(this.gameData.teams).forEach(i => {
@@ -41,7 +40,7 @@ export class AdminConsoleP5 {
                 });
             }
         }
-    }   
+    }
 }
 
 export class Engine {
@@ -55,7 +54,7 @@ export class Engine {
         if (info.windForce > windMaxSpeed) { info.windForce = windMaxSpeed }
         console.log('wind force = ' + info.windForce);
 
-        let windMaxAngle = 10; 
+        let windMaxAngle = 10;
 
         info.windDirection = info.windDirection + Math.floor(Math.random() * 2 * windMaxAngle - windMaxAngle);
         if (info.windDirection < 0) { info.windDirection += 360 }
@@ -63,12 +62,12 @@ export class Engine {
         console.log('wind angle = ' + info.windDirection);
     }
 
-    static updateTeams(team, p) {
+    static updateTeams(team, info, p) {
         //se una nave non viene usata la salto
-        if (!team.outputs.isUsed) {return;}
+        if (!team.outputs.isUsed) { return; }
 
         //aggiorno posizioni
-        this.updatePosition(team.outputs);
+        this.updatePosition(team.outputs, info);
 
         //aggiorno velocita'
         this.updateSpeed(team.inputs, team.outputs);
@@ -77,7 +76,7 @@ export class Engine {
         this.updateFuel(team.outputs);
 
         //radar e collisioni
-        this.updateRadar(team.outputs);
+        this.updateRadar(team.outputs, p);
         try {
             this.checkCollisions(team.outputs, p);
         } catch (e) {
@@ -88,7 +87,7 @@ export class Engine {
 
         //TODO: controllo isUsed
     }
-    
+
     static checkCollisions(data, p) {
         //coordinate da controllare
         let posX = data.positionX + 10 * Math.cos(data.direction * Math.PI / 180);
@@ -144,7 +143,7 @@ export class Engine {
         return state;
     }
 
-    static updatePosition(data) {
+    static updatePosition(data, info) {
         //aggiorno posizion
         let moltiplicatoreVelocita = 0.16;
         // immaginando che direction = 0 corrisponde all'asse orrizontale orientato
@@ -152,10 +151,10 @@ export class Engine {
         data.positionX += (data.speed * moltiplicatoreVelocita) * Math.cos((data.direction - 90) * Math.PI / 180);
         data.positionY += (data.speed * moltiplicatoreVelocita) * Math.sin((data.direction - 90) * Math.PI / 180);
 
-        //tengo conto del vento (FIXME: futura scelta)
+        //tengo conto del vento (FIXME: futura scelta) FIXME: windForce undefined
         if (true) {
-            data.positionX += (windForce * moltiplicatoreVelocita) * Math.cos((windDirection - 90) * Math.PI / 180);
-            data.positionY += (windForce * moltiplicatoreVelocita) * Math.sin((windDirection - 90) * Math.PI / 180);
+            data.positionX += (info.windForce * moltiplicatoreVelocita) * Math.cos((info.windDirection - 90) * Math.PI / 180);
+            data.positionY += (info.windForce * moltiplicatoreVelocita) * Math.sin((info.windDirection - 90) * Math.PI / 180);
         }
     }
 
@@ -194,7 +193,7 @@ export class Engine {
 
     static updateFuel(data) {
         //dovrebbe servire per i turni da fermo
-        if (data.fuel<0) {
+        if (data.fuel < 0) {
             data.fuel++;
             if (data.fuel == 0) {
                 data.fuel = 1800;
@@ -203,7 +202,7 @@ export class Engine {
         }
 
         //effettivo consumo di carburante
-        data.fuel -= 0.005 * Math.pow(Math.abs(data.speed),2.204) + 0.2;
+        data.fuel -= 0.005 * Math.pow(Math.abs(data.speed), 2.204) + 0.2;
         if (data.fuel <= 0) {
             //dovrebbe servire per i turni da fermo
             data.fuel = -5;
@@ -214,7 +213,7 @@ export class Engine {
     static plotTeams(data, p) {
         //plotta navi
         //salto se la nave non e' utilizzata
-        if (!data.isUsed) {return;}
+        if (!data.isUsed) { return; }
         //TODO: mod lunghezze in base alla direzione
         let length = 10;
         let width = 10;

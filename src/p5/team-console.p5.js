@@ -22,7 +22,7 @@ export class TeamConsoleP5Controller {
         //barra verrà moltiplicata per 10
         this.myTeam.inputs.wheel = 5;
         this.gameInfo.windForce = 30;
-        this.maxIntVento = 1;
+        this.maxIntVento = 5;
         this.gameInfo.windDirection = 200;
 
         this.calculateUIPositions(canvasWidth, canvasHeight);
