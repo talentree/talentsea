@@ -30,7 +30,7 @@ export class AdminConsoleP5 {
                 if ((this.gameData.info.gameTime % 10) == 0) { Engine.changeWind(this.gameData.info); }
                 //aggiorno le info dei singoli team                
                 Object.keys(this.gameData.teams).forEach(i => {
-                    Engine.updateTeams(this.gameData.teams[i], p);
+                    Engine.updateTeams(this.gameData.teams[i], this.gameData.info, p);
                 });
 
                 //disegno le navi sulla mappa dopo aver azzerato lo sfondo
@@ -62,12 +62,12 @@ export class Engine {
         console.log('wind angle = ' + info.windDirection);
     }
 
-    static updateTeams(team, p) {
+    static updateTeams(team, info, p) {
         //se una nave non viene usata la salto
         if (!team.outputs.isUsed) { return; }
 
         //aggiorno posizioni
-        this.updatePosition(team.outputs);
+        this.updatePosition(team.outputs, info);
 
         //aggiorno velocita'
         this.updateSpeed(team.inputs, team.outputs);
@@ -143,7 +143,7 @@ export class Engine {
         return state;
     }
 
-    static updatePosition(data) {
+    static updatePosition(data, info) {
         //aggiorno posizion
         let moltiplicatoreVelocita = 0.16;
         // immaginando che direction = 0 corrisponde all'asse orrizontale orientato
@@ -152,9 +152,9 @@ export class Engine {
         data.positionY += (data.speed * moltiplicatoreVelocita) * Math.sin((data.direction - 90) * Math.PI / 180);
 
         //tengo conto del vento (FIXME: futura scelta) FIXME: windForce undefined
-        if (false) {
-            data.positionX += (windForce * moltiplicatoreVelocita) * Math.cos((windDirection - 90) * Math.PI / 180);
-            data.positionY += (windForce * moltiplicatoreVelocita) * Math.sin((windDirection - 90) * Math.PI / 180);
+        if (true) {
+            data.positionX += (info.windForce * moltiplicatoreVelocita) * Math.cos((info.windDirection - 90) * Math.PI / 180);
+            data.positionY += (info.windForce * moltiplicatoreVelocita) * Math.sin((info.windDirection - 90) * Math.PI / 180);
         }
     }
 
