@@ -11,8 +11,10 @@ export class AdminConsoleP5 {
 
     p5Function(p) {
         let img;
+        let imgBN;
         p.preload = () => {
             img = p.loadImage('./applicativi/mapset08.jpg');
+            imgBN = p.loadImage('./applicativi/mapset08_alpha.jpg');
         }
 
         p.setup = () => {
@@ -23,6 +25,7 @@ export class AdminConsoleP5 {
 
         p.draw = () => {
             if (this.gameIsPlaying) {
+                p.background(imgBN);
                 //clock
                 this.gameData.info.gameTime++;
 
@@ -69,6 +72,8 @@ export class Engine {
         //aggiorno posizioni
         this.updatePosition(team.outputs, info);
 
+        this.updateDirection(team.inputs, team.outputs);
+
         //aggiorno velocita'
         this.updateSpeed(team.inputs, team.outputs);
 
@@ -90,14 +95,14 @@ export class Engine {
 
     static checkCollisions(data, p) {
         //coordinate da controllare
-        let posX = data.positionX + 10 * Math.cos(data.direction * Math.PI / 180);
-        let posY = data.positionY + 10 * Math.sin(data.direction * Math.PI / 180);
+        let posX = data.positionX + 10 * Math.cos((data.direction - 90) * Math.PI / 180);
+        let posY = data.positionY + 10 * Math.sin((data.direction - 90 )* Math.PI / 180);
 
         //controllo punto
         let x = this.checkPoint(posX, posY, p);
         //blocco la nave in caso di collisione
         if (x != 1) {
-            data.radar.sate = x;
+            data.radar.state = x;
         } else {
             data.positionX -= (10) * Math.cos((data.direction - 90) * Math.PI / 180);
             data.positionY -= (10) * Math.sin((data.direction - 90) * Math.PI / 180);
@@ -109,15 +114,16 @@ export class Engine {
         let radarDistance = 40; //raggio del radar
         let radarGap = 10;      //distanza tra i singoli punti del radar
 
-        Object.keys(data.radar.frontStates).forEach(i => {
+        data.radar.frontStates.forEach((state, i) => {
             //calcolo la direzione in cui controllare il punto
             //poi mi servira' in rad
-            let radarDirection = (data.direction + (radarGap * (i - 3)) * Math.PI / 180);
+            let radarDirection = ((data.direction -90 + (radarGap * (i - 3))) * Math.PI / 180);
             //aggiorno lo stato del radar
             let posX = data.positionX + radarDistance * Math.cos(radarDirection);
-            let posY = data.positionY + radarDistance * Math.cos(radarDirection);
+            let posY = data.positionY + radarDistance * Math.sin(radarDirection);
             data.radar.frontStates[i] = this.checkPoint(posX, posY, p);
         });
+        //console.log('radar ', data.radar);
     }
 
     static checkPoint(posX, posY, p) {
@@ -139,6 +145,7 @@ export class Engine {
         if ((greyScaleColor > (col2 - colorTollerance) && greyScaleColor < (col2 + colorTollerance))) { state = 2 };
         if ((greyScaleColor > (col3 - colorTollerance) && greyScaleColor < (col3 + colorTollerance))) { state = 3 };
         if ((greyScaleColor > (col4 - colorTollerance) && greyScaleColor < (col4 + colorTollerance))) { state = 4 };
+        p.ellipse(posX, posY, 5, 5);
         //ritorno lo stato del punto
         return state;
     }
@@ -151,11 +158,16 @@ export class Engine {
         data.positionX += (data.speed * moltiplicatoreVelocita) * Math.cos((data.direction - 90) * Math.PI / 180);
         data.positionY += (data.speed * moltiplicatoreVelocita) * Math.sin((data.direction - 90) * Math.PI / 180);
 
-        //tengo conto del vento (FIXME: futura scelta) FIXME: windForce undefined
+        //tengo conto del vento (FIXME: futura scelta) FIXME:
         if (true) {
             data.positionX += (info.windForce * moltiplicatoreVelocita) * Math.cos((info.windDirection - 90) * Math.PI / 180);
             data.positionY += (info.windForce * moltiplicatoreVelocita) * Math.sin((info.windDirection - 90) * Math.PI / 180);
         }
+    }
+
+    static updateDirection(inputs, outputs){
+        //FIXME: per adesso la nave può ruotare sul posto
+        outputs.direction += inputs.wheel;
     }
 
     static updateSpeed(inputs, outputs) {
