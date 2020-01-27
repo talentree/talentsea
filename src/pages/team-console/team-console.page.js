@@ -200,15 +200,12 @@ export class TeamConsolePage extends NavElement {
             teamInputsChanged = true;
         if (this.myTeam.inputs.wheel != this.previouslySentInputs.wheel)
             teamInputsChanged = true;
-        if (this.myTeam.inputs.timer != this.previouslySentInputs.timer)
-            teamInputsChanged = true;
 
         if (teamInputsChanged && this.connectionWithAdmin) {
             //notifico l'admin degli input
             this.connectionWithAdmin.send(Object.assign({}, this.myTeam.inputs));
             this.previouslySentInputs.acceleration = this.myTeam.inputs.acceleration;
             this.previouslySentInputs.wheel = this.myTeam.inputs.wheel;
-            this.previouslySentInputs.timer = this.myTeam.inputs.timer;
         }
     }
 }
