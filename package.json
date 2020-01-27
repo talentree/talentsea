@@ -22,14 +22,14 @@
   "homepage": "https://github.com/talentree/talentsea#readme",
   "devDependencies": {
     "concurrently": "^4.1.2",
-    "rollup": "^1.20.3",
-    "rollup-plugin-copy": "^3.1.0",
+    "rollup": "^1.29.1",
+    "rollup-plugin-copy": "^3.3.0",
     "rollup-plugin-node-resolve": "^5.2.0"
   },
   "dependencies": {
     "@polymer/lit-element": "^0.7.1",
     "bulma": "^0.7.5",
-    "firebase": "^6.5.0",
+    "firebase": "^6.6.2",
     "p5": "^0.9.0"
   }
 }

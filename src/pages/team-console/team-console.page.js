@@ -8,6 +8,8 @@ import './textual-interface.component';
 import { TeamConsoleP5Controller } from '../../p5/team-console.p5';
 import { ClickAction } from '../../p5/clickActionCode';
 import { Inputs } from '../../core/classes/inputs.class';
+//import p5 from 'p5';
+//import Peer from 'peerjs';
 
 export class TeamConsolePage extends NavElement {
 
@@ -48,6 +50,10 @@ export class TeamConsolePage extends NavElement {
         this.millisBetweenInputsUpload = 50;
         //la reference serve a rimuovere setInterval
         this.uploadInputsRef = null;
+        //peer che andrà connesso all'admin
+        this.peer = null;
+        //connesssione all'admin
+        this.connectionWithAdmin = null;
     }
 
     render() {
@@ -90,8 +96,16 @@ export class TeamConsolePage extends NavElement {
         //cambio lo uid
         this.firebaseQuery.setUid(TeamState.connectedToGameId);
 
-        //callback al documento della partita
-        this.onSnapshotReference = this.firebaseQuery.listenToChanges(newDoc => {
+        //creo un peer
+        this.peer = new Peer(TeamState.teamName);
+        console.log('creating peer with id: ', TeamState.teamName);
+        this.connectionWithAdmin = this.peer.connect(TeamState.connectedToGameId);
+        console.log('connecting with admin peer: ', TeamState.connectedToGameId);
+        this.connectionWithAdmin.on('open', () => {
+            console.log('connected to admin: ', TeamState.connectedToGameId);
+        });
+        this.connectionWithAdmin.on('data', data => {
+            console.log('received data from admin: ', data);
             //se non ho già un'istanza di p5 significa che sono appena entrato nella pagina
             if (!this.p5) {
                 let container = this.querySelector('#container-p5');
@@ -100,7 +114,7 @@ export class TeamConsolePage extends NavElement {
                 this.p5 = new p5(this.teamConsoleP5.p5Function.bind(this.teamConsoleP5), container);
 
                 //imposto i valori iniziali come già caricati
-                this.previouslySentInputs = Object.assign({}, newDoc.teams[TeamState.teamName].inputs);
+                this.previouslySentInputs = Object.assign({}, data.teams[TeamState.teamName].inputs);
 
                 //aggiungo la callback per quando clicco
                 this.teamConsoleP5.setCallbackToMouseClick(action => this.applyClickAction(action));
@@ -110,8 +124,8 @@ export class TeamConsolePage extends NavElement {
                 this.uploadInputsRef = setInterval(() => this.uploadInputsIfChanged(), this.millisBetweenInputsUpload);
             }
             //inserisco i nuovi dati e chiamo così il reload del component
-            this.gameInfo = newDoc.info;
-            this.myTeam = newDoc.teams[TeamState.teamName];
+            this.gameInfo = data.info;
+            this.myTeam = data.teams[TeamState.teamName];
         });
     }
 
@@ -183,10 +197,12 @@ export class TeamConsolePage extends NavElement {
         if (this.myTeam.inputs.timer != this.previouslySentInputs.timer)
             teamInputsChanged = true;
 
-        if (teamInputsChanged) {
-            this.firebaseQuery.updateInputs(TeamState.teamName, this.myTeam.inputs, () => {
-                this.previouslySentInputs = Object.assign({}, this.myTeam.inputs);
-            });
+        if (teamInputsChanged && this.connectionWithAdmin) {
+            console.log('sending inputs to admin');
+            this.connectionWithAdmin.send(Object.assign({}, this.myTeam.inputs));
+            this.previouslySentInputs.acceleration = teamInputsChanged.acceleration;
+            this.previouslySentInputs.wheel = teamInputsChanged.wheel;
+            this.previouslySentInputs.timer = teamInputsChanged.timer;
         }
     }
 }

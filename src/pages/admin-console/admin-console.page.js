@@ -6,6 +6,9 @@ import './admin-new-game.component';
 import './admin-console-bar.component';
 import { FirebaseQuery } from '../../core/firebase-query';
 import { AdminConsoleP5 } from '../../p5/admin-console.p5';
+import { Game } from '../../core/classes/game.class';
+//import p5 from 'p5';
+//import Peer from 'peerjs';
 
 export class AdminConsolePage extends NavElement {
 
@@ -20,6 +23,9 @@ export class AdminConsolePage extends NavElement {
         super();
         this.firebaseQuery = new FirebaseQuery();
         this.showNewGameComponent = false;
+        //oggetto Peer dell'admin a cui si dovranno connettere le squadre
+        this.adminPeer = null;
+
         //controllo se esiste già la partita con il mio UID
         this.checkIfGameExists();
         //contiene onSnapshot di firebase. La chiamo in disconnectedCallback per rimuovere il listener
@@ -30,10 +36,14 @@ export class AdminConsolePage extends NavElement {
         this.adminConsoleP5 = new AdminConsoleP5();
         //serve a admin-coonsole-bar per mostrare il nome della squadra da cambiare
         this.allTeamsName = [];
-
         //millisecondi per ogni upload del gioco
-        this.millisBetweenUpload = 1000;
+        this.millisBetweenUpload = 5000;
         this.gameUploadReference = null;
+        //millisecondi per comunicazione a peer
+        this.millisForPeers = 1000;
+        this.activeConnections = [];
+        this.peerUpdatesReference = null;
+
     }
 
     render() {
@@ -92,7 +102,36 @@ export class AdminConsolePage extends NavElement {
             //salvo una reference all'upload del gioco du firebase
             this.gameUploadReference = setInterval(() => {
                 if (this.adminConsoleP5.gameIsPlaying) { this.uploadGameToFirebase() }
-            }, this.millisBetweenUpload)
+            }, this.millisBetweenUpload);
+
+            //salvo reference per upload a peer
+            this.peerUpdatesReference = setInterval(() => {
+                if (this.adminConsoleP5.gameIsPlaying) { this.sendUpdatesToPeers() }
+            }, this.millisForPeers);
+        }
+        //se adminPeer non è impostato devo creare un nuovo oggetto Peer. Come id uso l'UID
+        if (!this.adminPeer) {
+            this.adminPeer = new Peer(AdminState.uid);
+            console.log('creating admin peer with id ', AdminState.uid);
+            this.adminPeer.on('connection', conn => {
+                conn.on('data', data =>{
+                    console.log('received data from: '+ conn.peer, data);
+                    this.adminConsoleP5.gameData.teams[conn.peer].inputs = data;
+                });
+                conn.on('open', () => {
+                    console.log('started connection', conn);
+                    this.activeConnections.push(conn);
+                });
+                conn.on('close', () => {
+                    console.log('disconnected peer: ', conn.peer);
+                    for (let i = 0; i < this.activeConnections.length; i++) {
+                        if(this.activeConnections[i].peer = conn.peer){
+                            this.activeConnections = this.activeConnections.filter(el => el.peer != conn.peer);
+                        }
+
+                    }
+                })
+            });
         }
     }
 
@@ -103,6 +142,8 @@ export class AdminConsolePage extends NavElement {
         if (this.istanzaP5) { this.istanzaP5.remove() }
         //elimino setInterval
         if (this.gameUploadReference) { clearInterval(this.gameUploadReference) }
+
+        if (this.peerUpdatesReference) { clearInterval(this.peerUpdatesReference) }
     }
 
     uploadGameToFirebase() {
@@ -113,17 +154,34 @@ export class AdminConsolePage extends NavElement {
     changeTeamData(dataToChange) {
         Object.keys(this.adminConsoleP5.gameData.teams).forEach(teamName => {
             if (teamName = dataToChange.teamName) {
-                if(dataToChange.positionX !== ""){
+                if (dataToChange.positionX !== "") {
                     this.adminConsoleP5.gameData.teams[teamName].outputs.positionX = parseInt(dataToChange.positionX)
                 }
-                if(dataToChange.positionY !== ""){
+                if (dataToChange.positionY !== "") {
                     this.adminConsoleP5.gameData.teams[teamName].outputs.positionY = parseInt(dataToChange.positionY)
                 }
-                if(dataToChange.fuel !== ""){
+                if (dataToChange.fuel !== "") {
                     this.adminConsoleP5.gameData.teams[teamName].outputs.fuel = parseInt(dataToChange.fuel)
                 }
                 this.firebaseQuery.updateSingleTeam(teamName, this.adminConsoleP5.gameData.teams[teamName]);
             }
+        })
+    }
+
+    sendUpdatesToPeers(){
+        console.log('updates', this.activeConnections);
+        Object.keys(this.adminConsoleP5.gameData.teams).forEach(teamName => {
+            this.activeConnections.forEach(connection => {
+                if(connection.peer == teamName){
+                    let dataToSend = {
+                        info: {},
+                        teams: {}
+                    };
+                    dataToSend.info = this.adminConsoleP5.gameData.info;
+                    dataToSend.teams[teamName] = this.adminConsoleP5.gameData.teams[teamName];
+                    connection.send(dataToSend);
+                }
+            });
         })
     }
 }
