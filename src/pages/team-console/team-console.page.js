@@ -139,8 +139,13 @@ export class TeamConsolePage extends NavElement {
         //se esco dalla pagina rimuovo p5, onSnapshot di firebase e setInterval per upload
         if (this.p5) { this.p5.remove() }
         if (this.onSnapshotReference) { this.onSnapshotReference() };
+        //rimuovo interval
         if (this.uploadInputsRef) { clearInterval(this.uploadInputsRef) };
+        //chiudo la connessione con l'admin
         if (this.connectionWithAdmin) { this.connectionWithAdmin.close() };
+        //distruggo i mio peer per evitare errore 401 alla riconnessione
+        if(this.peer){this.peer.destroy()};
+        //effettuo logout (non setta isUsed a false)
         TeamState.logoutFromGame();
     }
 
@@ -199,7 +204,7 @@ export class TeamConsolePage extends NavElement {
             teamInputsChanged = true;
 
         if (teamInputsChanged && this.connectionWithAdmin) {
-            //console.log('sending inputs to admin');
+            //notifico l'admin degli input
             this.connectionWithAdmin.send(Object.assign({}, this.myTeam.inputs));
             this.previouslySentInputs.acceleration = this.myTeam.inputs.acceleration;
             this.previouslySentInputs.wheel = this.myTeam.inputs.wheel;

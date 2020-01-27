@@ -120,21 +120,29 @@ export class AdminConsolePage extends NavElement {
                 });
                 conn.on('open', () => {
                     console.log('started connection', conn);
+                    //quando il team si connette, lo aggiungo alle squadre connesse
                     this.activeConnections.push(conn);
+                    //setto isUsed la squadra
                     if(this.adminConsoleP5.gameData.teams[conn.peer] != null){
                         this.adminConsoleP5.gameData.teams[conn.peer].outputs.isUsed = true;
                     }
+                    //aggiorno firebase immediatamente
+                    this.uploadGameToFirebase();
                 });
                 conn.on('close', () => {
                     console.log('disconnected peer: ', conn.peer);
+                    //quandoil team si disconnette lo rimuovo dalle connessioni
                     for (let i = 0; i < this.activeConnections.length; i++) {
                         if(this.activeConnections[i].peer = conn.peer){
                             this.activeConnections = this.activeConnections.filter(el => el.peer != conn.peer);
                         }
                     }
+                    //setto isUsed a false
                     if(this.adminConsoleP5.gameData.teams[conn.peer] != null){
                         this.adminConsoleP5.gameData.teams[conn.peer].outputs.isUsed = false;
                     }
+                    //aggiorno immediatamente firebase per settare a false isUsed
+                    this.uploadGameToFirebase();
                 })
             });
         }
@@ -147,12 +155,14 @@ export class AdminConsolePage extends NavElement {
         if (this.istanzaP5) { this.istanzaP5.remove() }
         //elimino setInterval
         if (this.gameUploadReference) { clearInterval(this.gameUploadReference) }
-
+        //elimino setInterval (comunicazione ai team)
         if (this.peerUpdatesReference) { clearInterval(this.peerUpdatesReference) }
-
+        //chiudo tutte le connessioni
         this.activeConnections.forEach(connection => {
             connection.close();
         });
+        //distruggo il mio peer
+        if(this.adminPeer){this.adminPeer.destroy()};
     }
 
     uploadGameToFirebase() {
@@ -187,6 +197,7 @@ export class AdminConsolePage extends NavElement {
                     };
                     dataToSend.info = this.adminConsoleP5.gameData.info;
                     dataToSend.teams[teamName] = this.adminConsoleP5.gameData.teams[teamName];
+                    //notifico ogni peer dei nuovi dati della partita
                     connection.send(dataToSend);
                 }
             });
