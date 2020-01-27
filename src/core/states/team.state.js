@@ -9,20 +9,11 @@ let loginToGame = function (gameName, teamName, password, onSuccess, onFailure) 
     }, onFailure)
 }
 
-let logoutFromGame = function () {
-    let firebaseQuery = new FirebaseQuery();
-    firebaseQuery.teamLogoutFromGame(TeamState.connectedToGameId, TeamState.teamName, () => {
-        TeamState.connectedToGameId = '';
-        TeamState.teamName = '';
-    })
-}
-
 //singleton per il team
 export let TeamState = (function () {
     return {
         connectedToGameId: 'ciao',
         teamName: 's1',
-        loginToGame: loginToGame,
-        logoutFromGame: logoutFromGame
+        loginToGame: loginToGame
     }
 })();
