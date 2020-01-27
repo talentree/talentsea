@@ -121,6 +121,9 @@ export class AdminConsolePage extends NavElement {
                 conn.on('open', () => {
                     console.log('started connection', conn);
                     this.activeConnections.push(conn);
+                    if(this.adminConsoleP5.gameData.teams[conn.peer] != null){
+                        this.adminConsoleP5.gameData.teams[conn.peer].outputs.isUsed = true;
+                    }
                 });
                 conn.on('close', () => {
                     console.log('disconnected peer: ', conn.peer);
@@ -128,7 +131,9 @@ export class AdminConsolePage extends NavElement {
                         if(this.activeConnections[i].peer = conn.peer){
                             this.activeConnections = this.activeConnections.filter(el => el.peer != conn.peer);
                         }
-
+                    }
+                    if(this.adminConsoleP5.gameData.teams[conn.peer] != null){
+                        this.adminConsoleP5.gameData.teams[conn.peer].outputs.isUsed = false;
                     }
                 })
             });
@@ -144,11 +149,15 @@ export class AdminConsolePage extends NavElement {
         if (this.gameUploadReference) { clearInterval(this.gameUploadReference) }
 
         if (this.peerUpdatesReference) { clearInterval(this.peerUpdatesReference) }
+
+        this.activeConnections.forEach(connection => {
+            connection.close();
+        });
     }
 
     uploadGameToFirebase() {
         //il controllo se gameIsPlaying viene fatto prima poichè questa funzione viene utilizzata anche 
-        this.firebaseQuery.updateDocument(this.adminConsoleP5.gameData, () => console.log('update successfully'));
+        this.firebaseQuery.updateDocument(this.adminConsoleP5.gameData, () => {}/*console.log('update successfully')*/);
     }
 
     changeTeamData(dataToChange) {
@@ -169,7 +178,6 @@ export class AdminConsolePage extends NavElement {
     }
 
     sendUpdatesToPeers(){
-        console.log('updates', this.activeConnections);
         Object.keys(this.adminConsoleP5.gameData.teams).forEach(teamName => {
             this.activeConnections.forEach(connection => {
                 if(connection.peer == teamName){

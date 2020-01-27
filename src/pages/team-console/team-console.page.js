@@ -140,6 +140,7 @@ export class TeamConsolePage extends NavElement {
         if (this.p5) { this.p5.remove() }
         if (this.onSnapshotReference) { this.onSnapshotReference() };
         if (this.uploadInputsRef) { clearInterval(this.uploadInputsRef) };
+        if (this.connectionWithAdmin) { this.connectionWithAdmin.close() };
         TeamState.logoutFromGame();
     }
 
