@@ -9,11 +9,17 @@ let loginToGame = function (gameName, teamName, password, onSuccess, onFailure) 
     }, onFailure)
 }
 
+let logoutFromGame = function(){
+    TeamState.connectedToGameId = 'ciao';
+    TeamState.teamName = 'alfa';
+}
+
 //singleton per il team
 export let TeamState = (function () {
     return {
         connectedToGameId: 'ciao',
-        teamName: 's1',
-        loginToGame: loginToGame
+        teamName: 'alfa',
+        loginToGame: loginToGame,
+        logoutFromGame: logoutFromGame
     }
 })();

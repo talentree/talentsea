@@ -115,7 +115,7 @@ export class FirebaseQuery {
                 if (res.empty || !res.docs[0].exists) { onFail('Dati sbagliati') }
                 else if (res.docs[0].data().teams[teamName].outputs.isUsed) { onFail('La squadra ha già un comandante!') }
                 else {
-                    onSuccess(res.docs[0].id, teamName))
+                    onSuccess(res.docs[0].id, teamName)
                 }
                 //onSuccess(res.docs[0].id, teamName)
             })

@@ -140,6 +140,7 @@ export class TeamConsolePage extends NavElement {
         if (this.p5) { this.p5.remove() }
         if (this.onSnapshotReference) { this.onSnapshotReference() };
         if (this.uploadInputsRef) { clearInterval(this.uploadInputsRef) };
+        TeamState.logoutFromGame();
     }
 
     applyClickAction(action) {
@@ -199,9 +200,9 @@ export class TeamConsolePage extends NavElement {
         if (teamInputsChanged && this.connectionWithAdmin) {
             console.log('sending inputs to admin');
             this.connectionWithAdmin.send(Object.assign({}, this.myTeam.inputs));
-            this.previouslySentInputs.acceleration = teamInputsChanged.acceleration;
-            this.previouslySentInputs.wheel = teamInputsChanged.wheel;
-            this.previouslySentInputs.timer = teamInputsChanged.timer;
+            this.previouslySentInputs.acceleration = this.myTeam.inputs.acceleration;
+            this.previouslySentInputs.wheel = this.myTeam.inputs.wheel;
+            this.previouslySentInputs.timer = this.myTeam.inputs.timer;
         }
     }
 }
