@@ -115,7 +115,7 @@ export class AdminConsolePage extends NavElement {
             console.log('creating admin peer with id ', AdminState.uid);
             this.adminPeer.on('connection', conn => {
                 conn.on('data', data =>{
-                    console.log('received data from: '+ conn.peer, data);
+                    //console.log('received data from: '+ conn.peer, data);
                     this.adminConsoleP5.gameData.teams[conn.peer].inputs = data;
                 });
                 conn.on('open', () => {

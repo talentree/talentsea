@@ -100,12 +100,12 @@ export class TeamConsolePage extends NavElement {
         this.peer = new Peer(TeamState.teamName);
         console.log('creating peer with id: ', TeamState.teamName);
         this.connectionWithAdmin = this.peer.connect(TeamState.connectedToGameId);
-        console.log('connecting with admin peer: ', TeamState.connectedToGameId);
+        //console.log('connecting with admin peer: ', TeamState.connectedToGameId);
         this.connectionWithAdmin.on('open', () => {
             console.log('connected to admin: ', TeamState.connectedToGameId);
         });
         this.connectionWithAdmin.on('data', data => {
-            console.log('received data from admin: ', data);
+            //console.log('received data from admin: ', data);
             //se non ho già un'istanza di p5 significa che sono appena entrato nella pagina
             if (!this.p5) {
                 let container = this.querySelector('#container-p5');
@@ -199,7 +199,7 @@ export class TeamConsolePage extends NavElement {
             teamInputsChanged = true;
 
         if (teamInputsChanged && this.connectionWithAdmin) {
-            console.log('sending inputs to admin');
+            //console.log('sending inputs to admin');
             this.connectionWithAdmin.send(Object.assign({}, this.myTeam.inputs));
             this.previouslySentInputs.acceleration = this.myTeam.inputs.acceleration;
             this.previouslySentInputs.wheel = this.myTeam.inputs.wheel;
