@@ -7,6 +7,7 @@ export class AdminConsoleP5 {
         //gameData è accessibile da admin-console-page
         this.gameData = new Game();
         this.gameIsPlaying = true;
+        this.callbackShipCollided = null;
     }
 
     p5Function(p) {
@@ -31,9 +32,14 @@ export class AdminConsoleP5 {
 
                 //gestione vento
                 if ((this.gameData.info.gameTime % 10) == 0) { Engine.changeWind(this.gameData.info); }
+
                 //aggiorno le info dei singoli team                
                 Object.keys(this.gameData.teams).forEach(i => {
-                    Engine.updateTeams(this.gameData.teams[i], this.gameData.info, p);
+                    let collided = Engine.updateTeams(this.gameData.teams[i], this.gameData.info, p);
+                    //se la nave è entrata in collisione chiamo la callback
+                    if (collided && this.callbackShipCollided) {
+                        this.callbackShipCollided(i);
+                    }
                 });
 
                 //disegno le navi sulla mappa dopo aver azzerato lo sfondo
@@ -82,28 +88,31 @@ export class Engine {
 
         //radar e collisioni
         this.updateRadar(team.outputs, p);
+        let collided = false;
         try {
             this.checkCollisions(team.outputs, p);
         } catch (e) {
             //collisione avvenuta
             team.outputs.speed = 0;
             team.inputs.acceleration = 0;
+            collided = true;
         }
 
         //TODO: controllo isUsed
+
+        //ritorno se è andata in collisione
+        return collided;
     }
 
     static checkCollisions(data, p) {
         //coordinate da controllare
         let posX = data.positionX + 10 * Math.cos((data.direction - 90) * Math.PI / 180);
-        let posY = data.positionY + 10 * Math.sin((data.direction - 90 )* Math.PI / 180);
+        let posY = data.positionY + 10 * Math.sin((data.direction - 90) * Math.PI / 180);
 
         //controllo punto
-        let x = this.checkPoint(posX, posY, p);
+        data.radar.state = this.checkPoint(posX, posY, p);
         //blocco la nave in caso di collisione
-        if (x != 1) {
-            data.radar.state = x;
-        } else {
+        if (data.radar.state == 1) {
             data.positionX -= (10) * Math.cos((data.direction - 90) * Math.PI / 180);
             data.positionY -= (10) * Math.sin((data.direction - 90) * Math.PI / 180);
             throw "Collided!";
@@ -117,7 +126,7 @@ export class Engine {
         data.radar.frontStates.forEach((state, i) => {
             //calcolo la direzione in cui controllare il punto
             //poi mi servira' in rad
-            let radarDirection = ((data.direction -90 + (radarGap * (i - 3))) * Math.PI / 180);
+            let radarDirection = ((data.direction - 90 + (radarGap * (i - 3))) * Math.PI / 180);
             //aggiorno lo stato del radar
             let posX = data.positionX + radarDistance * Math.cos(radarDirection);
             let posY = data.positionY + radarDistance * Math.sin(radarDirection);
@@ -165,9 +174,11 @@ export class Engine {
         }
     }
 
-    static updateDirection(inputs, outputs){
+    static updateDirection(inputs, outputs) {
         //FIXME: per adesso la nave può ruotare sul posto
         outputs.direction += inputs.wheel;
+        if (outputs.direction >= 360) { outputs.direction -= 360; }
+        if (outputs.direction <= -360) { outputs.direction += 360; }
     }
 
     static updateSpeed(inputs, outputs) {
