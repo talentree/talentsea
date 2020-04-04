@@ -46,10 +46,6 @@ export class TeamConsolePage extends NavElement {
         this.minAcceleration = -5;
         this.maxWheelAngle = 30;
 
-        //tempo tra un invio e l'altro degli input a firebase
-        this.millisBetweenInputsUpload = 50;
-        //la reference serve a rimuovere setInterval
-        this.uploadInputsRef = null;
         //peer che andrà connesso all'admin
         this.peer = null;
         //connesssione all'admin
@@ -108,25 +104,25 @@ export class TeamConsolePage extends NavElement {
             //console.log('received data from admin: ', data);
             //se non ho già un'istanza di p5 significa che sono appena entrato nella pagina
             if (!this.p5) {
-                let container = this.querySelector('#container-p5');
-
-                //creo quindi l'istanza
-                this.p5 = new p5(this.teamConsoleP5.p5Function.bind(this.teamConsoleP5), container);
-
-                //imposto i valori iniziali come già caricati
-                this.previouslySentInputs = Object.assign({}, data.teams[TeamState.teamName].inputs);
-
-                //aggiungo la callback per quando clicco
-                this.teamConsoleP5.setCallbackToMouseClick(action => this.applyClickAction(action));
-
-                //ogni tot secondi carico i nuovi input se sono diversi
-                //TODO: il timer per la presenza del giocatore può venire aggiornato qui, al momento del caricamento su firebase
-                this.uploadInputsRef = setInterval(() => this.uploadInputsIfChanged(), this.millisBetweenInputsUpload);
+                this.setupP5(data);
             }
             //inserisco i nuovi dati e chiamo così il reload del component
             this.gameInfo = data.info;
             this.myTeam = data.teams[TeamState.teamName];
         });
+    }
+
+    setupP5(data){
+        let container = this.querySelector('#container-p5');
+
+        //creo quindi l'istanza
+        this.p5 = new p5(this.teamConsoleP5.p5Function.bind(this.teamConsoleP5), container);
+
+        //imposto i valori iniziali come già caricati
+        this.previouslySentInputs = Object.assign({}, data.teams[TeamState.teamName].inputs);
+
+        //aggiungo la callback per quando clicco
+        this.teamConsoleP5.setCallbackToMouseClick(action => this.applyClickAction(action));
     }
 
     updated() {
@@ -139,8 +135,6 @@ export class TeamConsolePage extends NavElement {
         //se esco dalla pagina rimuovo p5, onSnapshot di firebase e setInterval per upload
         if (this.p5) { this.p5.remove() }
         if (this.onSnapshotReference) { this.onSnapshotReference() };
-        //rimuovo interval
-        if (this.uploadInputsRef) { clearInterval(this.uploadInputsRef) };
         //chiudo la connessione con l'admin
         if (this.connectionWithAdmin) { this.connectionWithAdmin.close() };
         //distruggo i mio peer per evitare errore 401 alla riconnessione
@@ -191,6 +185,8 @@ export class TeamConsolePage extends NavElement {
             }
             //il default non fa niente
         }
+        //comunico all'admin quando ci sono nuovi input
+        this.uploadInputsIfChanged();
     }
 
     uploadInputsIfChanged() {
@@ -200,15 +196,12 @@ export class TeamConsolePage extends NavElement {
             teamInputsChanged = true;
         if (this.myTeam.inputs.wheel != this.previouslySentInputs.wheel)
             teamInputsChanged = true;
-        if (this.myTeam.inputs.timer != this.previouslySentInputs.timer)
-            teamInputsChanged = true;
 
         if (teamInputsChanged && this.connectionWithAdmin) {
             //notifico l'admin degli input
             this.connectionWithAdmin.send(Object.assign({}, this.myTeam.inputs));
             this.previouslySentInputs.acceleration = this.myTeam.inputs.acceleration;
             this.previouslySentInputs.wheel = this.myTeam.inputs.wheel;
-            this.previouslySentInputs.timer = this.myTeam.inputs.timer;
         }
     }
 }

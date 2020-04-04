@@ -34,14 +34,14 @@ export class TextualInterface extends NavElement {
                     </div>
                 </div>
                 <hr>
-                <p class = "is-size-4"><b>Carburante Rimasto:</b> ${this.myTeam.outputs.fuel}</p>                              
+                <p class = "is-size-4"><b>Carburante Rimasto:</b> ${this.myTeam.outputs.fuel.toFixed(2)}</p>                              
                 <div class = " columns is-centered is-vcentered">
                     <div class = " column is-4 ">
                         <p class = "is-size-4"><b>Posizione:</b></p>
                     </div>
                     <div class = " column is-6 ">
-                        <p class = "is-size-4"><i>X:</i> ${this.myTeam.outputs.positionX}</p>
-                        <p class = "is-size-4"><i>Y:</i> ${this.myTeam.outputs.positionY}</p>
+                        <p class = "is-size-4"><i>X:</i> ${this.myTeam.outputs.positionX.toFixed(2)}</p>
+                        <p class = "is-size-4"><i>Y:</i> ${this.myTeam.outputs.positionY.toFixed(2)}</p>
                     </div>
                 </div>
                 <hr>

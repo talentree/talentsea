@@ -30,10 +30,12 @@ export class AdminConsoleBarComponent extends NavElement {
 
         //stringa vuota significa che non verranno contati come dati da modificare
         this.dataToChange = {
-            teamName : "",
+            teamName: "",
             positionX: "",
             positionY: "",
-            fuel: ""
+            fuel: "",
+            direction: "",
+            isUsed: ""
         }
     }
 
@@ -74,6 +76,17 @@ export class AdminConsoleBarComponent extends NavElement {
                 <div class = "column is-2">                    
                     <input class= "input is-link is-extra-large" type="text" placeholder="Carburante: " @input="${e => this.dataToChange.fuel = e.target.value}" />           
                 </div>
+                <div class = "column is-1">                    
+                    <input class= "input is-link is-extra-large" type="text" placeholder="Direzione: " @input="${e => this.dataToChange.direction = e.target.value}" />           
+                </div>
+                <div class = "column is-1">                    
+                    <select .value = ${"Invariato"} id="setIsUsed">
+                        <option .value = ${"Invariato"}>Invariato</option>
+                        <option .value = ${"True"}>True</option>
+                        <option .value = ${"False"}>False</option>
+                    </select>
+                </div>           
+                </div>
                 <div class = "column is-1">
                     <button  class = " button is-extra-large is-fullwidth is-link is-focused " @click=${() => this.changeTeamData()} title="Cambia Dati Nave"><i class="fas fa-check"></i></button>
                 </div>
@@ -110,6 +123,17 @@ export class AdminConsoleBarComponent extends NavElement {
         let indexTeam = parseInt(this.querySelector('#selectTeamToChange').value) - 1;
         if (indexTeam > -1) {
             this.dataToChange.teamName = this.allTeamsName[indexTeam];
+            switch(this.querySelector('#setIsUsed').value){
+                case "Invariato":
+                    this.dataToChange.isUsed = "";
+                    break;
+                case "True":
+                    this.dataToChange.isUsed = true;
+                    break;
+                case "False":
+                    this.dataToChange.isUsed = false;
+                    break;
+            }
             let event = new CustomEvent('changeTeamData', {
                 detail: this.dataToChange
             })

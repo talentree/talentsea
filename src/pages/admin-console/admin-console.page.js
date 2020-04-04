@@ -114,7 +114,7 @@ export class AdminConsolePage extends NavElement {
             this.adminPeer = new Peer(AdminState.uid);
             console.log('creating admin peer with id ', AdminState.uid);
             this.adminPeer.on('connection', conn => {
-                conn.on('data', data =>{
+                conn.on('data', data => {
                     //console.log('received data from: '+ conn.peer, data);
                     this.adminConsoleP5.gameData.teams[conn.peer].inputs = data;
                 });
@@ -123,7 +123,7 @@ export class AdminConsolePage extends NavElement {
                     //quando il team si connette, lo aggiungo alle squadre connesse
                     this.activeConnections.push(conn);
                     //setto isUsed la squadra
-                    if(this.adminConsoleP5.gameData.teams[conn.peer] != null){
+                    if (this.adminConsoleP5.gameData.teams[conn.peer] != null) {
                         this.adminConsoleP5.gameData.teams[conn.peer].outputs.isUsed = true;
                     }
                     //aggiorno firebase immediatamente
@@ -133,18 +133,24 @@ export class AdminConsolePage extends NavElement {
                     console.log('disconnected peer: ', conn.peer);
                     //quandoil team si disconnette lo rimuovo dalle connessioni
                     for (let i = 0; i < this.activeConnections.length; i++) {
-                        if(this.activeConnections[i].peer = conn.peer){
+                        if (this.activeConnections[i].peer = conn.peer) {
                             this.activeConnections = this.activeConnections.filter(el => el.peer != conn.peer);
                         }
                     }
                     //setto isUsed a false
-                    if(this.adminConsoleP5.gameData.teams[conn.peer] != null){
+                    if (this.adminConsoleP5.gameData.teams[conn.peer] != null) {
                         this.adminConsoleP5.gameData.teams[conn.peer].outputs.isUsed = false;
                     }
                     //aggiorno immediatamente firebase per settare a false isUsed
                     this.uploadGameToFirebase();
                 })
             });
+
+            //aggiungo la callback nel caso una nave si scontri
+            this.adminConsoleP5.callbackShipCollided = (teamName) => {
+                console.log('Ship collided: ' + teamName);
+                this.sendUpdatesToPeers(teamName);
+            }
         }
     }
 
@@ -162,12 +168,12 @@ export class AdminConsolePage extends NavElement {
             connection.close();
         });
         //distruggo il mio peer
-        if(this.adminPeer){this.adminPeer.destroy()};
+        if (this.adminPeer) { this.adminPeer.destroy() };
     }
 
     uploadGameToFirebase() {
         //il controllo se gameIsPlaying viene fatto prima poichè questa funzione viene utilizzata anche 
-        this.firebaseQuery.updateDocument(this.adminConsoleP5.gameData, () => {}/*console.log('update successfully')*/);
+        this.firebaseQuery.updateDocument(this.adminConsoleP5.gameData, () => { }/*console.log('update successfully')*/);
     }
 
     changeTeamData(dataToChange) {
@@ -182,15 +188,23 @@ export class AdminConsolePage extends NavElement {
                 if (dataToChange.fuel !== "") {
                     this.adminConsoleP5.gameData.teams[teamName].outputs.fuel = parseInt(dataToChange.fuel)
                 }
+                if(dataToChange.direction !== ""){
+                    this.adminConsoleP5.gameData.teams[teamName].outputs.direction = parseInt(dataToChange.direction)
+                }
+                if(dataToChange.isUsed !== ""){
+                    this.adminConsoleP5.gameData.teams[teamName].outputs.isUsed = dataToChange.isUsed;
+                    
+                }
                 this.firebaseQuery.updateSingleTeam(teamName, this.adminConsoleP5.gameData.teams[teamName]);
             }
         })
     }
 
-    sendUpdatesToPeers(){
+    //se non passo l'argomento sto inviando l'update a tutti i team
+    sendUpdatesToPeers(singlePeerName = "") {
         Object.keys(this.adminConsoleP5.gameData.teams).forEach(teamName => {
             this.activeConnections.forEach(connection => {
-                if(connection.peer == teamName){
+                if (connection.peer == teamName && (singlePeerName == "" || singlePeerName == teamName)) {
                     let dataToSend = {
                         info: {},
                         teams: {}
