@@ -10,7 +10,6 @@ games
 			inputs
 				acceleration
 				wheel
-				timer
 			outputs
 				isUsed
 				speed

@@ -169,8 +169,9 @@ export class Engine {
 
         //tengo conto del vento (FIXME: futura scelta) FIXME:
         if (true) {
-            data.positionX += (info.windForce * moltiplicatoreVelocita) * Math.cos((info.windDirection - 90) * Math.PI / 180);
-            data.positionY += (info.windForce * moltiplicatoreVelocita) * Math.sin((info.windDirection - 90) * Math.PI / 180);
+            //Sottraggo poichè il vento spinge dalla parte opposta
+            data.positionX -= (info.windForce * moltiplicatoreVelocita) * Math.cos((info.windDirection - 90) * Math.PI / 180);
+            data.positionY -= (info.windForce * moltiplicatoreVelocita) * Math.sin((info.windDirection - 90) * Math.PI / 180);
         }
     }
 
