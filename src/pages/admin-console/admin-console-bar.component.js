@@ -80,7 +80,7 @@ export class AdminConsoleBarComponent extends NavElement {
                     <input class= "input is-link is-extra-large" type="text" placeholder="Direzione: " @input="${e => this.dataToChange.direction = e.target.value}" />           
                 </div>
                 <div class = "column is-1">                    
-                    <select .value = ${0} id="setIsUsed">
+                    <select .value = ${"Invariato"} id="setIsUsed">
                         <option .value = ${"Invariato"}>Invariato</option>
                         <option .value = ${"True"}>True</option>
                         <option .value = ${"False"}>False</option>
