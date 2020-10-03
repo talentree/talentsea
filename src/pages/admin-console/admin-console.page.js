@@ -61,10 +61,12 @@ export class AdminConsolePage extends NavElement {
                 <admin-new-bar-component .gameIsPlaying="${this.adminConsoleP5.gameIsPlaying}"
                 @changeTeamData= ${e => this.changeTeamData(e.detail)}
                 .allTeamsName= "${this.allTeamsName}"
+                .gameInfo = "${this.adminConsoleP5.gameData.info}"
+                @changeWindData = ${e => this.changeWindData(e.detail)}
                 @gameStatusToggled = ${e => this.adminConsoleP5.gameIsPlaying = e.detail}></admin-new-bar-component>
             </div>
             <br>
-            <div class = " gradient-box map-padding "> 
+            <div class = "gradient-box map-padding "> 
                 <div class ="colums is-full " >
                     <div class= "column ">            
                         <div id="container-p5"></div> 
@@ -198,6 +200,15 @@ export class AdminConsolePage extends NavElement {
                 this.firebaseQuery.updateSingleTeam(teamName, this.adminConsoleP5.gameData.teams[teamName]);
             }
         })
+    }
+
+    changeWindData(windData){
+        if(windData.intensity !== ''){
+            this.adminConsoleP5.gameData.info.windForce = parseInt(windData.intensity);
+        }
+        if(windData.direction !== ''){
+            this.adminConsoleP5.gameData.info.windDirection = parseInt(windData.direction);
+        }
     }
 
     //se non passo l'argomento sto inviando l'update a tutti i team

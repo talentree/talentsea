@@ -6,6 +6,7 @@ export class Team {
     constructor() {
         this.inputs = new Inputs();
         this.outputs = new Outputs()
-        this.password = "";
+        this.password = '';
+        this.color = '';
     }
 }

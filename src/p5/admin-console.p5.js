@@ -8,6 +8,8 @@ export class AdminConsoleP5 {
         this.gameData = new Game();
         this.gameIsPlaying = true;
         this.callbackShipCollided = null;
+
+        this.shipColors = ['red', 'blue', 'green', '']
     }
 
     p5Function(p) {
@@ -45,7 +47,7 @@ export class AdminConsoleP5 {
                 //disegno le navi sulla mappa dopo aver azzerato lo sfondo
                 p.background(img);
                 Object.keys(this.gameData.teams).forEach(i => {
-                    Engine.plotTeams(this.gameData.teams[i].outputs, p);
+                    Engine.plotTeams(this.gameData.teams[i].outputs, p, this.gameData.teams[i].color);
                 });
             }
         }
@@ -234,14 +236,24 @@ export class Engine {
         }
     }
 
-    static plotTeams(data, p) {
+    static plotTeams(data, p, teamColor) {
         //plotta navi
-        //salto se la nave non e' utilizzata
-        if (!data.isUsed) { return; }
+        //salto se la nave non e' utilizzata TODO: disabilitato
+        //if (!data.isUsed) { return; }
         //TODO: mod lunghezze in base alla direzione
         let length = 10;
         let width = 10;
+        let lineLength = 10;
+        let lineTo = {
+            x: data.positionX + lineLength * Math.sin(data.direction * Math.PI / 180),
+            y: data.positionY - lineLength * Math.cos(data.direction * Math.PI / 180)
+        }
+        p.fill(p.color(teamColor || 'white'));
+        p.strokeWeight(3);
+        p.line(data.positionX, data.positionY,lineTo.x, lineTo.y);
+        p.strokeWeight(1);
         p.ellipse(data.positionX, data.positionY, length, width);
+        p.fill(p.color('white'));
     }
 }
 

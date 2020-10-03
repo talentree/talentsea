@@ -50,6 +50,7 @@ export class FirebaseQuery {
         teamArray.forEach(team => {
             let teamConverted = new Team();
             teamConverted.password = team.teamPassword;
+            teamConverted.color = team.teamColor;
             game.teams[team.teamName] = teamConverted;
         });
         //console.log(game);

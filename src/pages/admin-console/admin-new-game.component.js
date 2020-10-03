@@ -19,7 +19,8 @@ export class AdminNewGameComponent extends NavElement {
         super();
         this.allTeams = [{
             teamName: '',
-            teamPassword: ''
+            teamPassword: '',
+            teamColor: ''
         }];
         //se true fa comparire messaggio
         this.isNameAlreadyTaken = false;
@@ -53,6 +54,7 @@ export class AdminNewGameComponent extends NavElement {
                                 ${this.allTeams.map(team => {
                                     return html`<insert-new-team-component .teamName="${team.teamName}" .teamPassword="${team.teamPassword}"
                                     @nameChanged="${e => team.teamName = e.detail}" @passwordChanged="${e => team.teamPassword = e.detail}"
+                                    @colorChanged="${e => team.teamColor = e.detail}"
                                     @teamRemoved="${e => this.removeTeam(team)}"
                                     ></insert-new-team-component>`;
                                 })}
@@ -84,7 +86,7 @@ export class AdminNewGameComponent extends NavElement {
 
     buildGame() {
         this.missingData = false;
-        if (!this.gameName || this.allTeams.find(team => !team.teamName || !team.teamPassword)) {
+        if (!this.gameName || this.allTeams.find(team => !team.teamName || !team.teamPassword || !team.teamColor)) {
             this.missingData = true;
         }
         else {

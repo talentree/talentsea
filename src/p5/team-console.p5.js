@@ -206,6 +206,11 @@ export class TeamConsoleP5Controller {
         this.p.fill(this.coloreDiminuisciVelocita);
         this.p.rect(this.centroManopolaMotore.x - this.larghezzaManopolaMotore / 2, this.centroManopolaMotore.y, this.larghezzaManopolaMotore, this.altezzaManopolaMotore / 2);
 
+        //Divido accelerazione da decelerazione con una riga
+        this.p.strokeWeight(3);
+        this.p.stroke(this.p.color('black'));
+        this.p.line(this.centroManopolaMotore.x - this.larghezzaManopolaMotore / 2, this.centroManopolaMotore.y, this.centroManopolaMotore.x + this.larghezzaManopolaMotore / 2, this.centroManopolaMotore.y);
+        this.p.strokeWeight(1);
         //disegno triangolo per muovere timone
         //triangolo sx
         let timoneSxBase = {
