@@ -10,6 +10,7 @@ export class AdminConsoleP5 {
         this.callbackShipCollided = null;
 
         this.shipColors = ['red', 'blue', 'green', '']
+        this.movementScale = 1;
     }
 
     p5Function(p) {
@@ -37,7 +38,7 @@ export class AdminConsoleP5 {
 
                 //aggiorno le info dei singoli team                
                 Object.keys(this.gameData.teams).forEach(i => {
-                    let collided = Engine.updateTeams(this.gameData.teams[i], this.gameData.info, p);
+                    let collided = Engine.updateTeams(this.gameData.teams[i], this.gameData.info, p, this.movementScale);
                     //se la nave è entrata in collisione chiamo la callback
                     if (collided && this.callbackShipCollided) {
                         this.callbackShipCollided(i);
@@ -73,12 +74,12 @@ export class Engine {
         console.log('wind angle = ' + info.windDirection);
     }
 
-    static updateTeams(team, info, p) {
+    static updateTeams(team, info, p, movementScale) {
         //se una nave non viene usata la salto
         if (!team.outputs.isUsed) { return; }
 
         //aggiorno posizioni
-        this.updatePosition(team.outputs, info);
+        this.updatePosition(team.outputs, info, movementScale);
 
         this.updateDirection(team.inputs, team.outputs);
 
@@ -161,19 +162,19 @@ export class Engine {
         return state;
     }
 
-    static updatePosition(data, info) {
+    static updatePosition(data, info, movementScale) {
         //aggiorno posizion
         let moltiplicatoreVelocita = 0.16;
         // immaginando che direction = 0 corrisponde all'asse orrizontale orientato
         // verso destra gli angoli sono positivi in senso antiorario
-        data.positionX += (data.speed * moltiplicatoreVelocita) * Math.cos((data.direction - 90) * Math.PI / 180);
-        data.positionY += (data.speed * moltiplicatoreVelocita) * Math.sin((data.direction - 90) * Math.PI / 180);
+        data.positionX += (data.speed * moltiplicatoreVelocita) * Math.cos((data.direction - 90) * Math.PI / 180) * movementScale;
+        data.positionY += (data.speed * moltiplicatoreVelocita) * Math.sin((data.direction - 90) * Math.PI / 180) * movementScale;
 
         //tengo conto del vento (FIXME: futura scelta) FIXME:
         if (true) {
             //Sottraggo poichè il vento spinge dalla parte opposta
-            data.positionX -= (info.windForce * moltiplicatoreVelocita) * Math.cos((info.windDirection - 90) * Math.PI / 180);
-            data.positionY -= (info.windForce * moltiplicatoreVelocita) * Math.sin((info.windDirection - 90) * Math.PI / 180);
+            data.positionX -= (info.windForce * moltiplicatoreVelocita) * Math.cos((info.windDirection - 90) * Math.PI / 180) * movementScale;
+            data.positionY -= (info.windForce * moltiplicatoreVelocita) * Math.sin((info.windDirection - 90) * Math.PI / 180) * movementScale;
         }
     }
 

@@ -11,7 +11,8 @@ export class AdminConsoleBarComponent extends NavElement {
       gameIsPlaying: { type: Boolean },
       askingForGameDelete: { type: Boolean },
       allTeamsName: { type: Array },
-      gameInfo: {type: Info}
+      gameInfo: { type: Info },
+      scalaMovimento : {type: Number}
     };
   }
 
@@ -45,6 +46,8 @@ export class AdminConsoleBarComponent extends NavElement {
     };
 
     this.gameInfo = null;
+
+    this.scalaMovimento = 1;
   }
 
   render() {
@@ -170,6 +173,21 @@ export class AdminConsoleBarComponent extends NavElement {
           <p class="is-size-4">Attuali -> Intesità: ${this.gameInfo.windForce} Direzione: ${this.gameInfo.windDirection}</p>
         </div>
       </div>
+      <hr>
+      <!-- IMPOSTAZIONI SCALA MOVIMENTO -->
+      <div class="columns is-mobile is-full is-vcentered is-multiline">
+        <div class="column is-2">
+          <p class="is-size-4">Scala di movimento: ${this.scalaMovimento}</p>
+        </div>
+        <div class="column is-2">
+          <input
+          class="input is-link is-extra-large"
+          type="text"
+          placeholder="Scala: "
+          @input="${(e) => this.changeScalaMovimento(e.target.value)}"
+            />
+        </div>
+      </div>
       <!-- MODAL PER CONFERMA ELIMINAZIONE PARTITA FIXME: vengono tagliati i pulsanti-->
       <div class="modal confirm-message" style="display: ${this.askingForGameDelete ? 'block' : 'none'}">
         <div class="gradient-box ">
@@ -243,6 +261,14 @@ export class AdminConsoleBarComponent extends NavElement {
     this.gameIsPlaying = !this.gameIsPlaying;
     let e = new CustomEvent('gameStatusToggled', { detail: this.gameIsPlaying });
     this.dispatchEvent(e);
+  }
+
+  changeScalaMovimento(newScala){
+    this.scalaMovimento = newScala || 0;
+    let event = new CustomEvent('changeScalaMovimento', {
+      detail: this.scalaMovimento,
+    });
+    this.dispatchEvent(event);
   }
 }
 customElements.define('admin-new-bar-component', AdminConsoleBarComponent);
