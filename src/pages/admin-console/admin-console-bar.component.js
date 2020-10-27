@@ -87,7 +87,7 @@ export class AdminConsoleBarComponent extends NavElement {
           <div class="select is-fullwidth gradient-select">
               <select .value=${0} id="selectTeamToChange">
                 <option .value=${0}>Selezionare la Squadra</option>
-                ${this.allTeamsName.map((name, index) => html`<option .value=${index + 1}>${name}</option>`)}
+                ${this.allTeamsName.map((name, index) => html`<option .value=${index + 1}>${name.name} (${name.color})</option>`)}
               </select>
           </div>
         </div>
@@ -213,7 +213,7 @@ export class AdminConsoleBarComponent extends NavElement {
   changeTeamData() {
     let indexTeam = parseInt(this.querySelector('#selectTeamToChange').value) - 1;
     if (indexTeam > -1) {
-      this.dataToChange.teamName = this.allTeamsName[indexTeam];
+      this.dataToChange.teamName = this.allTeamsName[indexTeam].name;
       switch (this.querySelector('#setIsUsed').value) {
         case 'Invariato':
           this.dataToChange.isUsed = '';

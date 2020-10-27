@@ -95,7 +95,7 @@ export class AdminConsolePage extends NavElement {
         //passo game all'engine
         this.adminConsoleP5.gameData = game;
         //mostro ad admin-console-bar i nomi delle squadre
-        this.allTeamsName = Object.keys(game.teams);
+        this.allTeamsName = Object.keys(game.teams).map(name => ({name, color: game.teams[name].color}));
 
         //se non ho un'istanza di p5 significa che la partita è stata appena creata. Imposto quindi p5
         if (!this.istanzaP5) {
