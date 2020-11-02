@@ -38,10 +38,10 @@ export class TeamLoginPage extends NavElement {
             </div>           
             <div class = " columns is-full">
                 <div class = " column is-2 is-offset-1">
-                        <label class="label is-extra-large ">Nome Partita:</label>
+                        <label class="label is-large ">Nome Partita:</label>
                 </div>
                 <div class = " column is-6">
-                    <input class="input is-extra-large is-primary " type="text"  @input=${e => this.connectToGameName = e.target.value} .value=${this.connectToGameName} />
+                    <input class="input is-large is-primary " type="text"  @input=${e => this.connectToGameName = e.target.value} .value=${this.connectToGameName} />
                 </div>
                 <div class = " column is-2 ">
                     <team-game-list-component @gameChoosen=${e => this.connectToGameName = e.detail}></team-game-list-component>
@@ -54,10 +54,10 @@ export class TeamLoginPage extends NavElement {
             </div>            
             <div class = " columns is-vcentered">
                 <div class = " column is-2 is-offset-1">
-                        <label class="label is-extra-large">Nome Squadra:</label>
+                        <label class="label is-large">Nome Squadra:</label>
                 </div>
                 <div class = " column is-6">
-                    <input class="input is-extra-large is-primary"  type="text"  @input=${e => this.teamName = e.target.value} />
+                    <input class="input is-large is-primary"  type="text"  @input=${e => this.teamName = e.target.value} />
                 </div>            
             </div>
             <div class="columns is-centered is-full">
@@ -67,10 +67,10 @@ export class TeamLoginPage extends NavElement {
             </div>
             <div class = " columns is-vcentered ">
                 <div class = " column is-2 is-offset-1">
-                        <label class="label is-extra-large">Codice Segreto:</label>
+                        <label class="label is-large">Codice Segreto:</label>
                 </div>
                 <div class = " column is-6">
-                    <input  class="input is-extra-large is-primary"  type="text"  @input=${e => this.teamPassword = e.target.value} />
+                    <input  class="input is-large is-primary"  type="text"  @input=${e => this.teamPassword = e.target.value} />
                 </div>            
             </div>
             <div class="columns is-centered is-full">
@@ -82,7 +82,7 @@ export class TeamLoginPage extends NavElement {
                 <div class = "column is-4">
                 <!--FIXME:messaggio più carino--> 
                 ${this.loginFailedErrorDescription ? html` <b class= "alert">${this.loginFailedErrorDescription}</b>` : html``}
-                    <button class="button has-text-white  is-extra-large is-fullwidth gradient-background ${this.isDoingLogin ? 'is-loading is-disabled' : ''}"
+                    <button class="button has-text-white  is-large is-fullwidth gradient-background ${this.isDoingLogin ? 'is-loading is-disabled' : ''}"
                     @click=${(e) => this.login()}>Login</button>
                 </div>
             </div>

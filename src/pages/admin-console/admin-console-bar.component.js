@@ -6,52 +6,57 @@ import { FirebaseQuery } from '../../core/firebase-query';
 import { Info } from '../../core/classes/info.class';
 
 export class AdminConsoleBarComponent extends NavElement {
-  static get properties() {
-    return {
-      gameIsPlaying: { type: Boolean },
-      askingForGameDelete: { type: Boolean },
-      allTeamsName: { type: Array },
-      gameInfo: { type: Info },
-      scalaMovimento : {type: Number}
-    };
-  }
+    static get properties() {
+        return {
+            gameIsPlaying: { type: Boolean },
+            askingForGameDelete: { type: Boolean },
+            allTeamsName: { type: Array },
+            gameInfo: { type: Info },
+            scalaMovimento: { type: Number },
+            connectedToServer: { type: Boolean },
+            connectedPeers: { type: Array },
+        };
+    }
 
-  constructor() {
-    super();
-    //reference
-    this.firebaseQuery = new FirebaseQuery();
-    this.firebaseQuery.setUid(AdminState.uid);
-    //questo valore è inizialmente impostato da admin-console.page
-    this.gameIsPlaying = false;
-    //se true mostra popup
-    this.askingForGameDelete = false;
+    constructor() {
+        super();
+        //reference
+        this.firebaseQuery = new FirebaseQuery();
+        this.firebaseQuery.setUid(AdminState.uid);
+        //questo valore è inizialmente impostato da admin-console.page
+        this.gameIsPlaying = false;
+        //se true mostra popup
+        this.askingForGameDelete = false;
 
-    //valore passato da admin-console.page
-    this.allTeamsName = [];
+        //valore passato da admin-console.page
+        this.allTeamsName = [];
 
-    //stringa vuota significa che non verranno contati come dati da modificare
-    this.dataToChange = {
-      teamName: '',
-      positionX: '',
-      positionY: '',
-      fuel: '',
-      direction: '',
-      isUsed: '',
-    };
+        //stringa vuota significa che non verranno contati come dati da modificare
+        this.dataToChange = {
+            teamName: '',
+            positionX: '',
+            positionY: '',
+            fuel: '',
+            direction: '',
+            isUsed: '',
+        };
 
-    // Dati del vento da cambiare
-    this.windDataToChange = {
-      direction: '',
-      intensity: '',
-    };
+        // Dati del vento da cambiare
+        this.windDataToChange = {
+            direction: '',
+            intensity: '',
+        };
 
-    this.gameInfo = null;
+        this.gameInfo = null;
 
-    this.scalaMovimento = 1;
-  }
+        this.scalaMovimento = 1;
 
-  render() {
-    return html`
+        this.connectedToServer = false;
+        this.connectedPeers = [];
+    }
+
+    render() {
+        return html`
       <div class="columns is-mobile is-full is-vcentered is-multiline">
         <div class="column is-1">
           <button
@@ -77,6 +82,13 @@ export class AdminConsoleBarComponent extends NavElement {
             @click=${() => (this.askingForGameDelete = true)}>
             <i class="fas fa-trash-alt"></i>
           </button>
+          </div>
+          <div class="column is-3">
+          <p style="color: ${this.connectedToServer ? 'black' : 'red'}">${
+            this.connectedToServer ? 'Connesso al server' : 'Disconnesso dal server'
+        }</p>
+        <p>Connessioni attive: ${this.connectedPeers.map((p) => p).join(' ')}</p>
+          </div>
         </div>
         <!-- PULSANTE PER USCIRE DA FULLSCREEN
                     <div class = "column is-1">
@@ -221,54 +233,54 @@ export class AdminConsoleBarComponent extends NavElement {
         </div>
       </div>
     `;
-  }
-
-  //TODO: FULLSCREEN FUNCTION
-  toggleFullScreen() {
-    console.log('toggle Fullscreen not implemented');
-  }
-
-  changeTeamData() {
-    let indexTeam = parseInt(this.querySelector('#selectTeamToChange').value) - 1;
-    if (indexTeam > -1) {
-      this.dataToChange.teamName = this.allTeamsName[indexTeam].name;
-      switch (this.querySelector('#setIsUsed').value) {
-        case 'Invariato':
-          this.dataToChange.isUsed = '';
-          break;
-        case 'True':
-          this.dataToChange.isUsed = true;
-          break;
-        case 'False':
-          this.dataToChange.isUsed = false;
-          break;
-      }
-      let event = new CustomEvent('changeTeamData', {
-        detail: this.dataToChange,
-      });
-      this.dispatchEvent(event);
     }
-  }
 
-  changeWindData() {
-    let event = new CustomEvent('changeWindData', {
-      detail: this.windDataToChange,
-    });
-    this.dispatchEvent(event);
-  }
+    //TODO: FULLSCREEN FUNCTION
+    toggleFullScreen() {
+        console.log('toggle Fullscreen not implemented');
+    }
 
-  toggleGameStatus() {
-    this.gameIsPlaying = !this.gameIsPlaying;
-    let e = new CustomEvent('gameStatusToggled', { detail: this.gameIsPlaying });
-    this.dispatchEvent(e);
-  }
+    changeTeamData() {
+        let indexTeam = parseInt(this.querySelector('#selectTeamToChange').value) - 1;
+        if (indexTeam > -1) {
+            this.dataToChange.teamName = this.allTeamsName[indexTeam].name;
+            switch (this.querySelector('#setIsUsed').value) {
+                case 'Invariato':
+                    this.dataToChange.isUsed = '';
+                    break;
+                case 'True':
+                    this.dataToChange.isUsed = true;
+                    break;
+                case 'False':
+                    this.dataToChange.isUsed = false;
+                    break;
+            }
+            let event = new CustomEvent('changeTeamData', {
+                detail: this.dataToChange,
+            });
+            this.dispatchEvent(event);
+        }
+    }
 
-  changeScalaMovimento(newScala){
-    this.scalaMovimento = newScala || 0;
-    let event = new CustomEvent('changeScalaMovimento', {
-      detail: this.scalaMovimento,
-    });
-    this.dispatchEvent(event);
-  }
+    changeWindData() {
+        let event = new CustomEvent('changeWindData', {
+            detail: this.windDataToChange,
+        });
+        this.dispatchEvent(event);
+    }
+
+    toggleGameStatus() {
+        this.gameIsPlaying = !this.gameIsPlaying;
+        let e = new CustomEvent('gameStatusToggled', { detail: this.gameIsPlaying });
+        this.dispatchEvent(e);
+    }
+
+    changeScalaMovimento(newScala) {
+        this.scalaMovimento = newScala || 0;
+        let event = new CustomEvent('changeScalaMovimento', {
+            detail: this.scalaMovimento,
+        });
+        this.dispatchEvent(event);
+    }
 }
 customElements.define('admin-new-bar-component', AdminConsoleBarComponent);

@@ -68,6 +68,8 @@ export class AdminConsolePage extends NavElement {
                     @changeWindData=${(e) => this.changeWindData(e.detail)}
                     @gameStatusToggled=${(e) => (this.adminConsoleP5.gameIsPlaying = e.detail)}
                     @changeScalaMovimento=${(e) => (this.adminConsoleP5.movementScale = e.detail)}
+                    .connectedToServer=${this.adminPeer && !this.adminPeer.disconnected && !this.adminPeer.destroyed}
+                    .connectedPeers=${this.activeConnections.map((c) => c.peer)}
                 ></admin-new-bar-component>
             </div>
             <br />
