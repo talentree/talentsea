@@ -12,12 +12,11 @@ import { Inputs } from '../../core/classes/inputs.class';
 //import Peer from 'peerjs';
 
 export class TeamConsolePage extends NavElement {
-
     static get properties() {
         return {
             gameInfo: { type: Object },
-            myTeam: { type: Object }
-        }
+            myTeam: { type: Object },
+        };
     }
 
     constructor() {
@@ -53,34 +52,40 @@ export class TeamConsolePage extends NavElement {
     }
 
     render() {
-        return html`            
-            <div class = " columns is-mobile is-centered is-full ">
-                <div class = " column is-11 ">
-                    <h1  class = " title is-0 has-text-centered has-text-primary is-italic has-text-weight-bold gradient-text ">CONSOLE SQUADRA</h1>
-                    <div class = "home-position" >
+        return html`
+            <div class=" columns is-mobile is-centered is-full ">
+                <div class=" column is-11 ">
+                    <h1 class=" title is-0 has-text-centered has-text-primary is-italic has-text-weight-bold gradient-text ">
+                        CONSOLE SQUADRA
+                    </h1>
+                    <div class="home-position">
                         <a route="/"><i class="fas fa-home icon is-medium"></i></a>
                     </div>
-                    <hr> 
+                    <hr />
                 </div>
             </div>
-            <div class = " columns is-mobile is-full is-centered">
-                <div class = "column is-11">
-                    <div class = "columns">
-                        <div class = " column is-6">
-                            <div class = " gradient-box primary-box box-shadow-primary">
-                                <div class = "columns is-centered">
-                                    <div class = " column is-11"> 
+            <div class=" columns is-mobile is-full is-centered">
+                <div class="column is-11">
+                    <div class="columns">
+                        <div class=" column is-6">
+                            <div class=" gradient-box primary-box box-shadow-primary">
+                                <div class="columns is-centered">
+                                    <div class=" column is-11">
                                         <div id="container-p5"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class = " column is-6">
-                            <div class = " gradient-box link-box box-shadow-link">
-                                <div class = "columns is-centered">                                   
-                                        <textual-interface-component .gameInfo = ${this.gameInfo} .myTeam= ${this.myTeam} .teamName=${TeamState.teamName}></textual-interface-component>                                    
-                                </div>                             
-                            </div>                      
+                        <div class=" column is-6">
+                            <div class=" gradient-box link-box box-shadow-link">
+                                <div class="columns is-centered">
+                                    <textual-interface-component
+                                        .gameInfo=${this.gameInfo}
+                                        .myTeam=${this.myTeam}
+                                        .teamName=${TeamState.teamName}
+                                    ></textual-interface-component>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -92,27 +97,32 @@ export class TeamConsolePage extends NavElement {
         //cambio lo uid
         this.firebaseQuery.setUid(TeamState.connectedToGameId);
 
+        let peerId = Math.floor(Math.random() * 10000) + '_' + TeamState.teamName;
         //creo un peer
-        this.peer = new Peer(TeamState.teamName);
-        console.log('creating peer with id: ', TeamState.teamName);
-        this.connectionWithAdmin = this.peer.connect(TeamState.connectedToGameId);
-        //console.log('connecting with admin peer: ', TeamState.connectedToGameId);
-        this.connectionWithAdmin.on('open', () => {
-            console.log('connected to admin: ', TeamState.connectedToGameId);
+        this.peer = new Peer(peerId, {
+            host: 'navigator-talentree-peerjs.herokuapp.com/',
         });
-        this.connectionWithAdmin.on('data', data => {
-            //console.log('received data from admin: ', data);
-            //se non ho già un'istanza di p5 significa che sono appena entrato nella pagina
-            if (!this.p5) {
-                this.setupP5(data);
-            }
-            //inserisco i nuovi dati e chiamo così il reload del component
-            this.gameInfo = data.info;
-            this.myTeam = data.teams[TeamState.teamName];
+        this.peer.on('open', () => {
+            console.log('created peer with id: ', peerId);
+            this.connectionWithAdmin = this.peer.connect(TeamState.connectedToGameId);
+            //console.log('connecting with admin peer: ', TeamState.connectedToGameId);
+            this.connectionWithAdmin.on('open', () => {
+                console.log('connected to admin: ', TeamState.connectedToGameId);
+            });
+            this.connectionWithAdmin.on('data', (data) => {
+                //console.log('received data from admin: ', data);
+                //se non ho già un'istanza di p5 significa che sono appena entrato nella pagina
+                if (!this.p5) {
+                    this.setupP5(data);
+                }
+                //inserisco i nuovi dati e chiamo così il reload del component
+                this.gameInfo = data.info;
+                this.myTeam = data.teams[TeamState.teamName];
+            });
         });
     }
 
-    setupP5(data){
+    setupP5(data) {
         let container = this.querySelector('#container-p5');
 
         //creo quindi l'istanza
@@ -122,7 +132,7 @@ export class TeamConsolePage extends NavElement {
         this.previouslySentInputs = Object.assign({}, data.teams[TeamState.teamName].inputs);
 
         //aggiungo la callback per quando clicco
-        this.teamConsoleP5.setCallbackToMouseClick(action => this.applyClickAction(action));
+        this.teamConsoleP5.setCallbackToMouseClick((action) => this.applyClickAction(action));
     }
 
     updated() {
@@ -133,12 +143,20 @@ export class TeamConsolePage extends NavElement {
 
     disconnectedCallback() {
         //se esco dalla pagina rimuovo p5, onSnapshot di firebase e setInterval per upload
-        if (this.p5) { this.p5.remove() }
-        if (this.onSnapshotReference) { this.onSnapshotReference() };
+        if (this.p5) {
+            this.p5.remove();
+        }
+        if (this.onSnapshotReference) {
+            this.onSnapshotReference();
+        }
         //chiudo la connessione con l'admin
-        if (this.connectionWithAdmin) { this.connectionWithAdmin.close() };
+        if (this.connectionWithAdmin) {
+            this.connectionWithAdmin.close();
+        }
         //distruggo i mio peer per evitare errore 401 alla riconnessione
-        if(this.peer){this.peer.destroy()};
+        if (this.peer) {
+            this.peer.destroy();
+        }
         //effettuo logout (non setta isUsed a false)
         TeamState.logoutFromGame();
     }
@@ -146,36 +164,28 @@ export class TeamConsolePage extends NavElement {
     applyClickAction(action) {
         switch (action) {
             case ClickAction.accelerate: {
-                if (this.myTeam.inputs.acceleration < this.maxAcceleration)
-                    this.myTeam.inputs.acceleration++;
-                else
-                    this.myTeam.inputs.acceleration = this.maxAcceleration;
+                if (this.myTeam.inputs.acceleration < this.maxAcceleration) this.myTeam.inputs.acceleration++;
+                else this.myTeam.inputs.acceleration = this.maxAcceleration;
 
                 break;
             }
             case ClickAction.decelerate: {
-                if (this.myTeam.inputs.acceleration > this.minAcceleration)
-                    this.myTeam.inputs.acceleration--;
-                else
-                    this.myTeam.inputs.acceleration = this.minAcceleration;
+                if (this.myTeam.inputs.acceleration > this.minAcceleration) this.myTeam.inputs.acceleration--;
+                else this.myTeam.inputs.acceleration = this.minAcceleration;
 
                 break;
             }
             case ClickAction.turnRight: {
                 // controllo che barra sia tra -30<barra<30
-                if (this.myTeam.inputs.wheel < this.maxWheelAngle)
-                    this.myTeam.inputs.wheel++;
-                else
-                    this.myTeam.inputs.wheel = this.maxWheelAngle;
+                if (this.myTeam.inputs.wheel < this.maxWheelAngle) this.myTeam.inputs.wheel++;
+                else this.myTeam.inputs.wheel = this.maxWheelAngle;
 
                 break;
             }
             case ClickAction.turnLeft: {
                 // controllo che barra sia tra -30<barra<30
-                if (this.myTeam.inputs.wheel > - this.maxWheelAngle)
-                    this.myTeam.inputs.wheel--;
-                else
-                    this.myTeam.inputs.wheel = -this.maxWheelAngle;
+                if (this.myTeam.inputs.wheel > -this.maxWheelAngle) this.myTeam.inputs.wheel--;
+                else this.myTeam.inputs.wheel = -this.maxWheelAngle;
 
                 break;
             }
@@ -192,10 +202,8 @@ export class TeamConsolePage extends NavElement {
     uploadInputsIfChanged() {
         //se uno dei parametri è cambiato aggiorno su firebase
         let teamInputsChanged = false;
-        if (this.myTeam.inputs.acceleration != this.previouslySentInputs.acceleration)
-            teamInputsChanged = true;
-        if (this.myTeam.inputs.wheel != this.previouslySentInputs.wheel)
-            teamInputsChanged = true;
+        if (this.myTeam.inputs.acceleration != this.previouslySentInputs.acceleration) teamInputsChanged = true;
+        if (this.myTeam.inputs.wheel != this.previouslySentInputs.wheel) teamInputsChanged = true;
 
         if (teamInputsChanged && this.connectionWithAdmin) {
             //notifico l'admin degli input
