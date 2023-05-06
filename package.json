@@ -29,7 +29,7 @@
   "dependencies": {
     "@polymer/lit-element": "^0.7.1",
     "bulma": "^0.7.5",
-    "firebase": "^6.5.0",
+    "firebase": "^9.21.0",
     "p5": "^0.9.0"
   }
 }
